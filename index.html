@@ -331,6 +331,7 @@ nav button.on{color:#ECECF2}nav button.on .d{background:#F742C5}
   <div class="card">
     <div class="segrow"><div class="h"><div class="t">Binaural beat</div><div class="s" id="beatDesc"></div></div><div class="seg" id="beatSeg"></div></div>
     <div class="segrow"><div class="h"><div class="t">Breath guide</div><div class="s" id="breathDesc"></div></div><div class="seg" id="breathSeg"></div></div>
+    <div class="segrow"><div class="h"><div class="t">Breath cues</div><div class="s" id="cueDesc"></div></div><div class="seg" id="cueSeg"></div></div>
     <button class="lrow" id="bowlRow"><div class="f"><div class="t">Singing bowl<span class="plustag lockonly">Plus</span></div><div class="s">A struck bowl every 15–20 s, tuned to the mood</div></div><div class="tog"><i></i></div></button>
     <button class="lrow" id="humRow"><div class="f"><div class="t">528 Hz hum<span class="plustag lockonly">Plus</span></div><div class="s">A soft solfeggio tone under the pad</div></div><div class="tog"><i></i></div></button>
     <button class="lrow" id="rtRow"><div class="f"><div class="t">Room tone</div><div class="s">Fold the mic recording into the mix</div></div><div class="tog"><i></i></div></button>
@@ -420,6 +421,7 @@ const FREE_MOODS = ['Drift','Ember','Tide','Still'], FREE_LENGTHS = [10,15,20], 
 const LAYERS = { Rain:'Soft rain on a window, occasional drips', Ocean:'Slow swell and draw of surf', Wind:'Forest wind through leaves', Fire:'Low hearth with crackle', Night:'Crickets and warm dark air', Stream:'Running water close by' };
 const BEATS = { Off:0, Delta:2, Theta:4, Alpha:10 };
 const BREATHS = { Off:null, Box:[4,4,4,4], '4-7-8':[4,7,8,0] };
+const CUES = { Off:'Silent', Tones:'Soft tones', Isla:'Guide voice', Scott:'Scott' };   // breath cues; voice sets live in assets/voice/<name>/
 const DENS = { 1:'Low', 2:'Med', 3:'High' };
 
 // ---- state ----
@@ -427,7 +429,7 @@ const PREFS = JSON.parse(localStorage.getItem('rz.prefs') || 'null') || {};
 const S = {
   screen:'intro', back:'home', act:0, sensors:{ cam:0, mic:0, motion:0 },
   sub:false, plan:{ plan:'free' },
-  mood: PREFS.mood || 'Drift', length: PREFS.length || 15, beat: PREFS.beat || 'Theta', breath: PREFS.breath || 'Off',
+  mood: PREFS.mood || 'Drift', length: PREFS.length || 15, beat: PREFS.beat || 'Theta', breath: PREFS.breath || 'Off', cue: PREFS.cue || 'Isla',
   layers: Object.assign({ Rain:false, Ocean:false, Wind:false, Fire:false, Night:false, Stream:false }, PREFS.layers || {}),
   bowl: !!PREFS.bowl, hum: !!PREFS.hum, roomtone: PREFS.roomtone !== false, density: PREFS.density || 2,
   coverage:0, playing:false, preview:false, remaining:900, sessionNo:1,
@@ -436,7 +438,7 @@ const S = {
 };
 S.sessionNo = S.sessions.length + 1;
 if (!MOODS[S.mood]) S.mood = 'Drift';
-function savePrefs(){ localStorage.setItem('rz.prefs', JSON.stringify({ mood:S.mood, length:S.length, beat:S.beat, breath:S.breath, layers:S.layers, bowl:S.bowl, hum:S.hum, roomtone:S.roomtone, density:S.density })); }
+function savePrefs(){ localStorage.setItem('rz.prefs', JSON.stringify({ mood:S.mood, length:S.length, beat:S.beat, breath:S.breath, cue:S.cue, layers:S.layers, bowl:S.bowl, hum:S.hum, roomtone:S.roomtone, density:S.density })); }
 
 const pts = []; let W=0,H=0, motion=0, lastOri=null, amp=0, t0=performance.now();
 const video=$('#cam'), scanCv=$('#scanCv'), listenCv=$('#listenCv'), glCv=$('#glCv'), off=document.createElement('canvas'); off.width=96; off.height=54; const SW=96,SH=54; let objects=[], objIds=new Map(), ripples=[];
@@ -601,8 +603,8 @@ function tick(now){
   zapparFrame();
   // breath guide (visual only)
   const br=BREATHS[S.breath];
-  if(br && S.playing && S.screen==='listen'){ const tot=br.reduce((a,b)=>a+b,0), u=((now-breathT0)/1000)%tot; let acc=0, ph=0; for(;ph<3;ph++){ if(u<acc+br[ph]) break; acc+=br[ph]; } const k=(u-acc)/(br[ph]||1); const target=ph===0?k:ph===1?1:ph===2?1-k:0; S.breathK+=(target-S.breathK)*.1; const lbl=['INHALE','HOLD','EXHALE','HOLD'][ph]+' · '+Math.ceil(br[ph]-(u-acc)); if(lbl!==S.breathLabel){ S.breathLabel=lbl; $('#stateLabel').textContent=lbl; } }
-  else { S.breathK+=(0-S.breathK)*.05; if(S.breathLabel){ S.breathLabel=''; clockUI(); } }
+  if(br && S.playing && S.screen==='listen'){ const tot=br.reduce((a,b)=>a+b,0), u=((now-breathT0)/1000)%tot; let acc=0, ph=0; for(;ph<3;ph++){ if(u<acc+br[ph]) break; acc+=br[ph]; } const k=(u-acc)/(br[ph]||1); const target=ph===0?k:ph===1?1:ph===2?1-k:0; S.breathK+=(target-S.breathK)*.1; const cnt=Math.ceil(br[ph]-(u-acc)); const lbl=['INHALE','HOLD','EXHALE','HOLD'][ph]+' · '+cnt; if(lbl!==S.breathLabel){ const newPhase=!S.breathLabel||S.breathLabel.split(' · ')[0]!==lbl.split(' · ')[0]||S.breathPh!==ph; S.breathLabel=lbl; S.breathPh=ph; $('#stateLabel').textContent=lbl; if(E) E.breathCue(ph,cnt,newPhase); } }
+  else { S.breathK+=(0-S.breathK)*.05; if(S.breathLabel){ S.breathLabel=''; S.breathPh=-1; clockUI(); if(E) E.breathOff(); } }
   if(S.screen==='scan'){
     if(S.coverage<1) S.coverage=Math.min(1,S.coverage+dt*(1/14)*(0.6+motion*1.4+(lastOri?0:0.4)));
     motion*=.98;
@@ -668,6 +670,21 @@ function makeEngine(getLight){
   const strike=()=>{ const m=MOODS[E.mood], now=ac.currentTime, f=m.root*4*Math.pow(2,[0,7,12][Math.floor(Math.random()*3)]/12); [[1,.05],[2.76,.02],[5.4,.007],[8.9,.003]].forEach(([r,gn],i)=>{ [0,1.4].forEach(dt=>{ const o=ac.createOscillator(); o.frequency.value=f*r+dt*(i+1); const e=ac.createGain(); e.gain.setValueAtTime(0,now); e.gain.linearRampToValueAtTime(gn,now+.08+i*.02); e.gain.exponentialRampToValueAtTime(.0001,now+9-i*1.5); const p=pan(Math.random()*.8-.4); o.connect(e); e.connect(p); p.connect(bus); o.start(now); o.stop(now+9.5); }); }); };
   const schedBowl=()=>{ bowlT=setTimeout(()=>{ if(E.playing&&E.bowl) strike(); schedBowl(); },15000+Math.random()*5000); };
   const hum=ac.createGain(); hum.gain.value=0; [528,264].forEach((f,i)=>{ const o=ac.createOscillator(); o.frequency.value=f; const g=ac.createGain(); g.gain.value=i?.5:1; o.connect(g); g.connect(hum); o.start(); }); lfo(.25,.3,hum.gain); hum.connect(bus);
+  // breath cues: spoken clips (assets/voice/<set>/{in,hold,out,1..8}.mp3) or soft tones, plus a breathy noise swell
+  const voiceG=ac.createGain(); voiceG.gain.value=.9; voiceG.connect(master);
+  const brF=filt('lowpass',700,.5), brG=ac.createGain(); brG.gain.value=0; chain(src(pinkB),brF,brG,master);
+  const voices={}; let voiceSet=null;
+  E.loadVoice=name=>{ voiceSet=name; if(!name||name==='Off'||name==='Tones'||voices[name]) return; const set=voices[name]={}; ['in','hold','out','1','2','3','4','5','6','7','8'].forEach(id=>{ fetch(`assets/voice/${name}/${id}.mp3`).then(r=>r.ok?r.arrayBuffer():Promise.reject(r.status)).then(b=>ac.decodeAudioData(b)).then(buf=>{ set[id]=buf; }).catch(()=>{}); }); };
+  const say=id=>{ const set=voices[voiceSet]; const buf=set&&set[id]; if(!buf) return false; const sN=ac.createBufferSource(); sN.buffer=buf; sN.connect(voiceG); sN.start(); return true; };
+  const ping=(f,g,d)=>{ const now=ac.currentTime, o=ac.createOscillator(); o.type='sine'; o.frequency.value=f; const e=ac.createGain(); e.gain.setValueAtTime(0,now); e.gain.linearRampToValueAtTime(g,now+.03); e.gain.exponentialRampToValueAtTime(.0001,now+d); o.connect(e); e.connect(bus); o.start(now); o.stop(now+d+.1); };
+  // phase: 0 inhale, 1 hold, 2 exhale, 3 hold; count: seconds remaining in the phase
+  E.breathCue=(phase,count,newPhase)=>{ const now=ac.currentTime;
+    if(newPhase){ if(phase===0){ brG.gain.setTargetAtTime(.045,now,1.4); brF.frequency.setTargetAtTime(1500,now,1.6); } else if(phase===2){ brG.gain.setTargetAtTime(.035,now,1.2); brF.frequency.setTargetAtTime(450,now,2); } else { brG.gain.setTargetAtTime(0,now,.8); } }
+    if(!voiceSet||voiceSet==='Off') return;
+    if(voiceSet==='Tones'){ if(newPhase) ping([520,660,440,660][phase],.05,1.6); else ping(880,.018,.35); return; }
+    if(newPhase){ say(['in','hold','out','hold'][phase]); } else if(count>=1&&count<=8) say(String(count)); };
+  E.breathOff=()=>{ brG.gain.setTargetAtTime(0,ac.currentTime,.8); };
+  E.voiceCount=name=>Object.keys(voices[name]||{}).length;
   // plucks
   let pluckT=null;
   // current chord (semitones) follows the progression; plucks lean on chord tones and sometimes play a short stepwise phrase
@@ -701,7 +718,7 @@ function makeEngine(getLight){
   E.stop=()=>{ E.pause(); clearInterval(evTimer); };
   return E;
 }
-function syncEngine(){ if(!E) return; E.setMood(S.mood); E.setBeat(BEATS[S.beat]); E.setRoomtone(S.roomtone); Object.keys(S.layers).forEach(k=>E.setLayer(k,S.layers[k])); E.setBowl(S.bowl); E.setHum(S.hum); }
+function syncEngine(){ if(!E) return; E.loadVoice(S.cue); E.setMood(S.mood); E.setBeat(BEATS[S.beat]); E.setRoomtone(S.roomtone); Object.keys(S.layers).forEach(k=>E.setLayer(k,S.layers[k])); E.setBowl(S.bowl); E.setHum(S.hum); }
 function startAudio(){
   if(!E){ E=makeEngine(()=>S.light); if(!E) return; syncEngine();
     E.onPluck=()=>{ ripples.push({x:W*(.15+Math.random()*.7),y:H*(.12+Math.random()*.55),born:performance.now()}); if(ripples.length>14) ripples.shift(); };
@@ -723,7 +740,7 @@ function enforcePlan(){
 function pickMood(n,from){ if(!canMood(n)) return paywall(from); S.mood=n; if(E) E.setMood(n); savePrefs(); renderAll(); clockUI(); }
 function toggleLayer(n,from){ if(!S.sub) return paywall(from); S.layers[n]=!S.layers[n]; if(E) E.setLayer(n,S.layers[n]); savePrefs(); renderAll(); }
 function setBeat(k){ S.beat=k; if(E) E.setBeat(BEATS[k]); savePrefs(); renderAll(); }
-function setBreath(k,from){ if(!S.sub) return paywall(from); S.breath=k; S.breathLabel=''; breathT0=performance.now(); savePrefs(); renderAll(); clockUI(); }
+function setBreath(k,from){ if(!S.sub) return paywall(from); S.breath=k; S.breathLabel=''; S.breathPh=-1; breathT0=performance.now(); if(E){ E.loadVoice(S.cue); if(k==='Off') E.breathOff(); } savePrefs(); renderAll(); clockUI(); }
 
 // ---- renderers ----
 const lockSvg=(s,c)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2"><rect x="5" y="11" width="14" height="10"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>`;
@@ -761,6 +778,9 @@ function renderSounds(){
   $('#breathSeg').innerHTML=Object.keys(BREATHS).map(k=>`<button class="${k===S.breath?'on':''}" data-breath="${k}">${k}</button>`).join('');
   $$('#breathSeg [data-breath]').forEach(b=>b.onclick=()=>setBreath(b.dataset.breath,'sounds'));
   $('#breathDesc').textContent={Off:'Clock only',Box:'4 · 4 · 4 · 4','4-7-8':'In 4 · hold 7 · out 8'}[S.breath];
+  $('#cueSeg').innerHTML=Object.keys(CUES).map(k=>`<button class="${k===S.cue?'on':''}" data-cue="${k}">${k}</button>`).join('');
+  $$('#cueSeg [data-cue]').forEach(b=>b.onclick=()=>{ if(!S.sub) return paywall('sounds'); S.cue=b.dataset.cue; savePrefs(); if(E) E.loadVoice(S.cue); renderSounds(); });
+  $('#cueDesc').textContent=CUES[S.cue]+(S.cue==='Off'?'':' · spoken phases and counts');
   $$('.lockonly').forEach(e=>e.style.display=S.sub?'none':'');
   $('#bowlRow .tog').classList.toggle('on',S.bowl); $('#humRow .tog').classList.toggle('on',S.hum); $('#rtRow .tog').classList.toggle('on',S.roomtone);
 }

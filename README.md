@@ -84,6 +84,7 @@ is configured.
   Each disc follows its real promise, with the handoff's timetable as the minimum display time; a
   denied sensor stays `Off` with a pink ring and the app continues.
 - Live palette and light level from the camera; mic level shapes the room-tone layer.
+- Breath guide is audible: spoken "Breathe in / Hold / Breathe out" and counts in two voices (`assets/voice/Isla`, `assets/voice/Scott`, generated with Higgsfield Seed Audio), a soft-tones option, and a breath-like noise swell; pick under Sounds → Breath cues.
 - Generative score: sub drone, 6-voice pad, FM bell plucks on the mood scale, reverb, stereo delay;
   nature layers synthesised from shared pink/white noise; singing bowl; 528 Hz hum; binaural beat on
   the second drone oscillator; visual breath guide (Box, 4-7-8) that scales glow and point cloud.

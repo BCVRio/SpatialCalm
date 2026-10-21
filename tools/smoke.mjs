@@ -48,6 +48,7 @@ async function flow(plan) {
   await page.click('#breathBtn');
   if (plan === 'free') { await expect('paywall', 'breath gates'); await page.click('#pwClose'); await expect('listen', 'paywall back to listen'); }
   else { await page.waitForTimeout(800); const l2 = await page.textContent('#stateLabel'); if (!/INHALE|HOLD|EXHALE/.test(l2)) throw new Error('breath label missing: ' + l2); await shot(`${plan}-05b-breath`); }
+  if (plan === 'plus') { await page.waitForTimeout(2500); const n = await page.evaluate(() => RZ.engine().voiceCount(RZ.state.cue)); if (n < 11) throw new Error('breath voice clips not loaded: ' + n); }
   await page.click('#beatBtn'); await page.click('#play'); await page.waitForTimeout(300); if ((await page.textContent('#stateLabel')) !== 'PAUSED') throw new Error('pause label');
   await page.click('#play'); await page.click('#end'); await expect('library', 'finish -> library');
   const n = await page.$$eval('#sessList .sess', s => s.length); if (n < 1) throw new Error('session not saved');
