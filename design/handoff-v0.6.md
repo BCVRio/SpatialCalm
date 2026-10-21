@@ -150,3 +150,6 @@ Icons: Lucide-style 1.5px strokes drawn inline as SVG in the prototype; copy the
 - `Resonance.dc.html` — the canvas that lays out all screens (turn 2 = v0.6, turn 1 = v0.5 for reference)
 - `build/` — the shipping v0.5 WebAR build to extend (`index.html`, `README.txt`, fonts)
 - `assets/SOURCES.txt` — Higgsfield URLs for the generated art and video
+
+## Added after handoff (v0.6 build)
+- `assets/cover-intro.mp4` / `.webm` — 10 s intro sequence (Higgsfield Seedance 2.5, image-to-video from `cover-pointcloud`), job `100b6111-4a76-470b-8ba4-f7ba6ee4c7f6`; alternate take `0e398a89-bf36-462c-9db8-be50aa4043aa`. Plays once over the cover while the type reveals on a timeline, then crossfades to `cover-loop`.

@@ -68,7 +68,15 @@ video#cam{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
 .icon{width:20px;height:20px;padding:12px;box-sizing:content-box;color:#9B9BAE;margin:-12px}
 .icon:hover{color:#ECECF2}
 /* cover */
-#coverVid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+#coverVid,#introVid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+#introVid{z-index:1;transition:opacity 1200ms var(--ease)}
+#introVid.out{opacity:0}
+#intro .veil,#intro .content{z-index:2}
+#intro .rv{opacity:0;animation-delay:var(--d,0ms)}
+#intro.seq .rv{animation:up 720ms var(--ease) both;animation-delay:var(--d,0ms)}
+#intro.seq .rv.h1{animation:wipe 1100ms var(--ease) both;animation-delay:var(--d,0ms)}
+@keyframes wipe{0%{opacity:1;clip-path:inset(0 100% 0 0);filter:brightness(2) blur(3px)}60%{filter:brightness(1.4) blur(0)}100%{opacity:1;clip-path:inset(0 -2% 0 0);filter:none}}
+#intro.now .rv{animation:none!important;opacity:1}
 .sensors{margin-top:28px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
 .sensor{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
 .disc{position:relative;width:64px;height:64px}
@@ -190,7 +198,8 @@ nav button.on{color:#ECECF2}nav button.on .d{background:#F742C5}
 
 <!-- 01 Intro / cover -->
 <section id="intro" class="screen on">
-  <video id="coverVid" poster="assets/cover-pointcloud.jpg" autoplay muted loop playsinline preload="metadata"></video>
+  <video id="coverVid" poster="assets/cover-pointcloud.jpg" muted loop playsinline preload="metadata"></video>
+  <video id="introVid" poster="assets/cover-pointcloud.jpg" muted playsinline preload="auto"></video>
   <div class="veil" style="background:linear-gradient(180deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,0) 22%,rgba(0,0,0,0) 40%,rgba(0,0,0,.92) 66%,#000 100%)"></div>
   <div class="content pad" style="padding-bottom:calc(var(--sab) + 16px)">
     <div style="display:flex;align-items:center;justify-content:space-between">
@@ -198,17 +207,17 @@ nav button.on{color:#ECECF2}nav button.on .d{background:#F742C5}
       <span class="eyebrow sm">WebAR · Zappar</span>
     </div>
     <div style="margin-top:auto">
-      <div class="eyebrow">01 — Scan to sound</div>
-      <h1 class="display grad" style="font-size:46px;line-height:1;margin-top:10px">Resonance</h1>
-      <p style="margin:14px 0 0;color:#C9C9D6;font-size:16px;max-width:30ch;text-wrap:pretty">Your room, rendered as sound. We scan the space around you and compose a slow ambient score from its shape, light, and colour.</p>
+      <div class="eyebrow rv" style="--d:3400ms">01 — Scan to sound</div>
+      <h1 class="display grad rv h1" style="--d:4000ms;font-size:46px;line-height:1;margin-top:10px">Resonance</h1>
+      <p class="rv" style="--d:4900ms;margin:14px 0 0;color:#C9C9D6;font-size:16px;max-width:30ch;text-wrap:pretty">Your room, rendered as sound. We scan the space around you and compose a slow ambient score from its shape, light, and colour.</p>
     </div>
     <div class="sensors">
-      <div class="sensor" id="sCam"><div class="disc"><div class="r"></div><div class="i"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M3 7h3l2-3h8l2 3h3v12H3z"/><circle cx="12" cy="13" r="3.5"/></svg></div></div><div><div class="l">Camera</div><div class="s">Off</div></div></div>
-      <div class="sensor" id="sMic"><div class="disc"><div class="r"></div><div class="i"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></div></div><div><div class="l">Microphone</div><div class="s">Off</div></div></div>
-      <div class="sensor" id="sMot"><div class="disc"><div class="r"></div><div class="i"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2M7 12h10"/></svg></div></div><div><div class="l">Depth</div><div class="s">Off</div></div></div>
+      <div class="sensor rv" style="--d:5700ms" id="sCam"><div class="disc"><div class="r"></div><div class="i"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M3 7h3l2-3h8l2 3h3v12H3z"/><circle cx="12" cy="13" r="3.5"/></svg></div></div><div><div class="l">Camera</div><div class="s">Off</div></div></div>
+      <div class="sensor rv" style="--d:5900ms" id="sMic"><div class="disc"><div class="r"></div><div class="i"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></div></div><div><div class="l">Microphone</div><div class="s">Off</div></div></div>
+      <div class="sensor rv" style="--d:6100ms" id="sMot"><div class="disc"><div class="r"></div><div class="i"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2M7 12h10"/></svg></div></div><div><div class="l">Depth</div><div class="s">Off</div></div></div>
     </div>
-    <button id="actBtn" class="cta" style="margin-top:24px;width:100%"><div><span class="dot"></span><span id="actLabel">Activate camera, mic and depth</span></div></button>
-    <div class="note" style="margin-top:12px">One tap · Camera, mic and depth · No install</div>
+    <button id="actBtn" class="cta rv" style="--d:6900ms;margin-top:24px;width:100%"><div><span class="dot"></span><span id="actLabel">Activate camera, mic and depth</span></div></button>
+    <div class="note rv" style="--d:7300ms;margin-top:12px">One tap · Camera, mic and depth · No install</div>
   </div>
 </section>
 
@@ -314,7 +323,7 @@ nav button.on{color:#ECECF2}nav button.on .d{background:#F742C5}
     <div><div class="eyebrow">03 — Soundscape</div><h1 class="display" style="font-size:32px;margin-top:10px">Sounds</h1></div>
     <button class="prev" id="prevBtn"><svg id="prevPlay" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4l13 8-13 8z"/></svg><svg id="prevPause" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="display:none"><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg>Preview</button>
   </div>
-  <p style="margin:12px 0 28px;color:#9B9BAE;font-size:14px;text-wrap:pretty">Pick a mood for the score, then fold in nature and tone layers. Everything is synthesised live from the room scan.</p>
+  <p style="margin:12px 0 28px;color:#9B9BAE;font-size:14px;text-wrap:pretty">Pick a mood for the score — soft pads, dark drones, bright shimmer — then fold in nature and tone layers. Everything is synthesised live from the room scan.</p>
   <p class="sec">Mood · the score</p>
   <div class="mgrid" id="moodCards"></div>
   <p class="sec">Nature · layers</p>
@@ -387,14 +396,25 @@ const API = String(CFG.api || '').replace(/\/$/, '');
 
 // ---- soundscape tables (shared by UI and engine) ----
 const MOODS = {
-  Drift:  { hue:'#3096FB', desc:'Open lydian pad, slow bells',          root:73.42, chord:[0,7,14,16,23,28], scale:[0,2,4,6,7,9,11],  gap:[3,7],   cut:1100 },
-  Ember:  { hue:'#FF7B10', desc:'Warm minor, close and low',            root:55,    chord:[0,7,12,15,19,22], scale:[0,3,5,7,10],      gap:[4,9],   cut:750 },
-  Tide:   { hue:'#7859EB', desc:'Suspended fourths that rise and fall', root:82.41, chord:[0,5,7,12,14,19],  scale:[0,2,5,7,9],       gap:[2.5,6], cut:1400 },
-  Still:  { hue:'#F742C5', desc:'Two notes, almost nothing',            root:49,    chord:[0,7,12,19],       scale:[0,7,12,14,19],    gap:[6,12],  cut:600 },
-  Dawn:   { hue:'#FFC845', desc:'Bright major, slowly brightening',     root:65.41, chord:[0,4,7,11,14,19],  scale:[0,2,4,7,9],       gap:[3,6],   cut:1600 },
-  Hollow: { hue:'#6840E8', desc:'Dorian, cavernous, long reverb',       root:61.74, chord:[0,7,10,14,17,21], scale:[0,2,3,5,7,9,10],  gap:[5,10],  cut:650 },
-  Lumen:  { hue:'#25E0A1', desc:'Whole-tone shimmer, no gravity',       root:87.31, chord:[0,4,8,14,18,22],  scale:[0,2,4,6,8,10],    gap:[2,5],   cut:1900 },
-  Vale:   { hue:'#CB13A9', desc:'Pentatonic drone, bowl-like',          root:58.27, chord:[0,7,12,14,19,26], scale:[0,2,4,7,9],       gap:[4,8],   cut:900 },
+  // v = voice profile: padA/padB oscillator types (even/odd voices), detune cents, pad level + per-osc gain, LFO depth,
+  //     drone mix per role, air (filtered pink noise), reverb wet, delay send, bus tone cutoff, vibrato [Hz, cents],
+  //     shimmer (octave-up sines), rise (slow cutoff multiplier over ~10 min), pluck character or null.
+  Drift:  { hue:'#3096FB', desc:'Open lydian pad, slow bells',          root:73.42, chord:[0,7,14,16,23,28], scale:[0,2,4,6,7,9,11],  gap:[3,7],   cut:1100,
+            v:{ padA:'triangle', padB:'sine',     detune:7,  padLevel:1.1, padGain:1,   lfo:1,   drone:{sub:.7, beat:1, saw:.25, tri:1},  air:.04,  wet:.8,  delay:.32, tone:3400, vib:[.12,3],  shimmer:.02, pluck:{vel:1,   dec:1,   ratio:[2,3.01],    bright:1,   oct:[3,3,4,4], type:'sine'} } },
+  Ember:  { hue:'#FF7B10', desc:'Warm minor, close and low',            root:55,    chord:[0,7,12,15,19,22], scale:[0,3,5,7,10],      gap:[4,9],   cut:750,
+            v:{ padA:'sawtooth', padB:'sawtooth', detune:4,  padLevel:.8,  padGain:.6,  lfo:.6,  drone:{sub:1.5, beat:1, saw:1.6, tri:.3}, air:.01,  wet:.4,  delay:.12, tone:780,  vib:[.08,1.5], shimmer:0,  pluck:{vel:.6,  dec:.6,  ratio:[1.5,2],     bright:.3,  oct:[1,2,2,3], type:'triangle'} } },
+  Tide:   { hue:'#7859EB', desc:'Suspended fourths that rise and fall', root:82.41, chord:[0,5,7,12,14,19],  scale:[0,2,5,7,9],       gap:[2.5,6], cut:1400,
+            v:{ padA:'sawtooth', padB:'triangle', detune:14, padLevel:1.1, padGain:.9,  lfo:1.8, drone:{sub:.8, beat:1, saw:.7, tri:1.2},  air:.04,  wet:.8,  delay:.5,  tone:3200, vib:[.25,6],  shimmer:.03, pluck:{vel:.9,  dec:1.2, ratio:[2,3.01],    bright:1.1, oct:[3,3,4,4], type:'sine'} } },
+  Still:  { hue:'#F742C5', desc:'Two notes, almost nothing',            root:49,    chord:[0,7,12,19],       scale:[0,7,12,14,19],    gap:[6,12],  cut:600,
+            v:{ padA:'sine',     padB:'sine',     detune:2,  padLevel:.7,  padGain:1.2, lfo:.3,  drone:{sub:1.1, beat:1, saw:0, tri:.5},   air:.015, wet:.9,  delay:.1,  tone:1800, vib:[.05,1],  shimmer:0,   pluck:{vel:.5,  dec:1.6, ratio:[2],         bright:.4,  oct:[3,4],     type:'sine'} } },
+  Dawn:   { hue:'#FFC845', desc:'Bright major, slowly brightening',     root:65.41, chord:[0,4,7,11,14,19],  scale:[0,2,4,7,9],       gap:[3,6],   cut:1600,
+            v:{ padA:'triangle', padB:'sawtooth', detune:9,  padLevel:1,   padGain:1,   lfo:1,   drone:{sub:.7, beat:1, saw:.6, tri:1},    air:.03,  wet:.7,  delay:.35, tone:5000, vib:[.15,4],  shimmer:.05, rise:2.2, pluck:{vel:1.1, dec:1, ratio:[3.01,4],   bright:1.4, oct:[3,4,4,5], type:'sine'} } },
+  Hollow: { hue:'#6840E8', desc:'Dorian, cavernous, long reverb',       root:61.74, chord:[0,7,10,14,17,21], scale:[0,2,3,5,7,9,10],  gap:[5,10],  cut:650,
+            v:{ padA:'square',   padB:'triangle', detune:5,  padLevel:.6,  padGain:.5,  lfo:.8,  drone:{sub:1.6, beat:1, saw:.3, tri:.6},  air:.02,  wet:1.3, delay:.55, tone:900,  vib:[.06,2],  shimmer:0,   pluck:{vel:.7,  dec:2.2, ratio:[2,2.76],    bright:.5,  oct:[1,2,2,3], type:'triangle'} } },
+  Lumen:  { hue:'#25E0A1', desc:'Whole-tone shimmer, no gravity',       root:87.31, chord:[0,4,8,14,18,22],  scale:[0,2,4,6,8,10],    gap:[2,5],   cut:1900,
+            v:{ padA:'sine',     padB:'triangle', detune:11, padLevel:.9,  padGain:.9,  lfo:1.4, drone:{sub:.4, beat:1, saw:.3, tri:.8},   air:.045, wet:.85, delay:.4,  tone:6500, vib:[.5,7],   shimmer:.09, pluck:{vel:1.2, dec:.8,  ratio:[4,5.5,7],   bright:1.6, oct:[4,4,5,5], type:'sine'} } },
+  Vale:   { hue:'#CB13A9', desc:'Pentatonic drone, bowl-like',          root:58.27, chord:[0,7,12,14,19,26], scale:[0,2,4,7,9],       gap:[4,8],   cut:900,
+            v:{ padA:'triangle', padB:'sine',     detune:3,  padLevel:.5,  padGain:.8,  lfo:.5,  drone:{sub:1.5, beat:1, saw:.9, tri:1.3},  air:.02,  wet:.95, delay:.2,  tone:2000, vib:[.03,1.5], shimmer:.02, pluck:{vel:.8,  dec:2.6, ratio:[2.76,5.4], bright:.7,  oct:[2,3,3],   type:'sine'} } },
 };
 const FREE_MOODS = ['Drift','Ember','Tide','Still'], FREE_LENGTHS = [10,15,20], PLUS_LENGTHS = [10,15,20,30,60];
 const LAYERS = { Rain:'Soft rain on a window, occasional drips', Ocean:'Slow swell and draw of surf', Wind:'Forest wind through leaves', Fire:'Low hearth with crackle', Night:'Crickets and warm dark air', Stream:'Running water close by' };
@@ -475,8 +495,22 @@ $$('nav button').forEach(b=>b.onclick=()=>show(b.dataset.go));
 // ---- toast / sheet ----
 let toastT; function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('on'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('on'),2800); }
 
-// ---- cover video: fall back to the poster on reduced motion or data saver ----
-(function(){ const v=$('#coverVid'); const rm=matchMedia('(prefers-reduced-motion: reduce)').matches, ds=navigator.connection&&navigator.connection.saveData; if(rm||ds){ v.removeAttribute('autoplay'); return; } v.src='assets/cover-loop.mp4'; v.play().catch(()=>{}); })();
+// ---- cover: 10 s intro sequence plays once, content reveals on a timeline, then the loop takes over ----
+(function(){
+  const intro=$('#intro'), iv=$('#introVid'), lv=$('#coverVid');
+  const rm=matchMedia('(prefers-reduced-motion: reduce)').matches, ds=navigator.connection&&navigator.connection.saveData;
+  let done=false;
+  const srcs=(v,name)=>{ ['mp4','webm'].forEach(ext=>{ const s=document.createElement('source'); s.src=`assets/${name}.${ext}`; s.type=ext==='mp4'?'video/mp4':'video/webm'; v.appendChild(s); }); v.load(); };
+  const settle=()=>{ if(done) return; done=true; intro.classList.add('now'); iv.classList.add('out'); if(!lv.querySelector('source')) srcs(lv,'cover-loop'); lv.play().catch(()=>{}); setTimeout(()=>{ iv.pause(); iv.innerHTML=''; iv.load(); },1400); };
+  if(rm||ds){ iv.remove(); settle(); return; }          // poster only, everything visible
+  const start=()=>{ if(intro.classList.contains('seq')) return; intro.classList.add('seq'); };
+  iv.addEventListener('playing',start,{once:true});
+  iv.addEventListener('timeupdate',()=>{ if(iv.duration&&iv.currentTime>iv.duration-1.3) settle(); });
+  iv.addEventListener('ended',settle); iv.addEventListener('error',()=>{ start(); settle(); });
+  srcs(iv,'cover-intro'); iv.play().catch(()=>{ iv.remove(); start(); settle(); });   // autoplay blocked: reveal without the clip
+  setTimeout(start,900);                                         // never hold the UI hostage to buffering
+  intro.addEventListener('pointerdown',e=>{ if(!done&&!e.target.closest('#actBtn')) settle(); }); // tap to skip
+})();
 
 // ---- sensors: one tap, real permission prompts, fixed minimum display timings ----
 let camStream=null, micStream=null, micAn=null;
@@ -590,8 +624,10 @@ function makeEngine(getLight){
   const conv=ac.createConvolver(); (function(){const n=ac.sampleRate*6,b=ac.createBuffer(2,n,ac.sampleRate); for(let ch=0;ch<2;ch++){const d=b.getChannelData(ch); let last=0; for(let i=0;i<n;i++){const w=(Math.random()*2-1)*Math.pow(1-i/n,3.2); last=last*.6+w*.4; d[i]=last*1.6;}} conv.buffer=b;})();
   const wet=ac.createGain(); wet.gain.value=.75; bus.connect(conv); conv.connect(wet); wet.connect(master);
   const dsend=ac.createGain(); dsend.gain.value=.32; const dl=ac.createDelay(2),dr=ac.createDelay(2); dl.delayTime.value=.62; dr.delayTime.value=.93; const dlp=ac.createBiquadFilter(); dlp.type='lowpass'; dlp.frequency.value=1600; const fb=ac.createGain(); fb.gain.value=.38; const pl=pan(-.6),pr=pan(.6); bus.connect(dsend); dsend.connect(dl); dl.connect(pl); pl.connect(master); dl.connect(dlp); dlp.connect(fb); fb.connect(dr); dr.connect(pr); pr.connect(master); dr.connect(fb); fb.connect(dl);
-  const drone=[]; [[.5,'sine',.2,0],[.5,'sine',.14,0],[1,'sawtooth',.06,300],[1.002,'triangle',.07,0]].forEach(([m,type,gn,cut],i)=>{ const o=ac.createOscillator(); o.type=type; const g=ac.createGain(); g.gain.value=gn; let node=o; if(cut){const f=ac.createBiquadFilter(); f.type='lowpass'; f.frequency.value=cut; f.Q.value=.9; const l=ac.createOscillator(); l.frequency.value=.021; const lg=ac.createGain(); lg.gain.value=130; l.connect(lg); lg.connect(f.frequency); l.start(); o.connect(f); node=f;} node.connect(g); g.connect(bus); o.start(); drone.push({o,m,i}); });
-  const pad=[]; for(let i=0;i<6;i++){ const vg=ac.createGain(); vg.gain.value=0; const f=ac.createBiquadFilter(); f.type='lowpass'; f.frequency.value=900; f.Q.value=.8; f.connect(vg); vg.connect(bus); const oscs=[-8,0,8].map(d=>{const o=ac.createOscillator(); o.type=i%2?'sawtooth':'triangle'; o.detune.value=d; const og=ac.createGain(); og.gain.value=i%2?.045:.085; o.connect(og); og.connect(f); o.start(); return o;}); const l=ac.createOscillator(); l.frequency.value=.02+i*.011; const lg=ac.createGain(); lg.gain.value=0; l.connect(lg); lg.connect(vg.gain); l.start(); pad.push({oscs,f,vg,lg}); }
+  const drone=[]; [[.5,'sine',.2,0,'sub'],[.5,'sine',.14,0,'beat'],[1,'sawtooth',.06,300,'saw'],[1.002,'triangle',.07,0,'tri']].forEach(([m,type,gn,cut,role],i)=>{ const o=ac.createOscillator(); o.type=type; const g=ac.createGain(); g.gain.value=gn; let node=o; if(cut){const f=ac.createBiquadFilter(); f.type='lowpass'; f.frequency.value=cut; f.Q.value=.9; const l=ac.createOscillator(); l.frequency.value=.021; const lg=ac.createGain(); lg.gain.value=130; l.connect(lg); lg.connect(f.frequency); l.start(); o.connect(f); node=f;} node.connect(g); g.connect(bus); o.start(); drone.push({o,m,i,g,gn,role}); });
+  // shared vibrato for the pad (rate/depth per mood)
+  const vib=ac.createOscillator(); vib.frequency.value=.12; const vibG=ac.createGain(); vibG.gain.value=3; vib.connect(vibG); vib.start();
+  const pad=[]; for(let i=0;i<6;i++){ const vg=ac.createGain(); vg.gain.value=0; const f=ac.createBiquadFilter(); f.type='lowpass'; f.frequency.value=900; f.Q.value=.8; f.connect(vg); vg.connect(bus); const ogs=[]; const oscs=[-1,0,1].map(d=>{const o=ac.createOscillator(); o.type=i%2?'sawtooth':'triangle'; o.detune.value=d*8; vibG.connect(o.detune); const og=ac.createGain(); og.gain.value=i%2?.045:.085; ogs.push(og); o.connect(og); og.connect(f); o.start(); return o;}); const l=ac.createOscillator(); l.frequency.value=.02+i*.011; const lg=ac.createGain(); lg.gain.value=0; l.connect(lg); lg.connect(vg.gain); l.start(); pad.push({oscs,ogs,f,vg,lg,i}); }
   // shared 4 s pink + white noise buffers
   const mkBuf=pink=>{ const b=ac.createBuffer(1,ac.sampleRate*4,ac.sampleRate),d=b.getChannelData(0); let b0=0,b1=0,b2=0; for(let i=0;i<d.length;i++){ const w=Math.random()*2-1; if(pink){ b0=.99765*b0+w*.099046; b1=.963*b1+w*.2965164; b2=.57*b2+w*1.0526913; d[i]=(b0+b1+b2+w*.1848)*.09; } else d[i]=w*.3; } return b; };
   const pinkB=mkBuf(true), whiteB=mkBuf(false);
@@ -601,6 +637,11 @@ function makeEngine(getLight){
   const filt=(type,f,q)=>{ const n=ac.createBiquadFilter(); n.type=type; n.frequency.value=f; n.Q.value=q??1; return n; };
   // room tone (mic level shapes it)
   const nf=filt('bandpass',700,1.4); lfo(.017,380,nf.frequency); const ng=ac.createGain(); ng.gain.value=0; chain(src(pinkB),nf,ng,bus);
+  // air: soft filtered pink noise, level per mood
+  const af=filt('lowpass',1400,.5); lfo(.023,300,af.frequency); const ag=ac.createGain(); ag.gain.value=0; chain(src(pinkB),af,ag,bus);
+  // shimmer: two octave-up sines with slow tremolo, level per mood
+  const shimTr=ac.createGain(); shimTr.gain.value=1; lfo(.11,.4,shimTr.gain); const shim=ac.createGain(); shim.gain.value=0; shimTr.connect(shim); shim.connect(bus);
+  const shimO=[0,1].map(()=>{ const o=ac.createOscillator(); o.type='sine'; const g=ac.createGain(); g.gain.value=.5; o.connect(g); g.connect(shimTr); o.start(); return o; });
   // nature layers
   const L={};
   { const hp=filt('highpass',1500,.5), lp=filt('lowpass',7000,.5), g=ac.createGain(); g.gain.value=0; chain(src(whiteB),hp,lp,g,master); L.Rain={g,base:.055}; }
@@ -621,12 +662,16 @@ function makeEngine(getLight){
   const hum=ac.createGain(); hum.gain.value=0; [528,264].forEach((f,i)=>{ const o=ac.createOscillator(); o.frequency.value=f; const g=ac.createGain(); g.gain.value=i?.5:1; o.connect(g); g.connect(hum); o.start(); }); lfo(.25,.3,hum.gain); hum.connect(bus);
   // plucks
   let pluckT=null;
-  function pluck(){ const m=MOODS[E.mood],now=ac.currentTime; const deg=m.scale[Math.floor(Math.random()*m.scale.length)], oct=[2,3,3,4][Math.floor(Math.random()*4)], f=m.root*Math.pow(2,deg/12+oct); const c=ac.createOscillator(); c.frequency.value=f; const mo=ac.createOscillator(); mo.frequency.value=f*(Math.random()<.5?2:3.01); const mg=ac.createGain(); mg.gain.setValueAtTime(f*1.1,now); mg.gain.exponentialRampToValueAtTime(f*.04,now+1.4); mo.connect(mg); mg.connect(c.frequency); const env=ac.createGain(); const vel=.07+Math.random()*.09; env.gain.setValueAtTime(0,now); env.gain.linearRampToValueAtTime(vel,now+.04); env.gain.exponentialRampToValueAtTime(.0001,now+3+Math.random()*2.5); const p=pan(Math.random()*1.4-.7); c.connect(env); env.connect(p); p.connect(bus); c.start(now); mo.start(now); c.stop(now+6.5); mo.stop(now+6.5); if(E.onPluck) E.onPluck(f); }
+  function pluck(){ const m=MOODS[E.mood], P=m.v.pluck; if(!P) return; const now=ac.currentTime; const pick=a=>a[Math.floor(Math.random()*a.length)]; const deg=pick(m.scale), oct=pick(P.oct), f=m.root*Math.pow(2,deg/12+oct); const c=ac.createOscillator(); c.type=P.type||'sine'; c.frequency.value=f; const mo=ac.createOscillator(); mo.frequency.value=f*pick(P.ratio); const mg=ac.createGain(); mg.gain.setValueAtTime(f*1.1*P.bright,now); mg.gain.exponentialRampToValueAtTime(Math.max(1,f*.04*P.bright),now+1.4*P.dec); mo.connect(mg); mg.connect(c.frequency); const env=ac.createGain(); const vel=(.07+Math.random()*.09)*P.vel, dur=(3+Math.random()*2.5)*P.dec; env.gain.setValueAtTime(0,now); env.gain.linearRampToValueAtTime(vel,now+.04); env.gain.exponentialRampToValueAtTime(.0001,now+dur); const p=pan(Math.random()*1.4-.7); c.connect(env); env.connect(p); p.connect(bus); c.start(now); mo.start(now); c.stop(now+dur+1); mo.stop(now+dur+1); if(E.onPluck) E.onPluck(f); }
   function schedule(){ const [a,b]=MOODS[E.mood].gap; pluckT=setTimeout(()=>{ if(E.playing) pluck(); schedule(); },(a+Math.random()*(b-a))*1000); }
-  E.setMood=name=>{ E.mood=name; const m=MOODS[name],now=ac.currentTime; const set=(p,v,tc)=>{ if(E.init) p.setTargetAtTime(v,now,tc); else p.value=v; };
-    drone.forEach(d=>{ const f=d.i===1&&E.beat? m.root*.5+E.beat : m.root*d.m*(d.i===1?1.003:1); set(d.o.frequency,f,1.5); });
+  E.setMood=name=>{ E.mood=name; const m=MOODS[name], v=m.v, now=ac.currentTime; const set=(p,val,tc)=>{ if(E.init) p.setTargetAtTime(val,now,tc); else p.value=val; };
+    drone.forEach(d=>{ const f=d.i===1&&E.beat? m.root*.5+E.beat : m.root*d.m*(d.i===1?1.003:1); set(d.o.frequency,f,1.5); d.g.gain.setTargetAtTime(d.gn*(v.drone[d.role]??1),now,2); });
     const cut=m.cut+(getLight?getLight():0)*1.5;
-    pad.forEach((v,i)=>{ const onv=i<m.chord.length; if(onv) v.oscs.forEach(o=>set(o.frequency,m.root*Math.pow(2,m.chord[i]/12),1.2)); v.vg.gain.setTargetAtTime(onv?.5:0,now,3); v.lg.gain.setTargetAtTime(onv?.3:0,now,3); set(v.f.frequency,cut*(1-i*.08),2); });
+    pad.forEach((p,i)=>{ const onv=i<m.chord.length; p.oscs.forEach((o,k)=>{ o.type=i%2?v.padB:v.padA; o.detune.setTargetAtTime([-1,0,1][k]*v.detune,now,1); if(onv) set(o.frequency,m.root*Math.pow(2,m.chord[i]/12),1.2); }); p.ogs.forEach(g=>g.gain.setTargetAtTime((i%2?.045:.085)*v.padGain,now,2)); p.vg.gain.setTargetAtTime(onv?.5*v.padLevel:0,now,3); p.lg.gain.setTargetAtTime(onv?.3*v.lfo:0,now,3);
+      const fc=cut*(1-i*.08), fp=p.f.frequency; fp.cancelScheduledValues(now); if(v.rise){ fp.setValueAtTime(E.init?fp.value:fc*.6,now); fp.setTargetAtTime(fc*.6,now,1.5); fp.setTargetAtTime(fc*v.rise,now+6,240); } else set(fp,fc,2); });
+    vib.frequency.setTargetAtTime(v.vib[0],now,1); vibG.gain.setTargetAtTime(v.vib[1],now,1);
+    ag.gain.setTargetAtTime(v.air,now,2); wet.gain.setTargetAtTime(v.wet,now,2); dsend.gain.setTargetAtTime(v.delay,now,2); tone.frequency.setTargetAtTime(v.tone,now,2);
+    shimO.forEach((o,k)=>set(o.frequency,m.root*Math.pow(2,m.chord[Math.min(k+1,m.chord.length-1)]/12+2),1.5)); shim.gain.setTargetAtTime(v.shimmer,now,3);
     E.init=true; };
   E.setBeat=hz=>{ E.beat=hz; E.setMood(E.mood); };
   E.setRoomtone=v=>{ E.roomtone=v; ng.gain.setTargetAtTime(v?.03:0,ac.currentTime,1); };
@@ -784,6 +829,7 @@ $('#signOut').onclick=()=>{ localStorage.removeItem(TOKEN_KEY); localStorage.rem
 // ---- boot ----
 renderListen(); clockUI(); setCTA();
 loadPlan();
+window.RZ={ state:S, engine:()=>E, moods:MOODS }; // debug handle for the smoke test and device QA
 })();
 </script>
 </body>

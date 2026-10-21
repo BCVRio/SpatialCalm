@@ -9,7 +9,7 @@ subscription (Resonance Plus, £3.99/month, 7-day trial) and the expanded sounds
 ```
 index.html            the whole app (HTML/CSS/JS, no bundler) — ZapWorks needs it at the zip root
 fonts/                Audiowide, Space Grotesk, JetBrains Mono (bundled)
-assets/               cover-pointcloud.jpg, cover-loop.mp4, home-sweep.jpg, paywall-rings.jpg, bcvr-roundel.png
+assets/               cover-intro + cover-loop (mp4 + webm), cover-pointcloud.jpg, home-sweep.jpg, paywall-rings.jpg, bcvr-roundel.png
 api/                  Cloudflare Worker: Stripe Checkout, Billing Portal, webhooks, magic-link restore
 tools/                make-zip.sh (ZapWorks upload), smoke.mjs (headless walk-through)
 design/               the v0.6 handoff: spec, reference screenshots, clickable prototype, v0.5 build
