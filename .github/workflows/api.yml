@@ -1,0 +1,89 @@
+# Backend for the ZapWorks build: tests the Worker on every change, deploys it to the BCVR
+# Cloudflare account on main, and pushes the Stripe/auth secrets from GitHub into the Worker
+# so the repo is the single place billing is configured.
+name: api
+
+on:
+  push:
+    branches: [main]
+    paths: ['api/**', '.github/workflows/api.yml']
+  pull_request:
+    paths: ['api/**', '.github/workflows/api.yml']
+  workflow_dispatch:
+    inputs:
+      bootstrap:
+        description: 'Create the SUBS KV namespaces (one-off) and print their ids'
+        type: boolean
+        default: false
+
+defaults:
+  run:
+    working-directory: api
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: npm test
+
+  bootstrap:
+    if: github.event_name == 'workflow_dispatch' && inputs.bootstrap
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: npm ci || npm i
+      - name: Create KV namespaces
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          echo "Paste the two ids into api/wrangler.toml (id / preview_id):"
+          npx wrangler kv namespace create SUBS
+          npx wrangler kv namespace create SUBS --preview
+
+  deploy:
+    needs: test
+    if: github.event_name != 'pull_request' && !(github.event_name == 'workflow_dispatch' && inputs.bootstrap)
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: npm ci || npm i
+      - name: Deploy Worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx wrangler deploy
+      - name: Sync secrets into the Worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+          STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
+          STRIPE_PRICE_ID: ${{ secrets.STRIPE_PRICE_ID }}
+          AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        run: |
+          node -e '
+            const keys = ["STRIPE_SECRET_KEY","STRIPE_WEBHOOK_SECRET","STRIPE_PRICE_ID","AUTH_SECRET","RESEND_API_KEY"];
+            const out = {}; for (const k of keys) if (process.env[k]) out[k] = process.env[k];
+            require("fs").writeFileSync("/tmp/secrets.json", JSON.stringify(out));
+            console.log("syncing:", Object.keys(out).join(", ") || "(none set)");
+          '
+          [ "$(cat /tmp/secrets.json)" = "{}" ] || npx wrangler secret bulk /tmp/secrets.json
+          rm -f /tmp/secrets.json
+      - name: Health check
+        run: |
+          URL=$(npx wrangler deployments list --json 2>/dev/null | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{try{console.log((JSON.parse(s)[0]||{}).url||"")}catch{console.log("")}})')
+          [ -n "$URL" ] && curl -fsS "$URL/api/health" || echo "skip (no url)"
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        continue-on-error: true

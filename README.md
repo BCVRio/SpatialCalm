@@ -36,6 +36,25 @@ any locked tap on the free plan ─▶ paywall, close returns to the screen it c
    Camera and motion need HTTPS; ZapWorks provides it and no licence key is needed when hosted there.
 4. Add the published origin to `APP_ORIGINS` in `api/wrangler.toml` and redeploy the Worker.
 
+## How the repo is used
+
+The production front end is the zip uploaded to ZapWorks; it is not served from here. The repo is
+the source of truth and the deployment pipeline for everything around it:
+
+| What | Where it lives | How it deploys |
+|---|---|---|
+| Billing API (Checkout, Portal, webhooks, magic links) | `api/` | `api` workflow → Cloudflare Worker in the BCVR account on every push to `main` |
+| Subscription database | Workers KV (`SUBS`) | created once with the `api` workflow's **bootstrap** run, ids kept in `api/wrangler.toml` |
+| Stripe / auth / mail secrets | GitHub → Settings → Secrets → Actions | synced into the Worker by the `api` workflow (`wrangler secret bulk`) |
+| ZapWorks upload | `tools/make-zip.sh` | `build` workflow attaches `resonance-webar-<version>.zip` to every run; download and upload to ZapWorks |
+| Test build for QA | GitHub Pages | `build` workflow publishes `index.html` + fonts + assets; camera runs on the plain-browser fallback there unless the Pages domain is registered in ZapWorks |
+
+GitHub secrets the workflows expect: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID` (the existing
+BCVR Cloudflare account), `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `STRIPE_PRICE_ID` (the
+existing BCVR Stripe account; see `api/README.md` for the product), `AUTH_SECRET`, and optionally
+`RESEND_API_KEY`. The Worker URL goes into `window.RZ_CONFIG.api` in `index.html`, and the ZapWorks
+origin into `APP_ORIGINS` in `api/wrangler.toml`.
+
 ## Run locally
 
 ```sh
