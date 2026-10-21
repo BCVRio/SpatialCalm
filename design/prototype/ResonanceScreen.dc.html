@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Audiowide&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"><style>body{margin:0;background:#000}a{color:#F742C5}a:hover{color:#FF63A5}::-webkit-scrollbar{display:none}@keyframes rz-spin{to{transform:rotate(360deg)}}@keyframes rz-up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}@keyframes rz-pulse{0%,100%{opacity:.55}50%{opacity:1}}</style></helmet>
+<div style="position:relative;width:402px;height:874px;overflow:hidden;background:#000;color:#ECECF2;font-family:'Space Grotesk',system-ui,sans-serif;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased">
+
+<sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
+<div style="position:absolute;inset:0;animation:rz-up 420ms cubic-bezier(0.16,1,0.3,1) both">
+  <video src="https://d8j0ntlcm91z4.cloudfront.net/user_3DlDM15mu2KFPHjlkZYYVMK1E0U/hf_20261021_165641_aedc4a77-ba8d-4555-b61e-a950d2bf3dad.mp4" poster="https://d8j0ntlcm91z4.cloudfront.net/user_3DlDM15mu2KFPHjlkZYYVMK1E0U/hf_20261021_165537_c479effd-5968-40fe-8fe0-a8f2b261a371.png" autoPlay="{{ true }}" muted="{{ true }}" loop="{{ true }}" playsInline="{{ true }}" style="position:absolute;inset:0;width:402px;height:874px;object-fit:cover"></video>
+  <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.55) 0%,rgba(0,0,0,0) 22%,rgba(0,0,0,0) 40%,rgba(0,0,0,0.92) 66%,#000 100%)"></div>
+  <div style="position:absolute;inset:0;display:flex;flex-direction:column;padding:72px 24px 44px">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <img src="assets/bcvr-roundel.png" alt="BCVR" style="width:36px;height:36px;animation:rz-spin 8s linear infinite">
+      <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:#9B9BAE">WebAR · Zappar</span>
+    </div>
+    <div style="margin-top:auto">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#9B9BAE">01 — Scan to sound</div>
+      <h1 style="margin:10px 0 0;font-family:'Audiowide',sans-serif;font-weight:400;font-size:46px;line-height:1;letter-spacing:-0.01em;text-transform:uppercase;background:linear-gradient(180deg,#6840E8 0%,#BD31D6 18%,#F742C5 38%,#FF4A88 50%,#FF6A3D 70%,#FF8410 85%,#FFC845 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">Resonance</h1>
+      <p style="margin:14px 0 0;color:#C9C9D6;font-size:16px;line-height:1.5;max-width:30ch;text-wrap:pretty">Your room, rendered as sound. We scan the space around you and compose a slow ambient score from its shape, light, and colour.</p>
+    </div>
+    <div style="margin-top:28px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+        <div style="position:relative;width:64px;height:64px"><div style="position:absolute;inset:0;border-radius:50%;background:{{ camRing }};animation:{{ camAnim }};transition:background 300ms"></div><div style="position:absolute;inset:2px;border-radius:50%;background:#000;display:flex;align-items:center;justify-content:center;color:{{ camFg }};transition:color 300ms"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M3 7h3l2-3h8l2 3h3v12H3z"></path><circle cx="12" cy="13" r="3.5"></circle></svg></div></div>
+        <div style="text-align:center"><div style="font-size:13px;font-weight:500;color:{{ camFg }}">Camera</div><div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#6B6B7E;margin-top:2px">{{ camLabel }}</div></div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+        <div style="position:relative;width:64px;height:64px"><div style="position:absolute;inset:0;border-radius:50%;background:{{ micRing }};animation:{{ micAnim }};transition:background 300ms"></div><div style="position:absolute;inset:2px;border-radius:50%;background:#000;display:flex;align-items:center;justify-content:center;color:{{ micFg }};transition:color 300ms"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5 11a7 7 0 0 0 14 0M12 18v3"></path></svg></div></div>
+        <div style="text-align:center"><div style="font-size:13px;font-weight:500;color:{{ micFg }}">Microphone</div><div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#6B6B7E;margin-top:2px">{{ micLabel }}</div></div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+        <div style="position:relative;width:64px;height:64px"><div style="position:absolute;inset:0;border-radius:50%;background:{{ motRing }};animation:{{ motAnim }};transition:background 300ms"></div><div style="position:absolute;inset:2px;border-radius:50%;background:#000;display:flex;align-items:center;justify-content:center;color:{{ motFg }};transition:color 300ms"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2M7 12h10"></path></svg></div></div>
+        <div style="text-align:center"><div style="font-size:13px;font-weight:500;color:{{ motFg }}">Depth</div><div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#6B6B7E;margin-top:2px">{{ motLabel }}</div></div>
+      </div>
+    </div>
+    <div onClick="{{ activate }}" style="margin-top:24px;padding:1px;background:linear-gradient(135deg,#3096FB,#834AE7,#CB13A9);cursor:pointer;transition:box-shadow 220ms;box-shadow:{{ actGlow }}" style-hover="box-shadow:0 0 24px rgba(48,150,251,0.4)" style-active="filter:brightness(0.92);transform:translateY(1px)">
+      <div style="background:#000;padding:15px;text-align:center;font-weight:500;font-size:15px;color:#ECECF2;display:flex;align-items:center;justify-content:center;gap:10px"><span style="width:6px;height:6px;border-radius:50%;background:{{ actDot }};box-shadow:0 0 8px {{ actDot }};transition:background 300ms"></span>{{ actLabel }}</div>
+    </div>
+    <div style="text-align:center;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:#3F3F50;margin-top:12px">One tap · Camera, mic and depth · No install</div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isPaywall }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;animation:rz-up 420ms cubic-bezier(0.16,1,0.3,1) both">
+  <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3DlDM15mu2KFPHjlkZYYVMK1E0U/hf_20261021_165537_1e9655d7-d783-4799-a402-8efb1aac6fcb.png" alt="" style="position:absolute;left:0;top:0;width:402px;height:520px;object-fit:cover;object-position:center 30%">
+  <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.5) 0%,rgba(0,0,0,0) 20%,rgba(0,0,0,0.6) 38%,#000 56%)"></div>
+  <div style="position:absolute;inset:0;display:flex;flex-direction:column;padding:72px 24px 40px">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:#9B9BAE">Resonance Plus</span>
+      <button onClick="{{ skipPaywall }}" aria-label="Close" style="background:transparent;border:0;padding:6px;cursor:pointer;color:#9B9BAE" style-hover="color:#ECECF2"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+    </div>
+    <div style="margin-top:auto">
+      <h1 style="margin:0;font-family:'Audiowide',sans-serif;font-weight:400;font-size:34px;line-height:1.04;text-transform:uppercase;color:#ECECF2">Every room,<br>every mood</h1>
+      <div style="margin-top:22px;display:flex;flex-direction:column;gap:12px;font-size:15px;color:#C9C9D6">
+        <div style="display:flex;gap:12px"><span style="color:#F742C5">◆</span><span>All 8 moods and 6 nature layers — rain, ocean, forest wind, fire, night, stream</span></div>
+        <div style="display:flex;gap:12px"><span style="color:#F742C5">◆</span><span>Singing bowl, three binaural bands and guided breath</span></div>
+        <div style="display:flex;gap:12px"><span style="color:#F742C5">◆</span><span>Sessions up to 60 minutes, every one saved as an artefact</span></div>
+      </div>
+      <div style="margin-top:28px;display:flex;align-items:baseline;gap:10px">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:36px;line-height:1;color:#ECECF2">£3.99</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#9B9BAE">/ month</span>
+        <span style="margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#25E0A1;border:1px solid rgba(37,224,161,0.35);border-radius:999px;padding:4px 10px">7 days free</span>
+      </div>
+      <div onClick="{{ subscribe }}" style="margin-top:20px;padding:1px;background:linear-gradient(180deg,#6840E8,#F742C5 50%,#FFC845);cursor:pointer" style-hover="box-shadow:0 0 28px rgba(247,66,197,0.4)" style-active="filter:brightness(0.92);transform:translateY(1px)">
+        <div style="background:#000;padding:15px;text-align:center;font-weight:500;font-size:15px;color:#ECECF2">Start free trial</div>
+      </div>
+      <button onClick="{{ skipPaywall }}" style="margin-top:10px;width:100%;font:500 14px 'Space Grotesk',sans-serif;color:#9B9BAE;background:transparent;border:1px solid #2A2A38;padding:13px;cursor:pointer" style-hover="color:#ECECF2;border-color:#3F3F50">Continue with the free plan</button>
+      <div style="margin-top:16px;display:flex;justify-content:center;gap:18px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#3F3F50"><span>Restore purchase</span><span>·</span><span>Terms</span><span>·</span><span>Privacy</span></div>
+      <div style="margin-top:10px;text-align:center;font-size:11px;color:#3F3F50">Billed monthly after the trial via Stripe. Cancel anytime from Settings.</div>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isHome }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;animation:rz-up 420ms cubic-bezier(0.16,1,0.3,1) both">
+  <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3DlDM15mu2KFPHjlkZYYVMK1E0U/hf_20261021_165536_cf6a5d7d-4d9b-46a7-bfc6-1a30e294c957.png" alt="" style="position:absolute;left:0;top:0;width:402px;height:480px;object-fit:cover;object-position:center 60%">
+  <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.6) 0%,rgba(0,0,0,0.1) 24%,rgba(0,0,0,0.75) 42%,#000 54%)"></div>
+  <div style="position:absolute;inset:0;padding:64px 24px 110px;overflow:auto;scrollbar-width:none;display:flex;flex-direction:column">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <img src="assets/bcvr-roundel.png" alt="BCVR" style="width:32px;height:32px">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:{{ planFg }};border:1px solid {{ planBorder }};border-radius:999px;padding:4px 10px">{{ planLabel }}</div>
+    </div>
+    <div style="margin-top:150px">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#9B9BAE">{{ greeting }}</div>
+      <h1 style="margin:8px 0 0;font-family:'Audiowide',sans-serif;font-weight:400;font-size:30px;line-height:1.04;text-transform:uppercase;color:#ECECF2">Where are<br>you listening?</h1>
+    </div>
+    <div onClick="{{ goScan }}" style="margin-top:24px;padding:1px;background:linear-gradient(135deg,#3096FB,#834AE7,#CB13A9);cursor:pointer" style-hover="box-shadow:0 0 28px rgba(48,150,251,0.35)" style-active="filter:brightness(0.92);transform:translateY(1px)">
+      <div style="background:#000;padding:18px 18px 18px 20px;display:flex;align-items:center;gap:16px">
+        <div style="flex:1;min-width:0"><div style="font-weight:500;font-size:17px;color:#ECECF2">Scan a new room</div><div style="font-size:13px;color:#9B9BAE;margin-top:2px">About 14 seconds · {{ moodName }} · {{ lengthLabel }}</div></div>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ECECF2" stroke-width="1.5" stroke-linecap="square"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+      </div>
+    </div>
+    <div style="margin-top:10px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">
+      <div onClick="{{ goSounds }}" style="background:#14141C;border:1px solid rgba(255,255,255,0.06);border-radius:4px;padding:16px;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,0.05);transition:border-color 120ms" style-hover="border-color:#3F3F50">
+        <div style="display:flex;gap:3px;margin-bottom:14px"><span style="width:10px;height:10px;border-radius:50%;background:#3096FB"></span><span style="width:10px;height:10px;border-radius:50%;background:#FF7B10"></span><span style="width:10px;height:10px;border-radius:50%;background:#7859EB"></span><span style="width:10px;height:10px;border-radius:50%;background:#F742C5"></span><span style="width:10px;height:10px;border-radius:50%;background:#FFC845"></span><span style="width:10px;height:10px;border-radius:50%;background:#25E0A1"></span></div>
+        <div style="font-weight:500">Sounds</div><div style="font-size:12px;color:#6B6B7E;margin-top:2px">{{ soundsSub }}</div>
+      </div>
+      <div onClick="{{ goLibrary }}" style="background:#14141C;border:1px solid rgba(255,255,255,0.06);border-radius:4px;padding:16px;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,0.05);transition:border-color 120ms" style-hover="border-color:#3F3F50">
+        <div style="display:flex;gap:3px;margin-bottom:14px"><span style="width:16px;height:10px;background:#1E2A44"></span><span style="width:16px;height:10px;background:#6B4A3A"></span><span style="width:16px;height:10px;background:#2B3A2E"></span><span style="width:16px;height:10px;background:#3A2E4A"></span></div>
+        <div style="font-weight:500">Library</div><div style="font-size:12px;color:#6B6B7E;margin-top:2px">{{ libSub }}</div>
+      </div>
+      <div onClick="{{ resumeLast }}" style="background:#14141C;border:1px solid rgba(255,255,255,0.06);border-radius:4px;padding:16px;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,0.05);transition:border-color 120ms" style-hover="border-color:#3F3F50">
+        <div style="width:28px;height:10px;background:{{ lastThumb }};margin-bottom:14px"></div>
+        <div style="font-weight:500">Resume</div><div style="font-size:12px;color:#6B6B7E;margin-top:2px">{{ lastSub }}</div>
+      </div>
+      <div onClick="{{ goSettings }}" style="background:#14141C;border:1px solid rgba(255,255,255,0.06);border-radius:4px;padding:16px;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,0.05);transition:border-color 120ms" style-hover="border-color:#3F3F50">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#6B6B7E;margin-bottom:14px;height:10px;line-height:10px">{{ beatShort }}</div>
+        <div style="font-weight:500">Settings</div><div style="font-size:12px;color:#6B6B7E;margin-top:2px">{{ settingsSub }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isScan }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0">
+  <canvas ref="{{ scanRef }}" width="402" height="874" style="position:absolute;inset:0;width:402px;height:874px"></canvas>
+  <div style="position:absolute;top:64px;left:24px;right:24px;display:flex;align-items:center;justify-content:space-between">
+    <div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:#9B9BAE;display:flex;align-items:center;gap:8px"><span style="width:6px;height:6px;border-radius:50%;background:#F742C5;box-shadow:0 0 8px #F742C5"></span>Scanning · Living room</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:#3F3F50;margin-top:4px">{{ scanHint }}</div>
+    </div>
+    <div style="position:relative;width:44px;height:44px"><svg width="44" height="44" viewBox="0 0 44 44" style="transform:rotate(-90deg)"><circle cx="22" cy="22" r="18" fill="none" stroke="#2A2A38" stroke-width="2"></circle><circle cx="22" cy="22" r="18" fill="none" stroke="#3096FB" stroke-width="2" stroke-dasharray="{{ covDash }}" style="transition:stroke-dasharray 200ms linear"></circle></svg><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:10px;color:#ECECF2">{{ covPct }}</div></div>
+  </div>
+  <div style="position:absolute;left:24px;right:24px;bottom:104px;background:rgba(0,0,0,0.7);backdrop-filter:blur(20px) saturate(140%);-webkit-backdrop-filter:blur(20px) saturate(140%);border:1px solid rgba(255,255,255,0.06);padding:20px">
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px">
+      <div><div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#6B6B7E">Points</div><div style="font-family:'JetBrains Mono',monospace;font-size:18px;color:#ECECF2;margin-top:2px">{{ pointsLabel }}</div></div>
+      <div><div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#6B6B7E">Depth</div><div style="font-family:'JetBrains Mono',monospace;font-size:18px;color:#ECECF2;margin-top:2px">{{ depthLabel }}</div></div>
+      <div><div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#6B6B7E">Light</div><div style="font-family:'JetBrains Mono',monospace;font-size:18px;color:#ECECF2;margin-top:2px">{{ lightLabel }}</div></div>
+    </div>
+    <div style="margin-top:16px;display:flex;align-items:center;gap:12px">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#6B6B7E">Palette</div>
+      <div style="display:flex;gap:6px;flex:1"><span style="flex:1;height:14px;background:#1E2A44"></span><span style="flex:1;height:14px;background:#6B4A3A"></span><span style="flex:1;height:14px;background:#2B3A2E"></span><span style="flex:1;height:14px;background:#C9B07A"></span><span style="flex:1;height:14px;background:#3A2E4A"></span></div>
+    </div>
+    <div onClick="{{ compose }}" style="margin-top:16px;padding:1px;background:linear-gradient(135deg,#3096FB,#834AE7,#CB13A9);cursor:pointer;opacity:{{ composeOpacity }};transition:opacity 220ms" style-hover="box-shadow:0 0 24px rgba(48,150,251,0.4)">
+      <div style="background:#000;padding:14px;text-align:center;font-weight:500;color:#ECECF2">{{ composeLabel }}</div>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isListen }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0">
+  <canvas ref="{{ listenRef }}" width="402" height="874" style="position:absolute;inset:0;width:402px;height:874px"></canvas>
+  <div style="position:absolute;top:64px;left:24px;right:24px;display:flex;align-items:center;justify-content:space-between">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:#9B9BAE">{{ sessionLabel }}</div>
+    <button onClick="{{ endSession }}" aria-label="End session" style="background:transparent;border:0;padding:6px;cursor:pointer;color:#9B9BAE" style-hover="color:#ECECF2"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+  </div>
+  <div style="position:absolute;left:0;right:0;top:230px;display:flex;justify-content:center;pointer-events:none">
+    <div style="position:relative;width:260px;height:260px"><svg width="260" height="260" viewBox="0 0 260 260"><defs><linearGradient id="rzRing" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3096FB"></stop><stop offset="0.5" stop-color="#7859EB"></stop><stop offset="1" stop-color="#F742C5"></stop></linearGradient></defs><g transform="rotate(-90 130 130)"><circle cx="130" cy="130" r="118" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"></circle><circle cx="130" cy="130" r="118" fill="none" stroke="url(#rzRing)" stroke-width="1.5" stroke-dasharray="{{ ringDash }}" style="transition:stroke-dasharray 1s linear"></circle></g></svg><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px"><div style="font-family:'JetBrains Mono',monospace;font-size:40px;line-height:1;color:#ECECF2">{{ clock }}</div><div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.18em;color:#6B6B7E">{{ stateLabel }}</div></div></div>
+  </div>
+  <div style="position:absolute;left:0;right:0;bottom:56px;display:flex;flex-direction:column;gap:18px">
+    <div style="display:flex;gap:8px;overflow:auto;scrollbar-width:none;padding:0 24px">
+      <sc-for list="{{ moods }}" as="m" hint-placeholder-count="8">
+        <div onClick="{{ m.pick }}" style="flex:none;padding:1px;border-radius:999px;background:{{ m.bg }};cursor:pointer"><div style="padding:8px 14px;border-radius:999px;background:#000;font-size:13px;font-weight:500;color:{{ m.fg }};display:flex;align-items:center;gap:6px"><span style="width:6px;height:6px;border-radius:50%;background:{{ m.hue }}"></span>{{ m.name }}<sc-if value="{{ m.locked }}" hint-placeholder-val="{{ false }}"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#6B6B7E" stroke-width="2"><rect x="5" y="11" width="14" height="10"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg></sc-if></div></div>
+      </sc-for>
+    </div>
+    <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;padding:0 24px">
+      <sc-for list="{{ layers }}" as="l" hint-placeholder-count="6">
+        <button onClick="{{ l.toggle }}" style="font:500 12px 'Space Grotesk',sans-serif;color:{{ l.fg }};background:transparent;border:1px solid {{ l.border }};border-radius:999px;padding:5px 11px;cursor:pointer;transition:border-color 120ms,color 120ms;display:flex;align-items:center;gap:5px">{{ l.name }}<sc-if value="{{ l.locked }}" hint-placeholder-val="{{ false }}"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#3F3F50" stroke-width="2"><rect x="5" y="11" width="14" height="10"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg></sc-if></button>
+      </sc-for>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:center;gap:24px;padding:0 24px">
+      <button onClick="{{ cycleBeat }}" style="font:500 12px 'Space Grotesk',sans-serif;color:{{ beatFg }};background:transparent;border:0;cursor:pointer;letter-spacing:0.04em;min-width:76px;text-align:right">{{ beatLabel }}</button>
+      <button onClick="{{ togglePlay }}" aria-label="Play or pause" style="width:64px;height:64px;border-radius:50%;background:#000;border:1px solid #3F3F50;color:#ECECF2;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="border-color:#9B9BAE;box-shadow:0 0 24px rgba(48,150,251,0.4)" style-active="filter:brightness(0.92);transform:translateY(1px)">
+        <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14"></rect><rect x="14" y="5" width="4" height="14"></rect></svg></sc-if>
+        <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4l13 8-13 8z"></path></svg></sc-if>
+      </button>
+      <button onClick="{{ cycleBreath }}" style="font:500 12px 'Space Grotesk',sans-serif;color:{{ breathFg }};background:transparent;border:0;cursor:pointer;letter-spacing:0.04em;min-width:76px;text-align:left">{{ breathLabel }}</button>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isSounds }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;padding:72px 24px 110px;overflow:auto;scrollbar-width:none;animation:rz-up 420ms cubic-bezier(0.16,1,0.3,1) both">
+  <div style="display:flex;align-items:flex-end;justify-content:space-between">
+    <div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#9B9BAE">03 — Soundscape</div><h1 style="margin:10px 0 0;font-family:'Audiowide',sans-serif;font-weight:400;font-size:32px;line-height:1.02;text-transform:uppercase;color:#ECECF2">Sounds</h1></div>
+    <button onClick="{{ togglePreview }}" style="display:flex;align-items:center;gap:8px;font:500 12px 'Space Grotesk',sans-serif;color:#ECECF2;background:transparent;border:1px solid #3F3F50;border-radius:999px;padding:8px 14px 8px 10px;cursor:pointer" style-hover="border-color:#9B9BAE">
+      <sc-if value="{{ previewOn }}" hint-placeholder-val="{{ false }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14"></rect><rect x="14" y="5" width="4" height="14"></rect></svg></sc-if>
+      <sc-if value="{{ previewOff }}" hint-placeholder-val="{{ true }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4l13 8-13 8z"></path></svg></sc-if>
+      Preview
+    </button>
+  </div>
+  <p style="margin:12px 0 28px;color:#9B9BAE;font-size:14px;text-wrap:pretty">Pick a mood for the score, then fold in nature and tone layers. Everything is synthesised live from the room scan.</p>
+
+  <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#6B6B7E;margin-bottom:10px">Mood · the score</div>
+  <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:28px">
+    <sc-for list="{{ moodCards }}" as="m" hint-placeholder-count="8">
+      <div onClick="{{ m.pick }}" style="padding:1px;background:{{ m.bg }};cursor:pointer;border-radius:4px">
+        <div style="background:#14141C;border-radius:3px;padding:14px;display:flex;flex-direction:column;gap:10px;min-height:92px">
+          <div style="display:flex;align-items:center;justify-content:space-between"><span style="width:10px;height:10px;border-radius:50%;background:{{ m.hue }};box-shadow:0 0 10px {{ m.hue }}"></span><sc-if value="{{ m.locked }}" hint-placeholder-val="{{ false }}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6B6B7E" stroke-width="2"><rect x="5" y="11" width="14" height="10"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg></sc-if></div>
+          <div><div style="font-weight:500;color:{{ m.fg }}">{{ m.name }}</div><div style="font-size:12px;color:#6B6B7E;margin-top:2px;line-height:1.35">{{ m.desc }}</div></div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#6B6B7E;margin-bottom:10px">Nature · layers</div>
+  <div style="background:#14141C;border:1px solid rgba(255,255,255,0.06);border-radius:4px;margin-bottom:28px">
+    <sc-for list="{{ layerRows }}" as="l" hint-placeholder-count="6">
+      <div onClick="{{ l.toggle }}" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,0.06);cursor:pointer">
+        <div style="flex:1;min-width:0"><div style="font-weight:500;display:flex;align-items:center;gap:8px">{{ l.name }}<sc-if value="{{ l.locked }}" hint-placeholder-val="{{ false }}"><span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:#F742C5">Plus</span></sc-if></div><div style="font-size:13px;color:#6B6B7E">{{ l.desc }}</div></div>
+        <div style="width:44px;height:26px;border-radius:999px;background:{{ l.track }};position:relative;transition:background 220ms;flex:none"><div style="position:absolute;top:3px;left:{{ l.thumb }};width:20px;height:20px;border-radius:50%;background:#ECECF2;transition:left 220ms cubic-bezier(0.5,1.6,0.4,1)"></div></div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#6B6B7E;margin-bottom:10px">Tones &amp; guides</div>
+  <div style="background:#14141C;border:1px solid rgba(255,255,255,0.06);border-radius:4px">
+    <div style="padding:14px 16px;border-bottom:1px solid rgba(255,255,255,0.06)">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px"><div style="font-weight:500">Binaural beat</div><div style="font-size:13px;color:#6B6B7E">{{ beatDesc }}</div></div>
+      <div style="display:flex;border:1px solid #2A2A38">
+        <sc-for list="{{ beats }}" as="b" hint-placeholder-count="4"><div onClick="{{ b.pick }}" style="flex:1;padding:8px 0;text-align:center;font-family:'JetBrains Mono',monospace;font-size:12px;cursor:pointer;background:{{ b.bg }};color:{{ b.fg }}">{{ b.label }}</div></sc-for>
+      </div>
+    </div>
+    <div style="padding:14px 16px;border-bottom:1px solid rgba(255,255,255,0.06)">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px"><div style="font-weight:500">Breath guide</div><div style="font-size:13px;color:#6B6B7E">{{ breathDesc }}</div></div>
+      <div style="display:flex;border:1px solid #2A2A38">
+        <sc-for list="{{ breaths }}" as="b" hint-placeholder-count="3"><div onClick="{{ b.pick }}" style="flex:1;padding:8px 0;text-align:center;font-family:'JetBrains Mono',monospace;font-size:12px;cursor:pointer;background:{{ b.bg }};color:{{ b.fg }}">{{ b.label }}</div></sc-for>
+      </div>
+    </div>
+    <div onClick="{{ toggleBowl }}" style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,0.06);cursor:pointer">
+      <div><div style="font-weight:500;display:flex;align-items:center;gap:8px">Singing bowl<sc-if value="{{ locked }}" hint-placeholder-val="{{ false }}"><span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:#F742C5">Plus</span></sc-if></div><div style="font-size:13px;color:#6B6B7E">A struck bowl every 15–20 s, tuned to the mood</div></div>
+      <div style="width:44px;height:26px;border-radius:999px;background:{{ bowlTrack }};position:relative;transition:background 220ms"><div style="position:absolute;top:3px;left:{{ bowlThumb }};width:20px;height:20px;border-radius:50%;background:#ECECF2;transition:left 220ms cubic-bezier(0.5,1.6,0.4,1)"></div></div>
+    </div>
+    <div onClick="{{ toggleHum }}" style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,0.06);cursor:pointer">
+      <div><div style="font-weight:500;display:flex;align-items:center;gap:8px">528 Hz hum<sc-if value="{{ locked }}" hint-placeholder-val="{{ false }}"><span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:#F742C5">Plus</span></sc-if></div><div style="font-size:13px;color:#6B6B7E">A soft solfeggio tone under the pad</div></div>
+      <div style="width:44px;height:26px;border-radius:999px;background:{{ humTrack }};position:relative;transition:background 220ms"><div style="position:absolute;top:3px;left:{{ humThumb }};width:20px;height:20px;border-radius:50%;background:#ECECF2;transition:left 220ms cubic-bezier(0.5,1.6,0.4,1)"></div></div>
+    </div>
+    <div onClick="{{ toggleRoomtone }}" style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer">
+      <div><div style="font-weight:500">Room tone</div><div style="font-size:13px;color:#6B6B7E">Fold the mic recording into the mix</div></div>
+      <div style="width:44px;height:26px;border-radius:999px;background:{{ rtTrack }};position:relative;transition:background 220ms"><div style="position:absolute;top:3px;left:{{ rtThumb }};width:20px;height:20px;border-radius:50%;background:#ECECF2;transition:left 220ms cubic-bezier(0.5,1.6,0.4,1)"></div></div>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isLibrary }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;padding:72px 24px 110px;overflow:auto;scrollbar-width:none;animation:rz-up 420ms cubic-bezier(0.16,1,0.3,1) both">
+  <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#9B9BAE">04 — Sessions</div>
+  <h1 style="margin:10px 0 0;font-family:'Audiowide',sans-serif;font-weight:400;font-size:32px;line-height:1.02;text-transform:uppercase;color:#ECECF2">Library</h1>
+  <p style="margin:12px 0 28px;color:#9B9BAE;font-size:14px">{{ libraryCount }}</p>
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <sc-for list="{{ sessions }}" as="s" hint-placeholder-count="4">
+      <div style="display:flex;align-items:center;gap:16px;padding:14px;background:#14141C;border:1px solid rgba(255,255,255,0.06);border-radius:4px;cursor:pointer;transition:border-color 120ms" style-hover="border-color:#3F3F50">
+        <div style="width:56px;height:56px;flex:none;background:{{ s.thumb }}"></div>
+        <div style="flex:1;min-width:0"><div style="font-weight:500;color:#ECECF2">{{ s.name }}</div><div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#6B6B7E;margin-top:4px">{{ s.meta }}</div></div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#9B9BAE;border:1px solid #2A2A38;border-radius:999px;padding:3px 10px">{{ s.mood }}</div>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isSettings }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;padding:72px 24px 110px;overflow:auto;scrollbar-width:none;animation:rz-up 420ms cubic-bezier(0.16,1,0.3,1) both">
+  <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#9B9BAE">05 — Preferences</div>
+  <h1 style="margin:10px 0 28px;font-family:'Audiowide',sans-serif;font-weight:400;font-size:32px;line-height:1.02;text-transform:uppercase;color:#ECECF2">Settings</h1>
+
+  <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#6B6B7E;margin-bottom:8px">Subscription</div>
+  <div onClick="{{ goPaywall }}" style="padding:1px;background:{{ subBg }};border-radius:4px;margin-bottom:24px;cursor:pointer">
+    <div style="background:#14141C;border-radius:3px;display:flex;align-items:center;gap:14px;padding:14px 16px">
+      <div style="flex:1"><div style="font-weight:500">{{ subTitle }}</div><div style="font-size:13px;color:#6B6B7E">{{ subDesc }}</div></div>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:{{ subTagFg }}">{{ subTag }}</span>
+    </div>
+  </div>
+
+  <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#6B6B7E;margin-bottom:8px">Session</div>
+  <div style="background:#14141C;border:1px solid rgba(255,255,255,0.06);border-radius:4px;margin-bottom:24px">
+    <div style="padding:14px 16px;border-bottom:1px solid rgba(255,255,255,0.06)">
+      <div style="font-weight:500;margin-bottom:10px">Default mood</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <sc-for list="{{ moods }}" as="m" hint-placeholder-count="8">
+          <div onClick="{{ m.pick }}" style="padding:1px;border-radius:999px;background:{{ m.bg }};cursor:pointer"><div style="padding:6px 12px;border-radius:999px;background:#14141C;font-size:13px;font-weight:500;color:{{ m.fg }}">{{ m.name }}</div></div>
+        </sc-for>
+      </div>
+    </div>
+    <div style="padding:14px 16px">
+      <div style="font-weight:500;margin-bottom:10px">Session length</div>
+      <div style="display:flex;border:1px solid #2A2A38">
+        <sc-for list="{{ lengths }}" as="l" hint-placeholder-count="5"><div onClick="{{ l.pick }}" style="flex:1;padding:8px 0;text-align:center;font-family:'JetBrains Mono',monospace;font-size:12px;cursor:pointer;background:{{ l.bg }};color:{{ l.fg }}">{{ l.label }}</div></sc-for>
+      </div>
+    </div>
+  </div>
+
+  <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#6B6B7E;margin-bottom:8px">Scan</div>
+  <div style="background:#14141C;border:1px solid rgba(255,255,255,0.06);border-radius:4px;margin-bottom:24px">
+    <div style="padding:14px 16px">
+      <div style="font-weight:500;margin-bottom:10px">Point density</div>
+      <div style="display:flex;border:1px solid #2A2A38">
+        <sc-for list="{{ densities }}" as="d" hint-placeholder-count="3"><div onClick="{{ d.pick }}" style="flex:1;padding:8px 0;text-align:center;font-family:'JetBrains Mono',monospace;font-size:12px;cursor:pointer;background:{{ d.bg }};color:{{ d.fg }}">{{ d.label }}</div></sc-for>
+      </div>
+    </div>
+  </div>
+
+  <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#6B6B7E;margin-bottom:8px">Account</div>
+  <div style="background:#14141C;border:1px solid rgba(255,255,255,0.06);border-radius:4px">
+    <div style="display:flex;align-items:center;gap:14px;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,0.06)">
+      <div style="flex:1"><div style="font-weight:500">Zappar</div><div style="font-size:13px;color:#6B6B7E">bcvr.zapworks.com · WebAR project linked</div></div>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#25E0A1">Connected</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:14px;padding:14px 16px">
+      <img src="assets/bcvr-roundel.png" alt="BCVR" style="width:28px;height:28px">
+      <div style="flex:1;font-size:13px;color:#6B6B7E">Resonance 0.6 · BCVR Immersive</div>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ showNav }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;left:0;right:0;bottom:0;height:92px;padding:0 16px 26px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:center;background:rgba(0,0,0,0.7);backdrop-filter:blur(20px) saturate(140%);-webkit-backdrop-filter:blur(20px) saturate(140%);border-top:1px solid rgba(255,255,255,0.06)">
+  <button onClick="{{ goHome }}" style="display:flex;flex-direction:column;align-items:center;gap:6px;background:transparent;border:0;cursor:pointer;padding:10px 0;color:{{ navHomeFg }}"><span style="width:4px;height:4px;border-radius:50%;background:{{ navHomeDot }}"></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M4 11l8-7 8 7v9H4z"></path></svg><span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase">Home</span></button>
+  <button onClick="{{ goSounds }}" style="display:flex;flex-direction:column;align-items:center;gap:6px;background:transparent;border:0;cursor:pointer;padding:10px 0;color:{{ navSndFg }}"><span style="width:4px;height:4px;border-radius:50%;background:{{ navSndDot }}"></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"><path d="M4 12h2M8 7v10M12 4v16M16 8v8M20 11v2"></path></svg><span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase">Sounds</span></button>
+  <button onClick="{{ goLibrary }}" style="display:flex;flex-direction:column;align-items:center;gap:6px;background:transparent;border:0;cursor:pointer;padding:10px 0;color:{{ navLibFg }}"><span style="width:4px;height:4px;border-radius:50%;background:{{ navLibDot }}"></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><rect x="4" y="4" width="7" height="7"></rect><rect x="13" y="4" width="7" height="7"></rect><rect x="4" y="13" width="7" height="7"></rect><rect x="13" y="13" width="7" height="7"></rect></svg><span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase">Library</span></button>
+  <button onClick="{{ goSettings }}" style="display:flex;flex-direction:column;align-items:center;gap:6px;background:transparent;border:0;cursor:pointer;padding:10px 0;color:{{ navSetFg }}"><span style="width:4px;height:4px;border-radius:50%;background:{{ navSetDot }}"></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"></path><circle cx="16" cy="7" r="2"></circle><circle cx="10" cy="17" r="2"></circle></svg><span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase">Settings</span></button>
+</div>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:402,&quot;height&quot;:874},&quot;screen&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;intro&quot;,&quot;options&quot;:[&quot;intro&quot;,&quot;paywall&quot;,&quot;home&quot;,&quot;scan&quot;,&quot;listen&quot;,&quot;sounds&quot;,&quot;library&quot;,&quot;settings&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Flow&quot;},&quot;subscribed&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Flow&quot;},&quot;mood&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;Drift&quot;,&quot;options&quot;:[&quot;Drift&quot;,&quot;Ember&quot;,&quot;Tide&quot;,&quot;Still&quot;,&quot;Dawn&quot;,&quot;Hollow&quot;,&quot;Lumen&quot;,&quot;Vale&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Sound&quot;},&quot;demoSpeed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0.5,&quot;max&quot;:4,&quot;step&quot;:0.5,&quot;unit&quot;:&quot;x&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Flow&quot;}}">
+class Component extends DCLogic {
+  state = { screen: null, cam: false, mic: false, motion: false, act: 0, sub: null, back: 'home', coverage: 0, playing: false, preview: false, mood: null, remaining: null, length: 15, beat: 'Theta', roomtone: true, bowl: false, hum: false, breath: 'Off', breathLabel: '', layers: { Rain: false, Ocean: false, Wind: false, Fire: false, Night: false, Stream: false }, density: 'Med', sessions: null, sessionNo: 7 };
+  scanRef = React.createRef(); listenRef = React.createRef();
+  MOODS = {
+    Drift: { hue: '#3096FB', desc: 'Open lydian pad, slow bells', root: 73.42, chord: [0, 7, 14, 16, 23, 28], scale: [0, 2, 4, 6, 7, 9, 11], gap: [3, 7], cut: 1100 },
+    Ember: { hue: '#FF7B10', desc: 'Warm minor, close and low', root: 55, chord: [0, 7, 12, 15, 19, 22], scale: [0, 3, 5, 7, 10], gap: [4, 9], cut: 750 },
+    Tide: { hue: '#7859EB', desc: 'Suspended fourths that rise and fall', root: 82.41, chord: [0, 5, 7, 12, 14, 19], scale: [0, 2, 5, 7, 9], gap: [2.5, 6], cut: 1400 },
+    Still: { hue: '#F742C5', desc: 'Two notes, almost nothing', root: 49, chord: [0, 7, 12, 19], scale: [0, 7, 12, 14, 19], gap: [6, 12], cut: 600 },
+    Dawn: { hue: '#FFC845', desc: 'Bright major, slowly brightening', root: 65.41, chord: [0, 4, 7, 11, 14, 19], scale: [0, 2, 4, 7, 9], gap: [3, 6], cut: 1600 },
+    Hollow: { hue: '#6840E8', desc: 'Dorian, cavernous, long reverb', root: 61.74, chord: [0, 7, 10, 14, 17, 21], scale: [0, 2, 3, 5, 7, 9, 10], gap: [5, 10], cut: 650 },
+    Lumen: { hue: '#25E0A1', desc: 'Whole-tone shimmer, no gravity', root: 87.31, chord: [0, 4, 8, 14, 18, 22], scale: [0, 2, 4, 6, 8, 10], gap: [2, 5], cut: 1900 },
+    Vale: { hue: '#CB13A9', desc: 'Pentatonic drone, bowl-like', root: 58.27, chord: [0, 7, 12, 14, 19, 26], scale: [0, 2, 4, 7, 9], gap: [4, 8], cut: 900 },
+  };
+  FREE_MOODS = ['Drift', 'Ember', 'Tide', 'Still'];
+  LAYERS = { Rain: 'Soft rain on a window, occasional drips', Ocean: 'Slow swell and draw of surf', Wind: 'Forest wind through leaves', Fire: 'Low hearth with crackle', Night: 'Crickets and warm dark air', Stream: 'Running water close by' };
+  BEATS = { Off: 0, Delta: 2, Theta: 4, Alpha: 10 };
+  BREATHS = { Off: null, Box: [4, 4, 4, 4], '4-7-8': [4, 7, 8, 0] };
+  PAL = ['#1E2A44', '#6B4A3A', '#2B3A2E', '#C9B07A', '#3A2E4A'];
+  DEFAULT_SESSIONS = [
+    { name: 'Studio B', meta: '20 min · 3,104 pts · 19 Oct', mood: 'Still', thumb: 'linear-gradient(135deg,#1E2A44,#3A2E4A 60%,#F742C5)' },
+    { name: 'Kitchen, morning', meta: '10 min · 1,862 pts · 17 Oct', mood: 'Ember', thumb: 'linear-gradient(135deg,#6B4A3A,#C9B07A 70%,#FF7B10)' },
+    { name: 'Hotel, Cannes', meta: '15 min · 2,440 pts · 12 Oct', mood: 'Drift', thumb: 'linear-gradient(135deg,#0A0A0F,#1E2A44 60%,#3096FB)' },
+    { name: 'Garden bench', meta: '15 min · 2,019 pts · 04 Oct', mood: 'Tide', thumb: 'linear-gradient(135deg,#2B3A2E,#3A2E4A 60%,#7859EB)' },
+  ];
+  get screen() { return this.state.screen ?? this.props.screen ?? 'intro'; }
+  get mood() { return this.state.mood ?? this.props.mood ?? 'Drift'; }
+  get sub() { return this.state.sub ?? !!this.props.subscribed; }
+  get speed() { return Number(this.props.demoSpeed ?? 1) || 1; }
+  get sessions() { return this.state.sessions ?? this.DEFAULT_SESSIONS; }
+  componentDidMount() {
+    this.buildRoom(); this.particles = Array.from({ length: 220 }, () => ({ x: Math.random() * 402, y: Math.random() * 874, vx: (Math.random() - .5) * .25, vy: -0.1 - Math.random() * .25, r: 0.8 + Math.random() * 1.8, c: Math.floor(Math.random() * 7), p: Math.random() * 6.28 }));
+    this.last = performance.now(); this.amp = 0; this.lastSet = 0; this.breathK = 0;
+    this.raf = requestAnimationFrame(this.tick);
+  }
+  componentWillUnmount() { cancelAnimationFrame(this.raf); clearInterval(this.timer); this.timeouts?.forEach(clearTimeout); if (this.E) { this.E.stop(); this.E.ac.close(); } }
+  buildRoom() {
+    const P = [], R = (a, b) => a + Math.random() * (b - a);
+    for (let i = 0; i < 700; i++) P.push([R(-2.6, 2.6), -1.5, R(0.9, 6.5)]);
+    for (let i = 0; i < 450; i++) P.push([R(-2.6, 2.6), R(-1.5, 1.3), 6.5]);
+    for (let i = 0; i < 260; i++) P.push([-2.6, R(-1.5, 1.3), R(0.9, 6.5)]);
+    for (let i = 0; i < 260; i++) P.push([2.6, R(-1.5, 1.3), R(0.9, 6.5)]);
+    for (let i = 0; i < 340; i++) { const f = Math.random(); if (f < .5) P.push([R(-1.6, 0.6), -0.7, R(3.4, 4.4)]); else if (f < .8) P.push([R(-1.6, 0.6), R(-1.5, -0.7), 3.4]); else P.push([-1.6, R(-1.5, -0.7), R(3.4, 4.4)]); }
+    for (let i = 0; i < 160; i++) { const t = R(0, 6.283), u = R(-1, 1), r = Math.sqrt(1 - u * u) * .35; P.push([1.8 + r * Math.cos(t), 0.4 + u * .35, 5.4 + r * Math.sin(t)]); }
+    for (let i = 0; i < 80; i++) P.push([1.8, R(-1.5, 0.05), 5.4]);
+    for (let i = 0; i < 220; i++) P.push([R(-2.6, 2.6), 1.3, R(0.9, 6.5)]);
+    P.forEach(p => p[3] = p[1] + (Math.random() - .5) * .7);
+    P.sort((a, b) => a[3] - b[3]);
+    this.pts = P;
+  }
+  project(p, t, zoom = 1) {
+    const yaw = Math.sin(t * .31) * .07 + Math.sin(t * 1.7) * .006, pitch = Math.sin(t * .23) * .04;
+    let x = p[0] * Math.cos(yaw) - p[2] * Math.sin(yaw), z = p[0] * Math.sin(yaw) + p[2] * Math.cos(yaw);
+    let y = p[1] * Math.cos(pitch) - z * Math.sin(pitch); z = p[1] * Math.sin(pitch) + z * Math.cos(pitch);
+    z *= zoom; if (z < .3) return null;
+    return [201 + 430 * x / z, 437 - 430 * y / z, z];
+  }
+  drawFeed(g, t) {
+    g.fillStyle = '#05060A'; g.fillRect(0, 0, 402, 874);
+    const blobs = [[300 + Math.sin(t * .2) * 12, 260, 190, '#6B4A3A', .55], [90 + Math.cos(t * .17) * 10, 160, 170, '#1E2A44', .7], [130, 640 + Math.sin(t * .15) * 14, 220, '#2B3A2E', .5], [330, 560, 120, '#C9B07A', .22], [60, 420, 150, '#3A2E4A', .45]];
+    for (const [x, y, r, c, a] of blobs) { const gr = g.createRadialGradient(x, y, 0, x, y, r); gr.addColorStop(0, c); gr.addColorStop(1, 'rgba(5,6,10,0)'); g.globalAlpha = a; g.fillStyle = gr; g.fillRect(x - r, y - r, r * 2, r * 2); }
+    g.globalAlpha = 1; const v = g.createRadialGradient(201, 437, 200, 201, 437, 560); v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(0,0,0,0.85)'); g.fillStyle = v; g.fillRect(0, 0, 402, 874);
+    g.fillStyle = 'rgba(255,255,255,0.07)'; for (let i = 0; i < 90; i++) g.fillRect(Math.random() * 402, Math.random() * 874, 1, 1);
+  }
+  depthColor(z, a) { const k = Math.min(1, Math.max(0, (z - 1) / 5.5)); const r = Math.round(48 + (131 - 48) * k), gg = Math.round(150 + (74 - 150) * k), b = Math.round(251 + (231 - 251) * k); return `rgba(${r},${gg},${b},${a})`; }
+  drawScan(g, t) {
+    this.drawFeed(g, t);
+    const n = Math.floor(this.state.coverage * this.pts.length);
+    for (let i = 0; i < n; i++) { const q = this.project(this.pts[i], t); if (!q) continue; const fresh = i > n - 120 ? 1 : 0; const a = .55 + fresh * .45; g.fillStyle = fresh ? '#ECECF2' : this.depthColor(q[2], a); const s = fresh ? 2.2 : 1.5; g.fillRect(q[0] - s / 2, q[1] - s / 2, s, s); }
+    if (this.state.coverage < 1) { const yW = -1.5 + this.state.coverage * 2.8; const q = this.project([0, yW, 3.6], t); if (q) { const lg = g.createLinearGradient(0, 0, 402, 0); lg.addColorStop(0, 'rgba(247,66,197,0)'); lg.addColorStop(.5, 'rgba(247,66,197,0.6)'); lg.addColorStop(1, 'rgba(247,66,197,0)'); g.fillStyle = lg; g.fillRect(0, q[1], 402, 1); } }
+  }
+  drawListen(g, t) {
+    g.fillStyle = '#000'; g.fillRect(0, 0, 402, 874);
+    const hue = this.MOODS[this.mood].hue, amp = this.amp, bk = this.breathK;
+    const glow = g.createRadialGradient(201, 360, 0, 201, 360, 220 + amp * 120 + bk * 80); glow.addColorStop(0, hue); glow.addColorStop(1, 'rgba(0,0,0,0)'); g.globalAlpha = .10 + amp * .12 + bk * .06; g.fillStyle = glow; g.fillRect(0, 0, 402, 874); g.globalAlpha = 1;
+    const cols = [...this.PAL, hue, '#ECECF2'];
+    for (const p of this.particles) { p.x += p.vx; p.y += p.vy * (1 + amp); p.p += .02; if (p.y < -5) { p.y = 880; p.x = Math.random() * 402; } if (p.x < -5) p.x = 407; if (p.x > 407) p.x = -5; g.globalAlpha = .25 + .45 * (Math.sin(p.p) * .5 + .5); g.fillStyle = cols[p.c]; g.beginPath(); g.arc(p.x, p.y, p.r * (1 + amp * .4), 0, 6.283); g.fill(); }
+    g.globalAlpha = 1;
+    const zoom = 1 - amp * .08 - Math.sin(t * .35) * .03 - bk * .06;
+    for (let i = 0; i < this.pts.length; i += 2) { const q = this.project(this.pts[i], t * .4, zoom); if (!q) continue; g.fillStyle = this.depthColor(q[2], .22 + amp * .3); g.fillRect(q[0], q[1], 1.3, 1.3); }
+  }
+  tick = (now) => {
+    const dt = Math.min(.1, (now - this.last) / 1000); this.last = now; const t = now / 1000;
+    if (this.an) { const d = new Uint8Array(this.an.fftSize); this.an.getByteTimeDomainData(d); let s = 0; for (let i = 0; i < d.length; i++) { const v = (d[i] - 128) / 128; s += v * v; } const rms = Math.sqrt(s / d.length); this.amp += (Math.min(1, rms * 6) - this.amp) * .08; } else this.amp += ((Math.sin(t * .6) * .5 + .5) * .35 - this.amp) * .05;
+    const sc = this.screen;
+    const br = this.BREATHS[this.state.breath];
+    if (br && this.state.playing && sc === 'listen') { const tot = br.reduce((a, b) => a + b, 0), u = t % tot; let acc = 0, ph = 0; for (; ph < 4; ph++) { if (u < acc + br[ph]) break; acc += br[ph]; } const k = (u - acc) / (br[ph] || 1); const target = ph === 0 ? k : ph === 1 ? 1 : ph === 2 ? 1 - k : 0; this.breathK += (target - this.breathK) * .1; const lbl = ['INHALE', 'HOLD', 'EXHALE', 'HOLD'][ph] + ' · ' + Math.ceil(br[ph] - (u - acc)); if (lbl !== this.state.breathLabel) this.setState({ breathLabel: lbl }); } else this.breathK += (0 - this.breathK) * .05;
+    if (sc === 'scan') { if (this.state.coverage < 1) { this.state.coverage = Math.min(1, this.state.coverage + dt / 14 * this.speed); if (now - this.lastSet > 150) { this.lastSet = now; this.setState({ coverage: this.state.coverage }); } } const c = this.scanRef.current; if (c) this.drawScan(c.getContext('2d'), t); }
+    if (sc === 'listen') { const c = this.listenRef.current; if (c) this.drawListen(c.getContext('2d'), t); }
+    this.raf = requestAnimationFrame(this.tick);
+  };
+  makeEngine(getLight) {
+    const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return null;
+    const ac = new AC(), MOODS = this.MOODS;
+    const E = { ac, mood: 'Drift', beat: 4, roomtone: true, playing: false, level: 0, init: false, bowl: false };
+    const pan = v => { if (ac.createStereoPanner) { const p = ac.createStereoPanner(); p.pan.value = v; return p; } return ac.createGain(); };
+    const master = ac.createGain(); master.gain.value = 0; const comp = ac.createDynamicsCompressor(); comp.threshold.value = -20; comp.knee.value = 12; comp.ratio.value = 3; comp.attack.value = .05; comp.release.value = .5; master.connect(comp); comp.connect(ac.destination);
+    const an = E.an = ac.createAnalyser(); an.fftSize = 1024; master.connect(an);
+    const bus = ac.createGain(); const tone = ac.createBiquadFilter(); tone.type = 'lowpass'; tone.frequency.value = 2600; tone.Q.value = .3; bus.connect(tone); tone.connect(master);
+    const conv = ac.createConvolver(); (function () { const n = ac.sampleRate * 6, b = ac.createBuffer(2, n, ac.sampleRate); for (let ch = 0; ch < 2; ch++) { const d = b.getChannelData(ch); let last = 0; for (let i = 0; i < n; i++) { const w = (Math.random() * 2 - 1) * Math.pow(1 - i / n, 3.2); last = last * .6 + w * .4; d[i] = last * 1.6; } } conv.buffer = b; })();
+    const wet = ac.createGain(); wet.gain.value = .75; bus.connect(conv); conv.connect(wet); wet.connect(master);
+    const dsend = ac.createGain(); dsend.gain.value = .32; const dl = ac.createDelay(2), dr = ac.createDelay(2); dl.delayTime.value = .62; dr.delayTime.value = .93; const dlp = ac.createBiquadFilter(); dlp.type = 'lowpass'; dlp.frequency.value = 1600; const fb = ac.createGain(); fb.gain.value = .38; const pl = pan(-.6), pr = pan(.6); bus.connect(dsend); dsend.connect(dl); dl.connect(pl); pl.connect(master); dl.connect(dlp); dlp.connect(fb); fb.connect(dr); dr.connect(pr); pr.connect(master); dr.connect(fb); fb.connect(dl);
+    const drone = []; [[.5, 'sine', .2, 0], [.5, 'sine', .14, 0], [1, 'sawtooth', .06, 300], [1.002, 'triangle', .07, 0]].forEach(([m, type, gn, cut], i) => { const o = ac.createOscillator(); o.type = type; const g = ac.createGain(); g.gain.value = gn; let node = o; if (cut) { const f = ac.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = cut; f.Q.value = .9; const l = ac.createOscillator(); l.frequency.value = .021; const lg = ac.createGain(); lg.gain.value = 130; l.connect(lg); lg.connect(f.frequency); l.start(); o.connect(f); node = f; } node.connect(g); g.connect(bus); o.start(); drone.push({ o, m, i }); });
+    const pad = []; for (let i = 0; i < 6; i++) { const vg = ac.createGain(); vg.gain.value = 0; const f = ac.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 900; f.Q.value = .8; f.connect(vg); vg.connect(bus); const oscs = [-8, 0, 8].map(d => { const o = ac.createOscillator(); o.type = i % 2 ? 'sawtooth' : 'triangle'; o.detune.value = d; const og = ac.createGain(); og.gain.value = i % 2 ? .045 : .085; o.connect(og); og.connect(f); o.start(); return o; }); const l = ac.createOscillator(); l.frequency.value = .02 + i * .011; const lg = ac.createGain(); lg.gain.value = 0; l.connect(lg); lg.connect(vg.gain); l.start(); pad.push({ oscs, f, vg, lg }); }
+    // noise sources
+    const mkBuf = pink => { const b = ac.createBuffer(1, ac.sampleRate * 4, ac.sampleRate), d = b.getChannelData(0); let b0 = 0, b1 = 0, b2 = 0; for (let i = 0; i < d.length; i++) { const w = Math.random() * 2 - 1; if (pink) { b0 = .99765 * b0 + w * .099046; b1 = .963 * b1 + w * .2965164; b2 = .57 * b2 + w * 1.0526913; d[i] = (b0 + b1 + b2 + w * .1848) * .09; } else d[i] = w * .3; } return b; };
+    const pinkB = mkBuf(true), whiteB = mkBuf(false);
+    const src = b => { const s = ac.createBufferSource(); s.buffer = b; s.loop = true; s.start(); return s; };
+    const lfo = (f, amt, target) => { const l = ac.createOscillator(); l.frequency.value = f; const g = ac.createGain(); g.gain.value = amt; l.connect(g); g.connect(target); l.start(); };
+    const chain = (...nodes) => { for (let i = 0; i < nodes.length - 1; i++) nodes[i].connect(nodes[i + 1]); return nodes[nodes.length - 1]; };
+    const filt = (type, f, q) => { const n = ac.createBiquadFilter(); n.type = type; n.frequency.value = f; n.Q.value = q ?? 1; return n; };
+    // room tone
+    const nf = filt('bandpass', 700, 1.4); lfo(.017, 380, nf.frequency); const ng = ac.createGain(); ng.gain.value = 0; chain(src(pinkB), nf, ng, bus);
+    // nature layers: { gain, base }
+    const L = {};
+    { const hp = filt('highpass', 1500, .5), lp = filt('lowpass', 7000, .5), g = ac.createGain(); g.gain.value = 0; chain(src(whiteB), hp, lp, g, master); L.Rain = { g, base: .055 }; }
+    { const lp = filt('lowpass', 500, .7), g = ac.createGain(); g.gain.value = 0; lfo(.07, 350, lp.frequency); const tr = ac.createGain(); tr.gain.value = 1; lfo(.07, .5, tr.gain); chain(src(pinkB), lp, tr, g, master); L.Ocean = { g, base: .11 }; }
+    { const bp = filt('bandpass', 500, 1.6), g = ac.createGain(); g.gain.value = 0; lfo(.05, 250, bp.frequency); lfo(.13, 90, bp.frequency); const tr = ac.createGain(); tr.gain.value = 1; lfo(.09, .4, tr.gain); chain(src(pinkB), bp, tr, g, master); L.Wind = { g, base: .09 }; }
+    { const lp = filt('lowpass', 320, .8), g = ac.createGain(); g.gain.value = 0; chain(src(pinkB), lp, g, master); L.Fire = { g, base: .08 }; }
+    { const lp = filt('lowpass', 260, .6), g = ac.createGain(); g.gain.value = 0; chain(src(pinkB), lp, g, master); L.Night = { g, base: .03 }; }
+    { const bp = filt('bandpass', 1300, .8), lp = filt('lowpass', 4200, .5), g = ac.createGain(); g.gain.value = 0; lfo(1.3, 300, bp.frequency); lfo(.21, 450, bp.frequency); chain(src(whiteB), bp, lp, g, master); L.Stream = { g, base: .05 }; }
+    const on = {};
+    const blip = (f, vel, dec, hp) => { const now = ac.currentTime, o = ac.createOscillator(); o.frequency.value = f; const e = ac.createGain(); e.gain.setValueAtTime(vel, now); e.gain.exponentialRampToValueAtTime(.0001, now + dec); const p = pan(Math.random() * 1.6 - .8); o.connect(e); e.connect(p); p.connect(hp ? bus : master); o.start(now); o.stop(now + dec + .05); };
+    const burst = (f, q, vel, dec) => { const now = ac.currentTime, s = ac.createBufferSource(); s.buffer = whiteB; s.loopStart = Math.random() * 3; const bp = filt('bandpass', f, q), e = ac.createGain(); e.gain.setValueAtTime(vel, now); e.gain.exponentialRampToValueAtTime(.0001, now + dec); const p = pan(Math.random() * 1.2 - .6); chain(s, bp, e, p, master); s.start(now, Math.random() * 3); s.stop(now + dec + .05); };
+    const chirp = () => { const now = ac.currentTime, f = 3900 + Math.random() * 500, o = ac.createOscillator(); o.frequency.value = f; const e = ac.createGain(); e.gain.value = 0; const n = 6 + Math.floor(Math.random() * 5); for (let i = 0; i < n; i++) { e.gain.setValueAtTime(.007, now + i * .034); e.gain.setValueAtTime(0, now + i * .034 + .017); } const p = pan(Math.random() * 1.6 - .8); o.connect(e); e.connect(p); p.connect(master); o.start(now); o.stop(now + n * .034 + .1); };
+    const evTimer = setInterval(() => { if (!E.playing) return; if (on.Rain && Math.random() < .35) blip(2200 + Math.random() * 2600, .006 + Math.random() * .008, .05, false); if (on.Fire && Math.random() < .3) burst(1800 + Math.random() * 1800, 3, .05 + Math.random() * .08, .02 + Math.random() * .05); if (on.Night && Math.random() < .06) chirp(); if (on.Stream && Math.random() < .25) blip(900 + Math.random() * 1400, .003 + Math.random() * .004, .04, false); }, 60);
+    // bowl + hum
+    let bowlT = null;
+    const strike = () => { const m = MOODS[E.mood], now = ac.currentTime, f = m.root * 4 * Math.pow(2, [0, 7, 12][Math.floor(Math.random() * 3)] / 12); [[1, .07], [2.76, .03], [5.4, .012], [8.9, .005]].forEach(([r, gn], i) => { [0, 1.4].forEach(dt => { const o = ac.createOscillator(); o.frequency.value = f * r + dt * (i + 1); const e = ac.createGain(); e.gain.setValueAtTime(0, now); e.gain.linearRampToValueAtTime(gn, now + .02 + i * .01); e.gain.exponentialRampToValueAtTime(.0001, now + 9 - i * 1.5); const p = pan(Math.random() * .8 - .4); o.connect(e); e.connect(p); p.connect(bus); o.start(now); o.stop(now + 9.5); }); }); };
+    const schedBowl = () => { bowlT = setTimeout(() => { if (E.playing && E.bowl) strike(); schedBowl(); }, 15000 + Math.random() * 5000); };
+    const hum = ac.createGain(); hum.gain.value = 0; [528, 264].forEach((f, i) => { const o = ac.createOscillator(); o.frequency.value = f; const g = ac.createGain(); g.gain.value = i ? .5 : 1; o.connect(g); g.connect(hum); o.start(); }); lfo(.25, .3, hum.gain); hum.connect(bus);
+    // plucks
+    let pluckT = null;
+    function pluck() { const m = MOODS[E.mood], now = ac.currentTime; const deg = m.scale[Math.floor(Math.random() * m.scale.length)], oct = [2, 3, 3, 4][Math.floor(Math.random() * 4)], f = m.root * Math.pow(2, deg / 12 + oct); const c = ac.createOscillator(); c.frequency.value = f; const mo = ac.createOscillator(); mo.frequency.value = f * (Math.random() < .5 ? 2 : 3.01); const mg = ac.createGain(); mg.gain.setValueAtTime(f * 1.1, now); mg.gain.exponentialRampToValueAtTime(f * .04, now + 1.4); mo.connect(mg); mg.connect(c.frequency); const env = ac.createGain(); const vel = .07 + Math.random() * .09; env.gain.setValueAtTime(0, now); env.gain.linearRampToValueAtTime(vel, now + .04); env.gain.exponentialRampToValueAtTime(.0001, now + 3 + Math.random() * 2.5); const p = pan(Math.random() * 1.4 - .7); c.connect(env); env.connect(p); p.connect(bus); c.start(now); mo.start(now); c.stop(now + 6.5); mo.stop(now + 6.5); }
+    function schedule() { const [a, b] = MOODS[E.mood].gap; pluckT = setTimeout(() => { if (E.playing) pluck(); schedule(); }, (a + Math.random() * (b - a)) * 1000); }
+    E.setMood = name => { E.mood = name; const m = MOODS[name], now = ac.currentTime; const set = (p, v, tc) => { if (E.init) p.setTargetAtTime(v, now, tc); else p.value = v; };
+      drone.forEach(d => { const f = d.i === 1 && E.beat ? m.root * .5 + E.beat : m.root * d.m * (d.i === 1 ? 1.003 : 1); set(d.o.frequency, f, 1.5); });
+      const cut = m.cut + (getLight ? getLight() : 0) * 1.5;
+      pad.forEach((v, i) => { const onv = i < m.chord.length; if (onv) v.oscs.forEach(o => set(o.frequency, m.root * Math.pow(2, m.chord[i] / 12), 1.2)); v.vg.gain.setTargetAtTime(onv ? .5 : 0, now, 3); v.lg.gain.setTargetAtTime(onv ? .3 : 0, now, 3); set(v.f.frequency, cut * (1 - i * .08), 2); });
+      E.init = true; };
+    E.setBeat = hz => { E.beat = hz; E.setMood(E.mood); };
+    E.setRoomtone = v => { E.roomtone = v; ng.gain.setTargetAtTime(v ? .03 : 0, ac.currentTime, 1); };
+    E.setRoomLevel = l => { E.level = l; if (E.roomtone) ng.gain.setTargetAtTime(Math.min(.08, .03 + l * .3), ac.currentTime, .6); };
+    E.setLayer = (name, v) => { on[name] = v; const l = L[name]; if (l) l.g.gain.setTargetAtTime(v ? l.base : 0, ac.currentTime, 1.5); };
+    E.setBowl = v => { E.bowl = v; };
+    E.setHum = v => { hum.gain.setTargetAtTime(v ? .02 : 0, ac.currentTime, 1.5); };
+    E.start = () => { ac.resume(); E.playing = true; master.gain.setTargetAtTime(.7, ac.currentTime, 2); clearTimeout(pluckT); schedule(); clearTimeout(bowlT); schedBowl(); setTimeout(() => { if (E.playing) pluck(); }, 1200); setTimeout(() => { if (E.playing && E.bowl) strike(); }, 2500); };
+    E.pause = () => { E.playing = false; master.gain.setTargetAtTime(0, ac.currentTime, .6); clearTimeout(pluckT); clearTimeout(bowlT); };
+    E.stop = () => { E.pause(); clearInterval(evTimer); };
+    return E;
+  }
+  startAudio() {
+    const st = this.state;
+    if (!this.E) { this.E = this.makeEngine(() => 140 + st.coverage * 72); if (!this.E) return; this.E.setMood(this.mood); this.E.setBeat(this.BEATS[st.beat]); this.E.setRoomtone(st.roomtone); Object.keys(st.layers).forEach(k => this.E.setLayer(k, st.layers[k])); this.E.setBowl(st.bowl); this.E.setHum(st.hum); }
+    this.E.start(); this.an = this.E.an;
+  }
+  pauseAudio() { if (this.E) this.E.pause(); }
+  startTimer() { clearInterval(this.timer); this.timer = setInterval(() => { if (!this.state.playing) return; const r = this.state.remaining - 1; if (r <= 0) this.finish(); else this.setState({ remaining: r }); }, 1000); }
+  finish() {
+    clearInterval(this.timer); this.pauseAudio();
+    const pts = Math.floor(this.pts.length * .78 + 400).toLocaleString(); const hue = this.MOODS[this.mood].hue;
+    const s = { name: 'Living room', meta: `${this.state.length} min · ${pts} pts · 21 Oct`, mood: this.mood, thumb: `linear-gradient(135deg,#1E2A44,#6B4A3A 60%,${hue})` };
+    this.setState({ playing: false, screen: 'library', sessions: [s, ...this.sessions], coverage: 0, sessionNo: this.state.sessionNo + 1 });
+  }
+  go(screen) { this.setState({ screen }); }
+  paywall(back) { this.setState({ screen: 'paywall', back }); }
+  activate() {
+    if (this.state.act) return; this.setState({ act: 1 }); this.timeouts = [];
+    ['cam', 'mic', 'motion'].forEach((k, i) => { this.timeouts.push(setTimeout(() => this.setState({ [k]: 'on' }), i * 900 + 120)); this.timeouts.push(setTimeout(() => this.setState({ [k]: true }), i * 900 + 880)); });
+    this.timeouts.push(setTimeout(() => this.setState({ act: 2 }), 2900));
+    this.timeouts.push(setTimeout(() => this.setState({ screen: this.sub ? 'home' : 'paywall', back: 'home' }), 3700));
+  }
+  sensor(v) {
+    const scanning = v === 'on', done = v === true;
+    return { ring: done ? 'linear-gradient(135deg,#3096FB,#834AE7)' : scanning ? 'conic-gradient(from 0deg,#3096FB,#834AE7,#CB13A9,rgba(0,0,0,0) 72%)' : 'rgba(255,255,255,0.1)', anim: scanning ? 'rz-spin 1.1s linear infinite' : 'none', fg: done ? '#ECECF2' : scanning ? '#ECECF2' : '#6B6B7E', label: done ? 'Live' : scanning ? 'Waking' : 'Off' };
+  }
+  renderVals() {
+    const sc = this.screen, st = this.state, mood = this.mood, sub = this.sub;
+    const cov = st.coverage, ready = cov >= .6;
+    const rem = st.remaining ?? st.length * 60, mm = String(Math.floor(rem / 60)).padStart(2, '0'), ss = String(rem % 60).padStart(2, '0');
+    const total = st.length * 60, ring = 741.4 * (1 - rem / total);
+    const seg = (list, cur, key, label, after) => list.map(v => ({ label: label(v), bg: v === cur ? '#2A2A38' : 'transparent', fg: v === cur ? '#ECECF2' : '#6B6B7E', pick: () => { this.setState({ [key]: v, ...(key === 'length' ? { remaining: v * 60 } : {}) }); after && after(v); } }));
+    const cam = this.sensor(st.cam), mic = this.sensor(st.mic), mot = this.sensor(st.motion);
+    const canMood = n => sub || this.FREE_MOODS.includes(n);
+    const pickMood = n => { if (!canMood(n)) return this.paywall(sc); this.setState({ mood: n }); if (this.E) this.E.setMood(n); };
+    const moods = Object.keys(this.MOODS).map(n => ({ name: n, hue: this.MOODS[n].hue, locked: !canMood(n), bg: n === mood ? 'linear-gradient(135deg,#3096FB,#834AE7,#CB13A9)' : '#2A2A38', fg: n === mood ? '#ECECF2' : canMood(n) ? '#9B9BAE' : '#6B6B7E', pick: () => pickMood(n) }));
+    const toggleLayer = n => { if (!sub) return this.paywall(sc); const v = !st.layers[n]; this.setState({ layers: { ...st.layers, [n]: v } }); if (this.E) this.E.setLayer(n, v); };
+    const layers = Object.keys(this.LAYERS).map(n => ({ name: n, locked: !sub, fg: st.layers[n] ? '#ECECF2' : '#6B6B7E', border: st.layers[n] ? '#3096FB' : '#2A2A38', toggle: () => toggleLayer(n) }));
+    const layerRows = Object.keys(this.LAYERS).map(n => ({ name: n, desc: this.LAYERS[n], locked: !sub, track: st.layers[n] ? '#3096FB' : '#2A2A38', thumb: st.layers[n] ? '21px' : '3px', toggle: () => toggleLayer(n) }));
+    const activeLayers = Object.keys(st.layers).filter(k => st.layers[k]);
+    const beatKeys = Object.keys(this.BEATS), breathKeys = Object.keys(this.BREATHS);
+    const gated = fn => () => sub ? fn() : this.paywall(sc);
+    const h = new Date().getHours(), greeting = h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening';
+    const last = this.sessions[0];
+    return {
+      isIntro: sc === 'intro', isPaywall: sc === 'paywall', isHome: sc === 'home', isScan: sc === 'scan', isListen: sc === 'listen', isSounds: sc === 'sounds', isLibrary: sc === 'library', isSettings: sc === 'settings',
+      showNav: ['home', 'scan', 'sounds', 'library', 'settings'].includes(sc),
+      camRing: cam.ring, camAnim: cam.anim, camFg: cam.fg, camLabel: cam.label, micRing: mic.ring, micAnim: mic.anim, micFg: mic.fg, micLabel: mic.label, motRing: mot.ring, motAnim: mot.anim, motFg: mot.fg, motLabel: mot.label,
+      activate: () => this.activate(), actLabel: st.act === 2 ? 'Sensors live' : st.act === 1 ? 'Waking the sensors' : 'Activate camera, mic and depth', actDot: st.act === 2 ? '#25E0A1' : st.act === 1 ? '#F742C5' : '#3096FB', actGlow: st.act === 1 ? '0 0 28px rgba(247,66,197,0.35)' : 'none',
+      subscribe: () => this.setState({ sub: true, screen: st.back || 'home' }), skipPaywall: () => this.setState({ screen: st.back || 'home' }), goPaywall: () => this.paywall('settings'),
+      planLabel: sub ? 'Plus · trial' : 'Free plan', planFg: sub ? '#FFC845' : '#9B9BAE', planBorder: sub ? 'rgba(255,200,69,0.35)' : '#2A2A38',
+      greeting, moodName: mood, lengthLabel: `${st.length} min`,
+      soundsSub: sub ? `${mood} · ${activeLayers.length ? activeLayers.join(', ') : 'no layers'}` : `${mood} · 4 of 8 moods`, libSub: `${this.sessions.length} sessions`, lastThumb: last.thumb, lastSub: `${last.name} · ${last.mood}`, beatShort: st.beat === 'Off' ? 'No beat' : `${st.beat} · ${this.BEATS[st.beat]} Hz`, settingsSub: `${st.length} min · ${st.density} density`,
+      resumeLast: () => { this.setState({ mood: last.mood, screen: 'scan', coverage: 0 }); },
+      goHome: () => this.go('home'), goScan: () => this.setState({ screen: 'scan', coverage: 0 }), goSounds: () => this.go('sounds'), goLibrary: () => this.go('library'), goSettings: () => this.go('settings'),
+      scanRef: this.scanRef, listenRef: this.listenRef,
+      covDash: `${113.1 * cov} 113.1`, covPct: `${Math.round(cov * 100)}`,
+      scanHint: cov < .35 ? 'Sweep floor to ceiling' : cov < .7 ? 'Slowly — keep the walls in frame' : cov < 1 ? 'Nearly there' : 'Room captured',
+      pointsLabel: Math.floor(cov * this.pts?.length || 0).toLocaleString(), depthLabel: `${(1.2 + cov * 3.8).toFixed(1)} m`, lightLabel: `${Math.round(140 + cov * 72)} lx`,
+      composeOpacity: ready ? 1 : .35, composeLabel: ready ? 'Compose from this room' : `Composing needs ${Math.max(0, Math.ceil(60 - cov * 100))}% more`,
+      compose: () => { if (!ready) return; this.setState({ screen: 'listen', playing: true, preview: false, remaining: st.length * 60 }); this.startAudio(); this.startTimer(); },
+      sessionLabel: `Session ${String(st.sessionNo).padStart(2, '0')} · Living room · ${st.length} min`,
+      ringDash: `${ring} 741.4`, clock: `${mm}:${ss}`, stateLabel: !st.playing ? 'PAUSED' : (this.BREATHS[st.breath] && st.breathLabel) ? st.breathLabel : mood.toUpperCase(),
+      playing: st.playing, paused: !st.playing,
+      togglePlay: () => { const p = !st.playing; this.setState({ playing: p }); if (p) { this.startAudio(); this.startTimer(); } else this.pauseAudio(); },
+      endSession: () => this.finish(),
+      moods, layers, layerRows,
+      moodCards: moods.map(m => ({ ...m, desc: this.MOODS[m.name].desc, bg: m.name === mood ? 'linear-gradient(135deg,#3096FB,#834AE7,#CB13A9)' : 'rgba(255,255,255,0.06)' })),
+      beats: seg(beatKeys, st.beat, 'beat', v => v === 'Off' ? 'Off' : `${v} ${this.BEATS[v]}Hz`, v => this.E && this.E.setBeat(this.BEATS[v])),
+      beatDesc: st.beat === 'Off' ? 'Pure drone' : st.beat === 'Delta' ? '2 Hz · deep rest' : st.beat === 'Theta' ? '4 Hz · meditation' : '10 Hz · calm focus',
+      beatLabel: st.beat === 'Off' ? 'No beat' : `${st.beat} ${this.BEATS[st.beat]} Hz`, beatFg: st.beat === 'Off' ? '#3F3F50' : '#ECECF2',
+      cycleBeat: () => { const v = beatKeys[(beatKeys.indexOf(st.beat) + 1) % beatKeys.length]; this.setState({ beat: v }); if (this.E) this.E.setBeat(this.BEATS[v]); },
+      breaths: breathKeys.map(v => ({ label: v, bg: v === st.breath ? '#2A2A38' : 'transparent', fg: v === st.breath ? '#ECECF2' : '#6B6B7E', pick: gated(() => this.setState({ breath: v, breathLabel: '' })) })),
+      breathDesc: st.breath === 'Off' ? 'Clock only' : st.breath === 'Box' ? '4 · 4 · 4 · 4' : 'In 4 · hold 7 · out 8',
+      breathLabel: st.breath === 'Off' ? 'No breath' : `Breath ${st.breath}`, breathFg: st.breath === 'Off' ? '#3F3F50' : '#ECECF2',
+      cycleBreath: gated(() => { const v = breathKeys[(breathKeys.indexOf(st.breath) + 1) % breathKeys.length]; this.setState({ breath: v, breathLabel: '' }); }),
+      locked: !sub,
+      bowlTrack: st.bowl ? '#3096FB' : '#2A2A38', bowlThumb: st.bowl ? '21px' : '3px', toggleBowl: gated(() => { const v = !st.bowl; this.setState({ bowl: v }); if (this.E) this.E.setBowl(v); }),
+      humTrack: st.hum ? '#3096FB' : '#2A2A38', humThumb: st.hum ? '21px' : '3px', toggleHum: gated(() => { const v = !st.hum; this.setState({ hum: v }); if (this.E) this.E.setHum(v); }),
+      rtTrack: st.roomtone ? '#3096FB' : '#2A2A38', rtThumb: st.roomtone ? '21px' : '3px', toggleRoomtone: () => { const v = !st.roomtone; this.setState({ roomtone: v }); if (this.E) this.E.setRoomtone(v); },
+      previewOn: st.preview, previewOff: !st.preview, togglePreview: () => { const p = !st.preview; this.setState({ preview: p }); if (p) this.startAudio(); else this.pauseAudio(); },
+      lengths: seg(sub ? [10, 15, 20, 30, 60] : [10, 15, 20], st.length, 'length', v => `${v}`), densities: seg(['Low', 'Med', 'High'], st.density, 'density', v => v),
+      subBg: sub ? 'linear-gradient(135deg,#6840E8,#F742C5,#FFC845)' : 'rgba(255,255,255,0.06)', subTitle: sub ? 'Resonance Plus' : 'Free plan', subDesc: sub ? '£3.99 / month · trial ends 28 Oct' : '4 moods · 20 min sessions · no layers', subTag: sub ? 'Manage' : 'Upgrade', subTagFg: sub ? '#9B9BAE' : '#F742C5',
+      sessions: this.sessions, libraryCount: `${this.sessions.length} sessions · 60 min listened this month`,
+      navHomeFg: sc === 'home' ? '#ECECF2' : '#6B6B7E', navHomeDot: sc === 'home' ? '#F742C5' : 'transparent', navSndFg: sc === 'sounds' ? '#ECECF2' : '#6B6B7E', navSndDot: sc === 'sounds' ? '#F742C5' : 'transparent', navLibFg: sc === 'library' ? '#ECECF2' : '#6B6B7E', navLibDot: sc === 'library' ? '#F742C5' : 'transparent', navSetFg: sc === 'settings' ? '#ECECF2' : '#6B6B7E', navSetDot: sc === 'settings' ? '#F742C5' : 'transparent',
+    };
+  }
+}
+</script>
+</body>
+</html>

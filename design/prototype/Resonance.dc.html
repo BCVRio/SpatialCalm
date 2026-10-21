@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><meta name="design_doc_mode" content="canvas"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Audiowide&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"><style>body{margin:0;background:#0A0A0F;color:#ECECF2;font-family:'Space Grotesk',system-ui,sans-serif;-webkit-font-smoothing:antialiased}a{color:#F742C5}a:hover{color:#FF63A5}.dv-turn{padding:48px 44px 40px;border-bottom:1px solid rgba(255,255,255,0.06);scroll-margin-top:16px}.dv-thd{display:flex;align-items:baseline;gap:10px;margin:0 0 20px}.dv-tid{font:600 10px 'JetBrains Mono',monospace;padding:3px 7px;background:#ECECF2;color:#000;border-radius:4px;text-decoration:none}.dv-tname{font:500 13px/1.2 'Space Grotesk',sans-serif;color:#ECECF2}.dv-opts{display:flex;flex-wrap:wrap;gap:36px;align-items:flex-start}.dv-opt{flex:none;display:flex;flex-direction:column;gap:10px;scroll-margin-top:16px}.dv-oid{font:600 10.5px 'JetBrains Mono',monospace;padding:3px 7px;background:#2A2A38;color:#ECECF2;border-radius:4px;text-decoration:none}.dv-oid:hover{color:#fff}.dv-olabel{display:flex;align-items:baseline;gap:8px;font:500 11px/1.3 'JetBrains Mono',monospace;letter-spacing:0.14em;text-transform:uppercase;color:#9B9BAE}.dv-opt:target .dv-oid{background:#3096FB;color:#fff}.dv-next{margin:28px 0 0;font:13px/1.5 'Space Grotesk',sans-serif;color:#9B9BAE}</style></helmet>
+<section class="dv-turn" id="t2">
+  <div class="dv-thd"><a class="dv-tid" href="#t2">2</a><span class="dv-tname">v0.6 — cover art + loop (Higgsfield), one-tap sensor activation, Home menu, Plus paywall, expanded soundscape. Eight screens, all clickable; use the Tweaks panel to flip <b>subscribed</b> and see the free-plan locks.</span></div>
+  <div class="dv-opts">
+    <div class="dv-opt" id="2a"><div class="dv-olabel"><a class="dv-oid" href="#2a">2a</a>01 — Cover · tap Activate</div>
+      <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" dark="{{ true }}" hint-size="402px,874px"><dc-import name="ResonanceScreen" screen="intro" mood="{{ mood }}" subscribed="{{ subscribed }}" demo-speed="{{ demoSpeed }}" hint-size="402px,874px"></dc-import></x-import></div>
+    <div class="dv-opt" id="2b"><div class="dv-olabel"><a class="dv-oid" href="#2b">2b</a>02 — Paywall · £3.99/mo</div>
+      <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" dark="{{ true }}" hint-size="402px,874px"><dc-import name="ResonanceScreen" screen="paywall" mood="{{ mood }}" subscribed="{{ subscribed }}" demo-speed="{{ demoSpeed }}" hint-size="402px,874px"></dc-import></x-import></div>
+    <div class="dv-opt" id="2c"><div class="dv-olabel"><a class="dv-oid" href="#2c">2c</a>03 — Home</div>
+      <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" dark="{{ true }}" hint-size="402px,874px"><dc-import name="ResonanceScreen" screen="home" mood="{{ mood }}" subscribed="{{ subscribed }}" demo-speed="{{ demoSpeed }}" hint-size="402px,874px"></dc-import></x-import></div>
+    <div class="dv-opt" id="2d"><div class="dv-olabel"><a class="dv-oid" href="#2d">2d</a>04 — Live scan</div>
+      <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" dark="{{ true }}" hint-size="402px,874px"><dc-import name="ResonanceScreen" screen="scan" mood="{{ mood }}" subscribed="{{ subscribed }}" demo-speed="{{ demoSpeed }}" hint-size="402px,874px"></dc-import></x-import></div>
+    <div class="dv-opt" id="2e"><div class="dv-olabel"><a class="dv-oid" href="#2e">2e</a>05 — Listening</div>
+      <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" dark="{{ true }}" hint-size="402px,874px"><dc-import name="ResonanceScreen" screen="listen" mood="{{ mood }}" subscribed="{{ subscribed }}" demo-speed="{{ demoSpeed }}" hint-size="402px,874px"></dc-import></x-import></div>
+    <div class="dv-opt" id="2f"><div class="dv-olabel"><a class="dv-oid" href="#2f">2f</a>06 — Sounds</div>
+      <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" dark="{{ true }}" hint-size="402px,874px"><dc-import name="ResonanceScreen" screen="sounds" mood="{{ mood }}" subscribed="{{ subscribed }}" demo-speed="{{ demoSpeed }}" hint-size="402px,874px"></dc-import></x-import></div>
+    <div class="dv-opt" id="2g"><div class="dv-olabel"><a class="dv-oid" href="#2g">2g</a>07 — Library</div>
+      <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" dark="{{ true }}" hint-size="402px,874px"><dc-import name="ResonanceScreen" screen="library" mood="{{ mood }}" subscribed="{{ subscribed }}" demo-speed="{{ demoSpeed }}" hint-size="402px,874px"></dc-import></x-import></div>
+    <div class="dv-opt" id="2h"><div class="dv-olabel"><a class="dv-oid" href="#2h">2h</a>08 — Settings</div>
+      <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" dark="{{ true }}" hint-size="402px,874px"><dc-import name="ResonanceScreen" screen="settings" mood="{{ mood }}" subscribed="{{ subscribed }}" demo-speed="{{ demoSpeed }}" hint-size="402px,874px"></dc-import></x-import></div>
+  </div>
+  <p class="dv-next">Cover art and the 5 s loop were generated with Higgsfield (GPT Image 2 + Seedance 2.0) from the brand gradient; they're hosted on Higgsfield for now and need downloading into <code>assets/</code> before the ZapWorks build. Try next: "port v0.6 into the WebAR build" · "different cover direction" · "add a yearly plan at £29.99".</p>
+</section>
+<section class="dv-turn" id="t1">
+  <div style="display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:48px;max-width:1320px;margin-bottom:48px;align-items:start">
+    <div>
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:28px"><img src="assets/bcvr-logo.png" alt="BCVR" style="height:28px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:#6B6B7E">Concept · Oct 2026</span></div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#9B9BAE">Resonance · Scan-to-sound · WebAR</div>
+      <h1 style="margin:12px 0 0;font-family:'Audiowide',sans-serif;font-weight:400;font-size:44px;line-height:1.02;text-transform:uppercase;color:#ECECF2">The room<br>as instrument</h1>
+      <p style="margin:20px 0 0;max-width:56ch;color:#C9C9D6;font-size:16px;line-height:1.6;text-wrap:pretty">A mobile WebAR piece for the Zappar platform. The phone's LiDAR and camera scan the user's surroundings; the point cloud, sampled light, and room palette drive a slow generative pad. The same data renders a living visual: a breathing point cloud under a particle field tinted by what the camera saw. Every session is one-of-a-kind and saved as an artefact.</p>
+    </div>
+    <div style="background:#14141C;border:1px solid rgba(255,255,255,0.06);border-radius:4px;padding:24px;box-shadow:0 1px 0 rgba(255,255,255,0.05) inset">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#6B6B7E;margin-bottom:12px">Assumptions &amp; reasoning</div>
+      <div style="display:flex;flex-direction:column;gap:10px;font-size:14px;line-height:1.55;color:#C9C9D6">
+        <div style="display:flex;gap:10px"><span style="color:#3096FB">◆</span><span><b style="color:#ECECF2;font-weight:500">SpatialCalm repo is empty</b> — built from scratch on the BCVR system; linked for sync once code lands.</span></div>
+        <div style="display:flex;gap:10px"><span style="color:#3096FB">◆</span><span><b style="color:#ECECF2;font-weight:500">Zappar WebAR</b> — no install, runs in Safari/Chrome. Zappar's world tracking gives camera + motion; LiDAR depth comes from WebXR depth sensing where available, with a camera-based depth fallback. Permissions are therefore browser prompts, hence the explicit three-step onboarding.</span></div>
+        <div style="display:flex;gap:10px"><span style="color:#3096FB">◆</span><span><b style="color:#ECECF2;font-weight:500">Blue-led palette</b> — the cool half of the gradient for depth and UI, so the warm half stays available for the Ember mood and the end-of-session artefact.</span></div>
+        <div style="display:flex;gap:10px"><span style="color:#3096FB">◆</span><span><b style="color:#ECECF2;font-weight:500">The prototype is live</b> — the scan accumulates over ~14 s, "Compose" starts a real synthesised pad (turn sound on), and the visual breathes with the audio. Moods retune the chord. Sessions end into the library.</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="dv-thd"><a class="dv-tid" href="#t1">1</a><span class="dv-tname">Core flow — five screens, each phone is fully clickable</span></div>
+  <div class="dv-opts">
+    <div class="dv-opt" id="1a"><div class="dv-olabel"><a class="dv-oid" href="#1a">1a</a>01 — Onboarding</div>
+      <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" dark="{{ true }}" hint-size="402px,874px"><dc-import name="ResonanceScreen" screen="intro" mood="{{ mood }}" subscribed="{{ true }}" demo-speed="{{ demoSpeed }}" hint-size="402px,874px"></dc-import></x-import></div>
+    <div class="dv-opt" id="1b"><div class="dv-olabel"><a class="dv-oid" href="#1b">1b</a>02 — Live scan</div>
+      <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" dark="{{ true }}" hint-size="402px,874px"><dc-import name="ResonanceScreen" screen="scan" mood="{{ mood }}" subscribed="{{ true }}" demo-speed="{{ demoSpeed }}" hint-size="402px,874px"></dc-import></x-import></div>
+    <div class="dv-opt" id="1c"><div class="dv-olabel"><a class="dv-oid" href="#1c">1c</a>03 — Listening</div>
+      <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" dark="{{ true }}" hint-size="402px,874px"><dc-import name="ResonanceScreen" screen="listen" mood="{{ mood }}" subscribed="{{ true }}" demo-speed="{{ demoSpeed }}" hint-size="402px,874px"></dc-import></x-import></div>
+    <div class="dv-opt" id="1d"><div class="dv-olabel"><a class="dv-oid" href="#1d">1d</a>04 — Library</div>
+      <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" dark="{{ true }}" hint-size="402px,874px"><dc-import name="ResonanceScreen" screen="library" mood="{{ mood }}" subscribed="{{ true }}" demo-speed="{{ demoSpeed }}" hint-size="402px,874px"></dc-import></x-import></div>
+    <div class="dv-opt" id="1e"><div class="dv-olabel"><a class="dv-oid" href="#1e">1e</a>05 — Settings</div>
+      <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" dark="{{ true }}" hint-size="402px,874px"><dc-import name="ResonanceScreen" screen="settings" mood="{{ mood }}" subscribed="{{ true }}" demo-speed="{{ demoSpeed }}" hint-size="402px,874px"></dc-import></x-import></div>
+  </div>
+  <p class="dv-next">Try next: "make the listening visual more abstract in <a class="dv-oid" href="#1c">1c</a>" · "add a shareable artefact card at the end of a session" · "show the Zappar launch (QR + splash) before <a class="dv-oid" href="#1a">1a</a>"</p>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;subscribed&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Demo&quot;},&quot;mood&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;Drift&quot;,&quot;options&quot;:[&quot;Drift&quot;,&quot;Ember&quot;,&quot;Tide&quot;,&quot;Still&quot;,&quot;Dawn&quot;,&quot;Hollow&quot;,&quot;Lumen&quot;,&quot;Vale&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Sound&quot;},&quot;demoSpeed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0.5,&quot;max&quot;:4,&quot;step&quot;:0.5,&quot;unit&quot;:&quot;x&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Demo&quot;}}">
+class Component extends DCLogic {
+  renderVals() { return { mood: this.props.mood ?? 'Drift', demoSpeed: this.props.demoSpeed ?? 1, subscribed: !!this.props.subscribed }; }
+}
+</script>
+</body>
+</html>

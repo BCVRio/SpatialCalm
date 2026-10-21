@@ -1,0 +1,8 @@
+node_modules/
+tools/out/
+api/node_modules/
+api/.wrangler/
+api/.dev.vars
+*.zip
+.DS_Store
+dist/

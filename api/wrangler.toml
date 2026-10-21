@@ -1,0 +1,24 @@
+name = "resonance-api"
+main = "src/index.js"
+compatibility_date = "2024-09-23"
+
+# KV: subscription records (user:<email>, cust:<customerId>)
+# Create with:  wrangler kv namespace create SUBS   (and ... --preview for dev)
+kv_namespaces = [
+  { binding = "SUBS", id = "REPLACE_WITH_KV_ID", preview_id = "REPLACE_WITH_PREVIEW_KV_ID" }
+]
+
+[vars]
+# Origins allowed to call the API and to be used as checkout/magic-link return URLs.
+# ZapWorks serves projects from https://<project>.zapworks.app; add staging/local origins as needed.
+APP_ORIGINS = "https://resonance.zapworks.app,http://localhost:8080"
+TRIAL_DAYS = "7"
+# Sender for magic links (domain must be verified in Resend)
+MAIL_FROM = "Resonance <resonance@bcvr.io>"
+
+# Secrets (never commit): set with `wrangler secret put <NAME>`
+#   STRIPE_SECRET_KEY       sk_live_… from the BCVR Stripe account
+#   STRIPE_WEBHOOK_SECRET   whsec_… for the /api/webhook endpoint
+#   STRIPE_PRICE_ID         price_… Resonance Plus, £3.99 / month recurring
+#   AUTH_SECRET             openssl rand -base64 48
+#   RESEND_API_KEY          re_… (optional; without it magic links are only logged)

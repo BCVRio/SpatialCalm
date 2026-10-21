@@ -1,0 +1,13 @@
+{
+  "name": "resonance-webar",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "serve": "python3 -m http.server 8080 --bind 127.0.0.1",
+    "smoke": "node tools/smoke.mjs http://127.0.0.1:8080",
+    "zip": "sh tools/make-zip.sh"
+  },
+  "devDependencies": {
+    "playwright": "^1.47.2"
+  }
+}
