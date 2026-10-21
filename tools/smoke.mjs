@@ -20,10 +20,8 @@ async function flow(plan) {
   await page.goto(BASE + (plan === 'plus' ? '/?plan=plus' : '/?plan=free'), { waitUntil: 'load' });
   await page.waitForTimeout(600);
   await expect('intro', 'boot'); await page.waitForTimeout(2500); await shot(`${plan}-01-cover`);
-  if (plan === 'free') { await page.mouse.click(200, 300); await page.waitForTimeout(400); } else { await page.waitForSelector('#intro.now', { timeout: 15000 }); } // free: tap to skip the intro; plus: let it run
-  await shot(`${plan}-01a-revealed`);
   await page.click('#actBtn'); await page.waitForTimeout(1500); await shot(`${plan}-01b-waking`);
-  await page.waitForTimeout(2700);
+  await page.waitForFunction(() => document.querySelector('.screen.on').id !== 'intro', null, { timeout: 16000 }); // sensors + 10 s sequence
   if (plan === 'free') { await expect('paywall', 'after activation'); await shot(`${plan}-02-paywall`); await page.click('#pwSkip'); }
   await expect('home', 'home'); await shot(`${plan}-03-home`);
   await page.click('nav [data-go="sounds"]'); await expect('sounds', 'sounds'); await shot(`${plan}-06-sounds`);

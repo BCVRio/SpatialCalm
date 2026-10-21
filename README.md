@@ -80,7 +80,7 @@ is configured.
 
 - Zappar camera pipeline + Instant World Tracking (v0.5, unchanged): the point cloud is anchored in
   the room; falls back to the plain browser camera with motion parallax, then to a simulated feed.
-- One tap triggers the three browser prompts from the gesture (motion first, then camera, then mic).
+- "Scan now for calmness" is one tap: it plays the 10 s intro sequence (inside the gesture, so phones cannot refuse it) and fires the three browser prompts (motion first, then camera, then mic).
   Each disc follows its real promise, with the handoff's timetable as the minimum display time; a
   denied sensor stays `Off` with a pink ring and the app continues.
 - Live palette and light level from the camera; mic level shapes the room-tone layer.

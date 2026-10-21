@@ -70,14 +70,12 @@ video#cam{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
 .icon:hover{color:#ECECF2}
 /* cover */
 #coverVid,#introVid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
-#introVid{z-index:1;transition:opacity 1200ms var(--ease)}
+#introVid{z-index:1;transition:opacity 900ms var(--ease)}
 #introVid.out{opacity:0}
 #intro .veil,#intro .content{z-index:2}
-#intro .rv{opacity:0;animation-delay:var(--d,0ms)}
-#intro.seq .rv{animation:up 720ms var(--ease) both;animation-delay:var(--d,0ms)}
-#intro.seq .rv.h1{animation:wipe 1100ms var(--ease) both;animation-delay:var(--d,0ms)}
-@keyframes wipe{0%{opacity:1;clip-path:inset(0 100% 0 0);filter:brightness(2) blur(3px)}60%{filter:brightness(1.4) blur(0)}100%{opacity:1;clip-path:inset(0 -2% 0 0);filter:none}}
-#intro.now .rv{animation:none!important;opacity:1}
+#intro .sensors{opacity:0;transform:translateY(12px);transition:opacity 720ms var(--ease),transform 720ms var(--ease);pointer-events:none}
+#intro.act .sensors{opacity:1;transform:none}
+#intro.act .lead{opacity:.55;transition:opacity 900ms var(--ease)}
 .sensors{margin-top:28px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
 .sensor{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
 .disc{position:relative;width:64px;height:64px}
@@ -208,17 +206,17 @@ nav button.on{color:#ECECF2}nav button.on .d{background:#F742C5}
       <span class="eyebrow sm">WebAR · Zappar</span>
     </div>
     <div style="margin-top:auto">
-      <div class="eyebrow rv" style="--d:3400ms">01 — Scan to sound</div>
-      <h1 class="display grad rv h1" style="--d:4000ms;font-size:46px;line-height:1;margin-top:10px">Resonance</h1>
-      <p class="rv" style="--d:4900ms;margin:14px 0 0;color:#C9C9D6;font-size:16px;max-width:30ch;text-wrap:pretty">Your room, rendered as sound. We scan the space around you and compose a slow ambient score from its shape, light, and colour.</p>
+      <div class="eyebrow">01 — Scan to sound</div>
+      <h1 class="display grad" style="font-size:46px;line-height:1;margin-top:10px">Resonance</h1>
+      <p class="lead" style="margin:14px 0 0;color:#C9C9D6;font-size:16px;max-width:30ch;text-wrap:pretty">Your room, rendered as sound. We scan the space around you and compose a slow ambient score from its shape, light, and colour.</p>
     </div>
     <div class="sensors">
-      <div class="sensor rv" style="--d:5700ms" id="sCam"><div class="disc"><div class="r"></div><div class="i"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M3 7h3l2-3h8l2 3h3v12H3z"/><circle cx="12" cy="13" r="3.5"/></svg></div></div><div><div class="l">Camera</div><div class="s">Off</div></div></div>
-      <div class="sensor rv" style="--d:5900ms" id="sMic"><div class="disc"><div class="r"></div><div class="i"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></div></div><div><div class="l">Microphone</div><div class="s">Off</div></div></div>
-      <div class="sensor rv" style="--d:6100ms" id="sMot"><div class="disc"><div class="r"></div><div class="i"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2M7 12h10"/></svg></div></div><div><div class="l">Depth</div><div class="s">Off</div></div></div>
+      <div class="sensor" id="sCam"><div class="disc"><div class="r"></div><div class="i"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M3 7h3l2-3h8l2 3h3v12H3z"/><circle cx="12" cy="13" r="3.5"/></svg></div></div><div><div class="l">Camera</div><div class="s">Off</div></div></div>
+      <div class="sensor" id="sMic"><div class="disc"><div class="r"></div><div class="i"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></div></div><div><div class="l">Microphone</div><div class="s">Off</div></div></div>
+      <div class="sensor" id="sMot"><div class="disc"><div class="r"></div><div class="i"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2M7 12h10"/></svg></div></div><div><div class="l">Depth</div><div class="s">Off</div></div></div>
     </div>
-    <button id="actBtn" class="cta rv" style="--d:6900ms;margin-top:24px;width:100%"><div><span class="dot"></span><span id="actLabel">Activate camera, mic and depth</span></div></button>
-    <div class="note rv" style="--d:7300ms;margin-top:12px">One tap · Camera, mic and depth · No install</div>
+    <button id="actBtn" class="cta" style="margin-top:24px;width:100%"><div><span class="dot"></span><span id="actLabel">Scan now for calmness</span></div></button>
+    <div class="note" style="margin-top:12px">One tap · Camera, mic and depth · No install</div>
   </div>
 </section>
 
@@ -324,7 +322,7 @@ nav button.on{color:#ECECF2}nav button.on .d{background:#F742C5}
     <div><div class="eyebrow">03 — Soundscape</div><h1 class="display" style="font-size:32px;margin-top:10px">Sounds</h1></div>
     <button class="prev" id="prevBtn"><svg id="prevPlay" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4l13 8-13 8z"/></svg><svg id="prevPause" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="display:none"><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg>Preview</button>
   </div>
-  <p style="margin:12px 0 28px;color:#9B9BAE;font-size:14px;text-wrap:pretty">Pick a mood for the score — soft pads, dark drones, bright shimmer — then fold in nature and tone layers. Everything is synthesised live from the room scan.</p>
+  <p style="margin:12px 0 28px;color:#9B9BAE;font-size:14px;text-wrap:pretty">Pick a mood for the score — soft pads, deep drones, gentle shimmer — then fold in nature and tone layers. Everything is synthesised live from the room scan.</p>
   <p class="sec">Mood · the score</p>
   <div class="mgrid" id="moodCards"></div>
   <p class="sec">Nature · layers</p>
@@ -400,22 +398,23 @@ const MOODS = {
   // v = voice profile: padA/padB oscillator types (even/odd voices), detune cents, pad level + per-osc gain, LFO depth,
   //     drone mix per role, air (filtered pink noise), reverb wet, delay send, bus tone cutoff, vibrato [Hz, cents],
   //     shimmer (octave-up sines), rise (slow cutoff multiplier over ~10 min), pluck character or null.
-  Drift:  { hue:'#3096FB', desc:'Open lydian pad, slow bells',          root:73.42, chord:[0,7,14,16,23,28], scale:[0,2,4,6,7,9,11],  gap:[3,7],   cut:1100, bar:24, prog:[[0,7,14,16,23,28],[2,9,14,18,21,26],[9,16,19,23,28,31],[0,7,14,16,21,28]],
-            v:{ padA:'triangle', padB:'sine',     detune:7,  padLevel:1.1, padGain:1,   lfo:1,   drone:{sub:.7, beat:1, saw:.25, tri:1},  air:.04,  wet:.8,  delay:.32, tone:3400, vib:[.12,3],  shimmer:.02, pluck:{vel:1,   dec:1,   ratio:[2,3.01],    bright:1,   oct:[3,3,4,4], type:'sine'} } },
-  Ember:  { hue:'#FF7B10', desc:'Warm minor, close and low',            root:55,    chord:[0,7,12,15,19,22], scale:[0,3,5,7,10],      gap:[4,9],   cut:750,  bar:28, prog:[[0,7,12,15,19,22],[-4,3,8,15,19,24],[5,12,17,20,24,29],[0,7,10,15,19,22]],
-            v:{ padA:'sawtooth', padB:'sawtooth', detune:4,  padLevel:.8,  padGain:.6,  lfo:.6,  drone:{sub:1.5, beat:1, saw:1.6, tri:.3}, air:.01,  wet:.4,  delay:.12, tone:780,  vib:[.08,1.5], shimmer:0,  pluck:{vel:.6,  dec:.6,  ratio:[1.5,2],     bright:.3,  oct:[1,2,2,3], type:'triangle'} } },
-  Tide:   { hue:'#7859EB', desc:'Suspended fourths that rise and fall', root:82.41, chord:[0,5,7,12,14,19],  scale:[0,2,5,7,9],       gap:[2.5,6], cut:1400, bar:20, prog:[[0,5,7,12,14,19],[-2,5,10,12,17,22],[5,12,17,19,24,29],[0,7,14,17,19,26]],
-            v:{ padA:'sawtooth', padB:'triangle', detune:14, padLevel:1.1, padGain:.9,  lfo:1.8, drone:{sub:.8, beat:1, saw:.7, tri:1.2},  air:.04,  wet:.8,  delay:.5,  tone:3200, vib:[.25,6],  shimmer:.03, pluck:{vel:.9,  dec:1.2, ratio:[2,3.01],    bright:1.1, oct:[3,3,4,4], type:'sine'} } },
-  Still:  { hue:'#F742C5', desc:'Two notes, almost nothing',            root:49,    chord:[0,7,12,19],       scale:[0,7,12,14,19],    gap:[6,12],  cut:600,  bar:40, prog:[[0,7,12,19],[0,7,14,19],[-5,7,12,19]],
-            v:{ padA:'sine',     padB:'sine',     detune:2,  padLevel:.7,  padGain:1.2, lfo:.3,  drone:{sub:1.1, beat:1, saw:0, tri:.5},   air:.015, wet:.9,  delay:.1,  tone:1800, vib:[.05,1],  shimmer:0,   pluck:{vel:.5,  dec:1.6, ratio:[2],         bright:.4,  oct:[3,4],     type:'sine'} } },
-  Dawn:   { hue:'#FFC845', desc:'Bright major, slowly brightening',     root:65.41, chord:[0,4,7,11,14,19],  scale:[0,2,4,7,9],       gap:[3,6],   cut:1600, bar:22, prog:[[0,4,7,11,14,19],[5,9,12,16,19,24],[-3,4,7,12,16,19],[-5,2,7,11,14,19]],
-            v:{ padA:'triangle', padB:'sawtooth', detune:9,  padLevel:1,   padGain:1,   lfo:1,   drone:{sub:.7, beat:1, saw:.6, tri:1},    air:.03,  wet:.7,  delay:.35, tone:5000, vib:[.15,4],  shimmer:.05, rise:2.2, pluck:{vel:1.1, dec:1, ratio:[3.01,4],   bright:1.4, oct:[3,4,4,5], type:'sine'} } },
-  Hollow: { hue:'#6840E8', desc:'Dorian, cavernous, long reverb',       root:61.74, chord:[0,7,10,14,17,21], scale:[0,2,3,5,7,9,10],  gap:[5,10],  cut:650,  bar:30, prog:[[0,7,10,14,17,21],[5,9,12,17,21,24],[2,9,12,17,21,26],[0,7,10,15,17,22]],
-            v:{ padA:'square',   padB:'triangle', detune:5,  padLevel:.6,  padGain:.5,  lfo:.8,  drone:{sub:1.6, beat:1, saw:.3, tri:.6},  air:.02,  wet:1.3, delay:.55, tone:900,  vib:[.06,2],  shimmer:0,   pluck:{vel:.7,  dec:2.2, ratio:[2,2.76],    bright:.5,  oct:[1,2,2,3], type:'triangle'} } },
-  Lumen:  { hue:'#25E0A1', desc:'Whole-tone shimmer, no gravity',       root:87.31, chord:[0,4,8,14,18,22],  scale:[0,2,4,6,8,10],    gap:[2,5],   cut:1900, bar:18, prog:[[0,4,8,14,18,22],[2,6,10,16,20,24],[-2,2,6,12,16,20],[0,6,10,14,20,24]],
-            v:{ padA:'sine',     padB:'triangle', detune:11, padLevel:.9,  padGain:.9,  lfo:1.4, drone:{sub:.4, beat:1, saw:.3, tri:.8},   air:.045, wet:.85, delay:.4,  tone:6500, vib:[.5,7],   shimmer:.09, pluck:{vel:1.2, dec:.8,  ratio:[4,5.5,7],   bright:1.6, oct:[4,4,5,5], type:'sine'} } },
-  Vale:   { hue:'#CB13A9', desc:'Pentatonic drone, bowl-like',          root:58.27, chord:[0,7,12,14,19,26], scale:[0,2,4,7,9],       gap:[4,8],   cut:900,  bar:36, prog:[[0,7,12,14,19,26],[0,7,12,16,21,26],[0,9,14,16,19,28],[0,7,12,14,21,24]],
-            v:{ padA:'triangle', padB:'sine',     detune:3,  padLevel:.5,  padGain:.8,  lfo:.5,  drone:{sub:1.5, beat:1, saw:.9, tri:1.3},  air:.02,  wet:.95, delay:.2,  tone:2000, vib:[.03,1.5], shimmer:.02, pluck:{vel:.8,  dec:2.6, ratio:[2.76,5.4], bright:.7,  oct:[2,3,3],   type:'sine'} } },
+  //     Calm by design: no sawtooth/square pads, low tone cutoffs, soft slow plucks, long reverb.
+  Drift:  { hue:'#3096FB', desc:'Soft open pad, slow distant bells',   root:73.42, chord:[0,7,14,16,23,28], scale:[0,2,4,6,7,9,11],  gap:[5,10],  cut:1000, bar:26, prog:[[0,7,14,16,23,28],[2,9,14,18,21,26],[9,16,19,23,28,31],[0,7,14,16,21,28]],
+            v:{ padA:'triangle', padB:'sine',     detune:5,  padLevel:1,   padGain:1,   lfo:.8,  drone:{sub:.8, beat:1, saw:.3, tri:.9},  air:.03,  wet:.9,  delay:.25, tone:2400, vib:[.1,2.5],  shimmer:.02, pluck:{vel:.6,  dec:1.3, ratio:[2],       bright:.5,  oct:[3,4],     type:'sine'} } },
+  Ember:  { hue:'#FF7B10', desc:'Warm, low and close, like embers',    root:55,    chord:[0,7,12,15,19,22], scale:[0,3,5,7,10],      gap:[6,12],  cut:700,  bar:30, prog:[[0,7,12,15,19,22],[-4,3,8,15,19,24],[5,12,17,20,24,29],[0,7,10,15,19,22]],
+            v:{ padA:'triangle', padB:'triangle', detune:3,  padLevel:.9,  padGain:.9,  lfo:.5,  drone:{sub:1.4, beat:1, saw:.6, tri:.5},  air:.01,  wet:.65, delay:.1,  tone:900,  vib:[.07,1.5], shimmer:0,   pluck:{vel:.35, dec:1,   ratio:[2],       bright:.25, oct:[2,3],     type:'sine'} } },
+  Tide:   { hue:'#7859EB', desc:'Slow suspended swells, in and out',   root:82.41, chord:[0,5,7,12,14,19],  scale:[0,2,5,7,9],       gap:[4,9],   cut:1200, bar:22, prog:[[0,5,7,12,14,19],[-2,5,10,12,17,22],[5,12,17,19,24,29],[0,7,14,17,19,26]],
+            v:{ padA:'triangle', padB:'sine',     detune:9,  padLevel:1.1, padGain:.9,  lfo:1.4, drone:{sub:.8, beat:1, saw:.3, tri:1},   air:.035, wet:.95, delay:.4,  tone:2600, vib:[.2,4],    shimmer:.03, pluck:{vel:.55, dec:1.3, ratio:[2],       bright:.5,  oct:[3,4],     type:'sine'} } },
+  Still:  { hue:'#F742C5', desc:'Two pure tones, almost nothing',      root:49,    chord:[0,7,12,19],       scale:[0,7,12,14,19],    gap:[8,16],  cut:600,  bar:44, prog:[[0,7,12,19],[0,7,14,19],[-5,7,12,19]],
+            v:{ padA:'sine',     padB:'sine',     detune:1,  padLevel:.7,  padGain:1.2, lfo:.25, drone:{sub:1.1, beat:1, saw:0, tri:.4},   air:.015, wet:1,   delay:.08, tone:1400, vib:[.05,1],   shimmer:0,   pluck:{vel:.3,  dec:2,   ratio:[2],       bright:.25, oct:[3,4],     type:'sine'} } },
+  Dawn:   { hue:'#FFC845', desc:'Gentle major, slowly brightening',    root:65.41, chord:[0,4,7,11,14,19],  scale:[0,2,4,7,9],       gap:[4,8],   cut:1300, bar:24, prog:[[0,4,7,11,14,19],[5,9,12,16,19,24],[-3,4,7,12,16,19],[-5,2,7,11,14,19]],
+            v:{ padA:'triangle', padB:'sine',     detune:6,  padLevel:1,   padGain:1,   lfo:.9,  drone:{sub:.7, beat:1, saw:.3, tri:.9},  air:.03,  wet:.85, delay:.3,  tone:3200, vib:[.12,3],   shimmer:.04, rise:1.6, pluck:{vel:.6, dec:1.1, ratio:[2,3],    bright:.7,  oct:[3,4],     type:'sine'} } },
+  Hollow: { hue:'#6840E8', desc:'Deep and cavernous, long reverb',     root:61.74, chord:[0,7,10,14,17,21], scale:[0,2,3,5,7,9,10],  gap:[7,13],  cut:650,  bar:32, prog:[[0,7,10,14,17,21],[5,9,12,17,21,24],[2,9,12,17,21,26],[0,7,10,15,17,22]],
+            v:{ padA:'triangle', padB:'sine',     detune:4,  padLevel:.7,  padGain:.7,  lfo:.7,  drone:{sub:1.6, beat:1, saw:.2, tri:.5},  air:.02,  wet:1.2, delay:.45, tone:1000, vib:[.06,2],   shimmer:0,   pluck:{vel:.4,  dec:2.4, ratio:[2],       bright:.3,  oct:[2,3],     type:'sine'} } },
+  Lumen:  { hue:'#25E0A1', desc:'Weightless glassy shimmer',           root:87.31, chord:[0,4,8,14,18,22],  scale:[0,2,4,6,8,10],    gap:[3.5,7], cut:1500, bar:20, prog:[[0,4,8,14,18,22],[2,6,10,16,20,24],[-2,2,6,12,16,20],[0,6,10,14,20,24]],
+            v:{ padA:'sine',     padB:'triangle', detune:7,  padLevel:.9,  padGain:.9,  lfo:1.2, drone:{sub:.4, beat:1, saw:.2, tri:.7},  air:.04,  wet:.95, delay:.35, tone:4200, vib:[.3,4],    shimmer:.06, pluck:{vel:.55, dec:1,   ratio:[3,4],     bright:.8,  oct:[4,5],     type:'sine'} } },
+  Vale:   { hue:'#CB13A9', desc:'Pentatonic drone, bowl-like tones',   root:58.27, chord:[0,7,12,14,19,26], scale:[0,2,4,7,9],       gap:[6,11],  cut:850,  bar:38, prog:[[0,7,12,14,19,26],[0,7,12,16,21,26],[0,9,14,16,19,28],[0,7,12,14,21,24]],
+            v:{ padA:'triangle', padB:'sine',     detune:2,  padLevel:.5,  padGain:.8,  lfo:.5,  drone:{sub:1.5, beat:1, saw:.5, tri:1.2}, air:.02,  wet:1,   delay:.2,  tone:1800, vib:[.03,1.5], shimmer:.02, pluck:{vel:.5,  dec:2.6, ratio:[2.76],    bright:.5,  oct:[2,3],     type:'sine'} } },
 };
 const FREE_MOODS = ['Drift','Ember','Tide','Still'], FREE_LENGTHS = [10,15,20], PLUS_LENGTHS = [10,15,20,30,60];
 const LAYERS = { Rain:'Soft rain on a window, occasional drips', Ocean:'Slow swell and draw of surf', Wind:'Forest wind through leaves', Fire:'Low hearth with crackle', Night:'Crickets and warm dark air', Stream:'Running water close by' };
@@ -496,32 +495,29 @@ $$('nav button').forEach(b=>b.onclick=()=>show(b.dataset.go));
 // ---- toast / sheet ----
 let toastT; function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('on'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('on'),2800); }
 
-// ---- cover: 10 s intro sequence plays once, content reveals on a timeline, then the loop takes over ----
-// Robust to the ways mobile refuses autoplay (Low Power Mode, loading behind the Zappar launch page, slow CDN):
-// the reveal timeline only starts once the clip is really playing; if autoplay is refused the first tap starts
-// the clip (not skips it); a second tap skips; if nothing can play within 6 s the type simply reveals.
-(function(){
+// ---- cover: the loop idles behind the still; the tap on "Scan now for calmness" plays the 10 s intro sequence
+// (a user gesture, so mobile cannot refuse it) while the sensors wake, then hands over to the paywall / home ----
+const COVER=(function(){
   const intro=$('#intro'), iv=$('#introVid'), lv=$('#coverVid');
   const rm=matchMedia('(prefers-reduced-motion: reduce)').matches, ds=navigator.connection&&navigator.connection.saveData;
-  let done=false, started=false, armed=false;
-  const srcs=(v,name)=>{ ['mp4','webm'].forEach(ext=>{ const s=document.createElement('source'); s.src=`assets/${name}.${ext}`; s.type=ext==='mp4'?'video/mp4':'video/webm'; v.appendChild(s); }); v.load(); };
-  const settle=()=>{ if(done) return; done=true; intro.classList.add('seq','now'); iv.classList.add('out'); if(!lv.querySelector('source')) srcs(lv,'cover-loop'); lv.muted=true; lv.play().catch(()=>{}); setTimeout(()=>{ iv.pause(); iv.innerHTML=''; iv.load(); },1400); };
-  if(rm||ds||!iv.canPlayType||!(iv.canPlayType('video/mp4')||iv.canPlayType('video/webm'))){ iv.remove(); settle(); return; }   // poster only, everything visible
-  const start=()=>{ if(started) return; started=true; intro.classList.add('seq'); };
-  const tryPlay=()=>{ if(done||started) return; iv.muted=true; iv.defaultMuted=true; const p=iv.play(); if(p&&p.catch) p.catch(()=>{ armed=true; }); };   // armed: a user tap will start it
-  iv.addEventListener('playing',start,{once:true});
-  iv.addEventListener('timeupdate',()=>{ if(iv.duration&&iv.currentTime>iv.duration-1.3) settle(); });
-  iv.addEventListener('ended',settle); iv.addEventListener('error',settle);
-  srcs(iv,'cover-intro'); tryPlay();
-  iv.addEventListener('canplay',tryPlay); document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible') tryPlay(); });
-  setTimeout(()=>{ if(!started) settle(); },6000);              // never hold the UI hostage to buffering
-  intro.addEventListener('pointerdown',e=>{ if(done||e.target.closest('#actBtn')) return; if(!started){ armed=false; tryPlay(); } else settle(); }); // tap: start if refused, else skip
+  const canVideo=!(rm||ds)&&iv.canPlayType&&(iv.canPlayType('video/mp4')||iv.canPlayType('video/webm'));
+  const srcs=(v,name)=>{ ['mp4','webm'].forEach(ext=>{ const sEl=document.createElement('source'); sEl.src=`assets/${name}.${ext}`; sEl.type=ext==='mp4'?'video/mp4':'video/webm'; v.appendChild(sEl); }); v.load(); };
+  if(!canVideo){ iv.remove(); return { play:()=>Promise.resolve() }; }
+  srcs(lv,'cover-loop'); lv.muted=true; lv.play().catch(()=>{});          // idle loop (poster if autoplay is refused)
+  srcs(iv,'cover-intro'); iv.classList.add('out');                           // preloads behind the loop
+  let played=false;
+  return { play:()=>new Promise(res=>{ if(played) return res(); played=true; let done=false; const finish=()=>{ if(done) return; done=true; iv.classList.add('out'); lv.play().catch(()=>{}); setTimeout(()=>{ iv.pause(); iv.innerHTML=''; iv.load(); },1400); res(); };
+    iv.muted=true; iv.defaultMuted=true; iv.currentTime=0; iv.classList.remove('out');
+    iv.addEventListener('timeupdate',()=>{ if(iv.duration&&iv.currentTime>iv.duration-1.2) finish(); }); iv.addEventListener('ended',finish); iv.addEventListener('error',finish);
+    const p=iv.play(); if(p&&p.catch) p.catch(finish); lv.pause();
+    setTimeout(finish,12500);                                                 // never wait on a stalled download
+  }) };
 })();
 
 // ---- sensors: one tap, real permission prompts, fixed minimum display timings ----
 let camStream=null, micStream=null, micAn=null;
 function setSensor(k,state){ const el={cam:'#sCam',mic:'#sMic',motion:'#sMot'}[k]; const e=$(el); e.classList.remove('waking','live','denied'); if(state) e.classList.add(state); e.querySelector('.s').textContent=state==='waking'?'Waking':state==='live'?'Live':'Off'; S.sensors[k]=state==='live'; }
-function setCTA(){ const b=$('#actBtn'); b.classList.toggle('waking',S.act===1); b.classList.toggle('live',S.act===2); $('#actLabel').textContent=S.act===2?'Sensors live':S.act===1?'Waking the sensors':'Activate camera, mic and depth'; }
+function setCTA(){ const b=$('#actBtn'); b.classList.toggle('waking',S.act===1); b.classList.toggle('live',S.act===2); $('#actLabel').textContent=S.act===2?'Sensors live':S.act===1?'Waking the sensors':'Scan now for calmness'; }
 async function requestCamera(){
   if(!Z) initZappar();
   if(Z){ const ok=await Zappar.permissionRequest(); if(!ok) throw new Error('camera denied'); Z.source.start(); Z.started=true; return true; }
@@ -530,7 +526,8 @@ async function requestCamera(){
 async function requestMic(){ micStream=await navigator.mediaDevices.getUserMedia({audio:true,video:false}); return true; }
 function onOri(e){ if(lastOri){ motion=Math.min(1, motion*.9 + (Math.abs(e.beta-lastOri.beta)+Math.abs(e.gamma-lastOri.gamma))*.02); } lastOri={beta:e.beta||0,gamma:e.gamma||0}; }
 async function activate(){
-  if(S.act) return; S.act=1; setCTA();
+  if(S.act) return; S.act=1; setCTA(); $('#intro').classList.add('act');
+  const introDone=COVER.play();                                   // starts inside the tap
   const start=performance.now(), at=ms=>new Promise(r=>setTimeout(r,Math.max(0,ms-(performance.now()-start))));
   // Kick every request off inside the tap: iOS only grants motion access from a user gesture.
   let motionP=Promise.resolve(true);
@@ -543,7 +540,8 @@ async function activate(){
   const mot=await run('motion',motionP,1920,2680);
   if(mot) addEventListener('deviceorientation',onOri);
   await at(2900); S.act=2; setCTA();
-  await at(3700); if(S.sub) show('home'); else paywall('home');
+  await Promise.all([at(3700),introDone]);                       // leave when both the sensors and the sequence are done
+  if(S.sub) show('home'); else paywall('home');
 }
 $('#actBtn').onclick=activate;
 
@@ -624,13 +622,17 @@ function makeEngine(getLight){
   const ac=new AC();
   const E={ac,mood:'Drift',beat:4,roomtone:true,playing:false,level:0,init:false,bowl:false};
   const pan=v=>{ if(ac.createStereoPanner){const p=ac.createStereoPanner(); p.pan.value=v; return p;} return ac.createGain(); };
-  const master=ac.createGain(); master.gain.value=0; const comp=ac.createDynamicsCompressor(); comp.threshold.value=-20; comp.knee.value=12; comp.ratio.value=3; comp.attack.value=.05; comp.release.value=.5; master.connect(comp); comp.connect(ac.destination);
+  const master=ac.createGain(); master.gain.value=0;
+  const warm=ac.createBiquadFilter(); warm.type='lowpass'; warm.frequency.value=4800; warm.Q.value=.4;           // takes the edge off everything
+  const shelf=ac.createBiquadFilter(); shelf.type='highshelf'; shelf.frequency.value=2800; shelf.gain.value=-3.5;
+  const comp=ac.createDynamicsCompressor(); comp.threshold.value=-24; comp.knee.value=18; comp.ratio.value=2.5; comp.attack.value=.12; comp.release.value=.9;
+  master.connect(warm); warm.connect(shelf); shelf.connect(comp); comp.connect(ac.destination);
   const an=E.an=ac.createAnalyser(); an.fftSize=1024; master.connect(an);
   const bus=ac.createGain(); const tone=ac.createBiquadFilter(); tone.type='lowpass'; tone.frequency.value=2600; tone.Q.value=.3; bus.connect(tone); tone.connect(master);
   const conv=ac.createConvolver(); (function(){const n=ac.sampleRate*6,b=ac.createBuffer(2,n,ac.sampleRate); for(let ch=0;ch<2;ch++){const d=b.getChannelData(ch); let last=0; for(let i=0;i<n;i++){const w=(Math.random()*2-1)*Math.pow(1-i/n,3.2); last=last*.6+w*.4; d[i]=last*1.6;}} conv.buffer=b;})();
-  const wet=ac.createGain(); wet.gain.value=.75; bus.connect(conv); conv.connect(wet); wet.connect(master);
-  const dsend=ac.createGain(); dsend.gain.value=.32; const dl=ac.createDelay(2),dr=ac.createDelay(2); dl.delayTime.value=.62; dr.delayTime.value=.93; const dlp=ac.createBiquadFilter(); dlp.type='lowpass'; dlp.frequency.value=1600; const fb=ac.createGain(); fb.gain.value=.38; const pl=pan(-.6),pr=pan(.6); bus.connect(dsend); dsend.connect(dl); dl.connect(pl); pl.connect(master); dl.connect(dlp); dlp.connect(fb); fb.connect(dr); dr.connect(pr); pr.connect(master); dr.connect(fb); fb.connect(dl);
-  const drone=[]; [[.5,'sine',.2,0,'sub'],[.5,'sine',.14,0,'beat'],[1,'sawtooth',.06,300,'saw'],[1.002,'triangle',.07,0,'tri']].forEach(([m,type,gn,cut,role],i)=>{ const o=ac.createOscillator(); o.type=type; const g=ac.createGain(); g.gain.value=gn; let node=o; if(cut){const f=ac.createBiquadFilter(); f.type='lowpass'; f.frequency.value=cut; f.Q.value=.9; const l=ac.createOscillator(); l.frequency.value=.021; const lg=ac.createGain(); lg.gain.value=130; l.connect(lg); lg.connect(f.frequency); l.start(); o.connect(f); node=f;} node.connect(g); g.connect(bus); o.start(); drone.push({o,m,i,g,gn,role}); });
+  const wet=ac.createGain(); wet.gain.value=.75; const wetLP=ac.createBiquadFilter(); wetLP.type='lowpass'; wetLP.frequency.value=2200; wetLP.Q.value=.3; bus.connect(conv); conv.connect(wetLP); wetLP.connect(wet); wet.connect(master);
+  const dsend=ac.createGain(); dsend.gain.value=.32; const dl=ac.createDelay(2),dr=ac.createDelay(2); dl.delayTime.value=.62; dr.delayTime.value=.93; const dlp=ac.createBiquadFilter(); dlp.type='lowpass'; dlp.frequency.value=1100; const fb=ac.createGain(); fb.gain.value=.38; const pl=pan(-.6),pr=pan(.6); bus.connect(dsend); dsend.connect(dl); dl.connect(pl); pl.connect(master); dl.connect(dlp); dlp.connect(fb); fb.connect(dr); dr.connect(pr); pr.connect(master); dr.connect(fb); fb.connect(dl);
+  const drone=[]; [[.5,'sine',.2,0,'sub'],[.5,'sine',.14,0,'beat'],[1,'sawtooth',.04,220,'saw'],[1.002,'triangle',.07,0,'tri']].forEach(([m,type,gn,cut,role],i)=>{ const o=ac.createOscillator(); o.type=type; const g=ac.createGain(); g.gain.value=gn; let node=o; if(cut){const f=ac.createBiquadFilter(); f.type='lowpass'; f.frequency.value=cut; f.Q.value=.9; const l=ac.createOscillator(); l.frequency.value=.021; const lg=ac.createGain(); lg.gain.value=130; l.connect(lg); lg.connect(f.frequency); l.start(); o.connect(f); node=f;} node.connect(g); g.connect(bus); o.start(); drone.push({o,m,i,g,gn,role}); });
   // shared vibrato for the pad (rate/depth per mood)
   const vib=ac.createOscillator(); vib.frequency.value=.12; const vibG=ac.createGain(); vibG.gain.value=3; vib.connect(vibG); vib.start();
   const pad=[]; for(let i=0;i<6;i++){ const vg=ac.createGain(); vg.gain.value=0; const f=ac.createBiquadFilter(); f.type='lowpass'; f.frequency.value=900; f.Q.value=.8; f.connect(vg); vg.connect(bus); const ogs=[]; const oscs=[-1,0,1].map(d=>{const o=ac.createOscillator(); o.type=i%2?'sawtooth':'triangle'; o.detune.value=d*8; vibG.connect(o.detune); const og=ac.createGain(); og.gain.value=i%2?.045:.085; ogs.push(og); o.connect(og); og.connect(f); o.start(); return o;}); const l=ac.createOscillator(); l.frequency.value=.02+i*.011; const lg=ac.createGain(); lg.gain.value=0; l.connect(lg); lg.connect(vg.gain); l.start(); pad.push({oscs,ogs,f,vg,lg,i}); }
@@ -650,20 +652,20 @@ function makeEngine(getLight){
   const shimO=[0,1].map(()=>{ const o=ac.createOscillator(); o.type='sine'; const g=ac.createGain(); g.gain.value=.5; o.connect(g); g.connect(shimTr); o.start(); return o; });
   // nature layers
   const L={};
-  { const hp=filt('highpass',1500,.5), lp=filt('lowpass',7000,.5), g=ac.createGain(); g.gain.value=0; chain(src(whiteB),hp,lp,g,master); L.Rain={g,base:.055}; }
-  { const lp=filt('lowpass',500,.7), g=ac.createGain(); g.gain.value=0; lfo(.07,350,lp.frequency); const tr=ac.createGain(); tr.gain.value=1; lfo(.07,.5,tr.gain); chain(src(pinkB),lp,tr,g,master); L.Ocean={g,base:.11}; }
-  { const bp=filt('bandpass',500,1.6), g=ac.createGain(); g.gain.value=0; lfo(.05,250,bp.frequency); lfo(.13,90,bp.frequency); const tr=ac.createGain(); tr.gain.value=1; lfo(.09,.4,tr.gain); chain(src(pinkB),bp,tr,g,master); L.Wind={g,base:.09}; }
-  { const lp=filt('lowpass',320,.8), g=ac.createGain(); g.gain.value=0; chain(src(pinkB),lp,g,master); L.Fire={g,base:.08}; }
-  { const lp=filt('lowpass',260,.6), g=ac.createGain(); g.gain.value=0; chain(src(pinkB),lp,g,master); L.Night={g,base:.03}; }
-  { const bp=filt('bandpass',1300,.8), lp=filt('lowpass',4200,.5), g=ac.createGain(); g.gain.value=0; lfo(1.3,300,bp.frequency); lfo(.21,450,bp.frequency); chain(src(whiteB),bp,lp,g,master); L.Stream={g,base:.05}; }
+  { const hp=filt('highpass',1200,.5), lp=filt('lowpass',5000,.5), g=ac.createGain(); g.gain.value=0; chain(src(whiteB),hp,lp,g,master); L.Rain={g,base:.035}; }
+  { const lp=filt('lowpass',500,.7), g=ac.createGain(); g.gain.value=0; lfo(.07,350,lp.frequency); const tr=ac.createGain(); tr.gain.value=1; lfo(.07,.5,tr.gain); chain(src(pinkB),lp,tr,g,master); L.Ocean={g,base:.08}; }
+  { const bp=filt('bandpass',500,1.6), g=ac.createGain(); g.gain.value=0; lfo(.05,250,bp.frequency); lfo(.13,90,bp.frequency); const tr=ac.createGain(); tr.gain.value=1; lfo(.09,.4,tr.gain); chain(src(pinkB),bp,tr,g,master); L.Wind={g,base:.06}; }
+  { const lp=filt('lowpass',320,.8), g=ac.createGain(); g.gain.value=0; chain(src(pinkB),lp,g,master); L.Fire={g,base:.055}; }
+  { const lp=filt('lowpass',260,.6), g=ac.createGain(); g.gain.value=0; chain(src(pinkB),lp,g,master); L.Night={g,base:.022}; }
+  { const bp=filt('bandpass',1100,.8), lp=filt('lowpass',3200,.5), g=ac.createGain(); g.gain.value=0; lfo(1.3,250,bp.frequency); lfo(.21,350,bp.frequency); chain(src(whiteB),bp,lp,g,master); L.Stream={g,base:.035}; }
   const on={};
   const blip=(f,vel,dec,toBus)=>{ const now=ac.currentTime, o=ac.createOscillator(); o.frequency.value=f; const e=ac.createGain(); e.gain.setValueAtTime(vel,now); e.gain.exponentialRampToValueAtTime(.0001,now+dec); const p=pan(Math.random()*1.6-.8); o.connect(e); e.connect(p); p.connect(toBus?bus:master); o.start(now); o.stop(now+dec+.05); };
   const burst=(f,q,vel,dec)=>{ const now=ac.currentTime, s=ac.createBufferSource(); s.buffer=whiteB; const bp=filt('bandpass',f,q), e=ac.createGain(); e.gain.setValueAtTime(vel,now); e.gain.exponentialRampToValueAtTime(.0001,now+dec); const p=pan(Math.random()*1.2-.6); chain(s,bp,e,p,master); s.start(now,Math.random()*3); s.stop(now+dec+.05); };
-  const chirp=()=>{ const now=ac.currentTime, f=3900+Math.random()*500, o=ac.createOscillator(); o.frequency.value=f; const e=ac.createGain(); e.gain.value=0; const n=6+Math.floor(Math.random()*5); for(let i=0;i<n;i++){ e.gain.setValueAtTime(.007,now+i*.034); e.gain.setValueAtTime(0,now+i*.034+.017); } const p=pan(Math.random()*1.6-.8); o.connect(e); e.connect(p); p.connect(master); o.start(now); o.stop(now+n*.034+.1); };
-  const evTimer=setInterval(()=>{ if(!E.playing) return; if(on.Rain&&Math.random()<.35) blip(2200+Math.random()*2600,.006+Math.random()*.008,.05,false); if(on.Fire&&Math.random()<.3) burst(1800+Math.random()*1800,3,.05+Math.random()*.08,.02+Math.random()*.05); if(on.Night&&Math.random()<.06) chirp(); if(on.Stream&&Math.random()<.25) blip(900+Math.random()*1400,.003+Math.random()*.004,.04,false); },60);
+  const chirp=()=>{ const now=ac.currentTime, f=3900+Math.random()*500, o=ac.createOscillator(); o.frequency.value=f; const e=ac.createGain(); e.gain.value=0; const n=6+Math.floor(Math.random()*5); for(let i=0;i<n;i++){ e.gain.setValueAtTime(.004,now+i*.034); e.gain.setValueAtTime(0,now+i*.034+.017); } const p=pan(Math.random()*1.6-.8); o.connect(e); e.connect(p); p.connect(master); o.start(now); o.stop(now+n*.034+.1); };
+  const evTimer=setInterval(()=>{ if(!E.playing) return; if(on.Rain&&Math.random()<.25) blip(1600+Math.random()*2000,.003+Math.random()*.004,.06,false); if(on.Fire&&Math.random()<.22) burst(1400+Math.random()*1400,3,.03+Math.random()*.05,.03+Math.random()*.05); if(on.Night&&Math.random()<.05) chirp(); if(on.Stream&&Math.random()<.18) blip(800+Math.random()*1100,.002+Math.random()*.003,.05,false); },60);
   // singing bowl + 528 Hz hum
   let bowlT=null;
-  const strike=()=>{ const m=MOODS[E.mood], now=ac.currentTime, f=m.root*4*Math.pow(2,[0,7,12][Math.floor(Math.random()*3)]/12); [[1,.07],[2.76,.03],[5.4,.012],[8.9,.005]].forEach(([r,gn],i)=>{ [0,1.4].forEach(dt=>{ const o=ac.createOscillator(); o.frequency.value=f*r+dt*(i+1); const e=ac.createGain(); e.gain.setValueAtTime(0,now); e.gain.linearRampToValueAtTime(gn,now+.02+i*.01); e.gain.exponentialRampToValueAtTime(.0001,now+9-i*1.5); const p=pan(Math.random()*.8-.4); o.connect(e); e.connect(p); p.connect(bus); o.start(now); o.stop(now+9.5); }); }); };
+  const strike=()=>{ const m=MOODS[E.mood], now=ac.currentTime, f=m.root*4*Math.pow(2,[0,7,12][Math.floor(Math.random()*3)]/12); [[1,.05],[2.76,.02],[5.4,.007],[8.9,.003]].forEach(([r,gn],i)=>{ [0,1.4].forEach(dt=>{ const o=ac.createOscillator(); o.frequency.value=f*r+dt*(i+1); const e=ac.createGain(); e.gain.setValueAtTime(0,now); e.gain.linearRampToValueAtTime(gn,now+.08+i*.02); e.gain.exponentialRampToValueAtTime(.0001,now+9-i*1.5); const p=pan(Math.random()*.8-.4); o.connect(e); e.connect(p); p.connect(bus); o.start(now); o.stop(now+9.5); }); }); };
   const schedBowl=()=>{ bowlT=setTimeout(()=>{ if(E.playing&&E.bowl) strike(); schedBowl(); },15000+Math.random()*5000); };
   const hum=ac.createGain(); hum.gain.value=0; [528,264].forEach((f,i)=>{ const o=ac.createOscillator(); o.frequency.value=f; const g=ac.createGain(); g.gain.value=i?.5:1; o.connect(g); g.connect(hum); o.start(); }); lfo(.25,.3,hum.gain); hum.connect(bus);
   // plucks
@@ -673,15 +675,15 @@ function makeEngine(getLight){
   const curChord=()=>{ const m=MOODS[E.mood]; return (m.prog&&m.prog[chordIdx%m.prog.length])||m.chord; };
   const applyChord=(ch,tc)=>{ const m=MOODS[E.mood], now=ac.currentTime; pad.forEach((p,i)=>{ if(i<ch.length) p.oscs.forEach(o=>o.frequency.setTargetAtTime(m.root*Math.pow(2,ch[i]/12),now,tc)); }); };
   const schedChord=()=>{ clearTimeout(chordT); const m=MOODS[E.mood]; if(!m.prog) return; chordT=setTimeout(()=>{ if(E.playing){ chordIdx=(chordIdx+1)%m.prog.length; applyChord(curChord(),1.8); } schedChord(); },m.bar*1000*(0.85+Math.random()*.3)); };
-  function phrase(){ const m=MOODS[E.mood], P=m.v.pluck; if(!P) return; const sc=m.scale, ch=curChord().map(x=>((x%12)+12)%12); const tones=sc.filter(d=>ch.includes(d%12)); let di=sc.indexOf(tones.length?tones[Math.floor(Math.random()*tones.length)]:sc[0]); const n=2+Math.floor(Math.random()*3), oct=P.oct[Math.floor(Math.random()*P.oct.length)], step=(.45+Math.random()*.45)*Math.max(.6,P.dec); for(let k=0;k<n;k++){ const d=sc[di]; setTimeout(()=>{ if(E.playing) pluckNote(m.root*Math.pow(2,d/12+oct),P,k===n-1?1.3:.9); },k*step*1000); di=Math.max(0,Math.min(sc.length-1,di+(Math.random()<.5?-1:1)*(Math.random()<.8?1:2))); } }
+  function phrase(){ const m=MOODS[E.mood], P=m.v.pluck; if(!P) return; const sc=m.scale, ch=curChord().map(x=>((x%12)+12)%12); const tones=sc.filter(d=>ch.includes(d%12)); let di=sc.indexOf(tones.length?tones[Math.floor(Math.random()*tones.length)]:sc[0]); const n=2+Math.floor(Math.random()*3), oct=P.oct[Math.floor(Math.random()*P.oct.length)], step=(.7+Math.random()*.5)*Math.max(.7,P.dec); for(let k=0;k<n;k++){ const d=sc[di]; setTimeout(()=>{ if(E.playing) pluckNote(m.root*Math.pow(2,d/12+oct),P,k===n-1?1.3:.9); },k*step*1000); di=Math.max(0,Math.min(sc.length-1,di+(Math.random()<.5?-1:1)*(Math.random()<.8?1:2))); } }
   function pluck(){ const m=MOODS[E.mood], P=m.v.pluck; if(!P) return; if(Math.random()<.35) return phrase(); const ch=curChord().map(x=>((x%12)+12)%12), tones=m.scale.filter(d=>ch.includes(d%12)); const deg=(Math.random()<.65&&tones.length)?pick(tones):pick(m.scale), oct=pick(P.oct); pluckNote(m.root*Math.pow(2,deg/12+oct),P,1); }
-  function pluckNote(f,P,velMul){ const now=ac.currentTime; const c=ac.createOscillator(); c.type=P.type||'sine'; c.frequency.value=f; const mo=ac.createOscillator(); mo.frequency.value=f*pick(P.ratio); const mg=ac.createGain(); mg.gain.setValueAtTime(f*1.1*P.bright,now); mg.gain.exponentialRampToValueAtTime(Math.max(1,f*.04*P.bright),now+1.4*P.dec); mo.connect(mg); mg.connect(c.frequency); const env=ac.createGain(); const vel=(.07+Math.random()*.09)*P.vel*velMul, dur=(3+Math.random()*2.5)*P.dec; env.gain.setValueAtTime(0,now); env.gain.linearRampToValueAtTime(vel,now+.04); env.gain.exponentialRampToValueAtTime(.0001,now+dur); const p=pan(Math.random()*1.4-.7); c.connect(env); env.connect(p); p.connect(bus); c.start(now); mo.start(now); c.stop(now+dur+1); mo.stop(now+dur+1); if(E.onPluck) E.onPluck(f); }
+  function pluckNote(f,P,velMul){ const now=ac.currentTime; const c=ac.createOscillator(); c.type=P.type||'sine'; c.frequency.value=f; const mo=ac.createOscillator(); mo.frequency.value=f*pick(P.ratio); const mg=ac.createGain(); mg.gain.setValueAtTime(f*1.1*P.bright,now); mg.gain.exponentialRampToValueAtTime(Math.max(1,f*.04*P.bright),now+1.4*P.dec); mo.connect(mg); mg.connect(c.frequency); const env=ac.createGain(); const vel=(.05+Math.random()*.05)*P.vel*velMul, dur=(3.5+Math.random()*3)*P.dec; env.gain.setValueAtTime(0,now); env.gain.linearRampToValueAtTime(vel,now+.09); env.gain.exponentialRampToValueAtTime(.0001,now+dur); const p=pan(Math.random()*1-.5); c.connect(env); env.connect(p); p.connect(bus); c.start(now); mo.start(now); c.stop(now+dur+1); mo.stop(now+dur+1); if(E.onPluck) E.onPluck(f); }
   function schedule(){ const [a,b]=MOODS[E.mood].gap; pluckT=setTimeout(()=>{ if(E.playing) pluck(); schedule(); },(a+Math.random()*(b-a))*1000); }
   E.setMood=name=>{ E.mood=name; const m=MOODS[name], v=m.v, now=ac.currentTime; const set=(p,val,tc)=>{ if(E.init) p.setTargetAtTime(val,now,tc); else p.value=val; };
     drone.forEach(d=>{ const f=d.i===1&&E.beat? m.root*.5+E.beat : m.root*d.m*(d.i===1?1.003:1); set(d.o.frequency,f,1.5); d.g.gain.setTargetAtTime(d.gn*(v.drone[d.role]??1),now,2); });
     const cut=m.cut+(getLight?getLight():0)*1.5;
     chordIdx=0; const ch0=curChord();
-    pad.forEach((p,i)=>{ const onv=i<ch0.length; p.oscs.forEach((o,k)=>{ o.type=i%2?v.padB:v.padA; o.detune.setTargetAtTime([-1,0,1][k]*v.detune,now,1); if(onv) set(o.frequency,m.root*Math.pow(2,ch0[i]/12),1.2); }); p.ogs.forEach(g=>g.gain.setTargetAtTime((i%2?.045:.085)*v.padGain,now,2)); p.vg.gain.setTargetAtTime(onv?.5*v.padLevel:0,now,3); p.lg.gain.setTargetAtTime(onv?.3*v.lfo:0,now,3);
+    pad.forEach((p,i)=>{ const onv=i<ch0.length; p.oscs.forEach((o,k)=>{ o.type=i%2?v.padB:v.padA; o.detune.setTargetAtTime([-1,0,1][k]*v.detune,now,1); if(onv) set(o.frequency,m.root*Math.pow(2,ch0[i]/12),1.2); }); p.ogs.forEach(g=>g.gain.setTargetAtTime((i%2?.045:.085)*v.padGain,now,2)); p.vg.gain.setTargetAtTime(onv?.5*v.padLevel:0,now,5); p.lg.gain.setTargetAtTime(onv?.3*v.lfo:0,now,5);
       const fc=cut*(1-i*.08), fp=p.f.frequency; fp.cancelScheduledValues(now); if(v.rise){ fp.setValueAtTime(E.init?fp.value:fc*.6,now); fp.setTargetAtTime(fc*.6,now,1.5); fp.setTargetAtTime(fc*v.rise,now+6,240); } else set(fp,fc,2); });
     vib.frequency.setTargetAtTime(v.vib[0],now,1); vibG.gain.setTargetAtTime(v.vib[1],now,1);
     ag.gain.setTargetAtTime(v.air,now,2); wet.gain.setTargetAtTime(v.wet,now,2); dsend.gain.setTargetAtTime(v.delay,now,2); tone.frequency.setTargetAtTime(v.tone,now,2);
@@ -690,12 +692,12 @@ function makeEngine(getLight){
     E.init=true; };
   E.setBeat=hz=>{ E.beat=hz; E.setMood(E.mood); };
   E.setRoomtone=v=>{ E.roomtone=v; ng.gain.setTargetAtTime(v?.03:0,ac.currentTime,1); };
-  E.setRoomLevel=l=>{ E.level=l; if(E.roomtone) ng.gain.setTargetAtTime(Math.min(.08,.03+l*.3),ac.currentTime,.6); };
+  E.setRoomLevel=l=>{ E.level=l; if(E.roomtone) ng.gain.setTargetAtTime(Math.min(.06,.025+l*.25),ac.currentTime,.6); };
   E.setLayer=(name,v)=>{ on[name]=v; const l=L[name]; if(l) l.g.gain.setTargetAtTime(v?l.base:0,ac.currentTime,1.5); };
   E.setBowl=v=>{ E.bowl=v; };
   E.setHum=v=>{ hum.gain.setTargetAtTime(v?.02:0,ac.currentTime,1.5); };
-  E.start=()=>{ ac.resume(); E.playing=true; master.gain.setTargetAtTime(.7,ac.currentTime,2); clearTimeout(pluckT); schedule(); clearTimeout(bowlT); schedBowl(); schedChord(); setTimeout(()=>{ if(E.playing) pluck(); },1200); setTimeout(()=>{ if(E.playing&&E.bowl) strike(); },2500); };
-  E.pause=()=>{ E.playing=false; master.gain.setTargetAtTime(0,ac.currentTime,.6); clearTimeout(pluckT); clearTimeout(bowlT); clearTimeout(chordT); };
+  E.start=()=>{ ac.resume(); E.playing=true; master.gain.setTargetAtTime(.6,ac.currentTime,3); clearTimeout(pluckT); schedule(); clearTimeout(bowlT); schedBowl(); schedChord(); setTimeout(()=>{ if(E.playing) pluck(); },1200); setTimeout(()=>{ if(E.playing&&E.bowl) strike(); },2500); };
+  E.pause=()=>{ E.playing=false; master.gain.setTargetAtTime(0,ac.currentTime,1.2); clearTimeout(pluckT); clearTimeout(bowlT); clearTimeout(chordT); };
   E.stop=()=>{ E.pause(); clearInterval(evTimer); };
   return E;
 }
