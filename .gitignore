@@ -6,3 +6,5 @@ api/.dev.vars
 *.zip
 .DS_Store
 dist/
+api/.connect.local.json
+api/.secrets.tmp.json
