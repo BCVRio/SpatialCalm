@@ -34,6 +34,13 @@ async function flow(plan) {
   if (plan === 'free') { await expect('paywall', 'locked layer gates'); await page.click('#pwSkip'); }
   await page.click('nav [data-go="library"]'); await expect('library', 'library'); await shot(`${plan}-07-library`);
   await page.click('nav [data-go="settings"]'); await expect('settings', 'settings'); await shot(`${plan}-08-settings`);
+  if (plan === 'free') { // QA unlock: five taps on the version row flips to Plus, five more removes it
+    for (let i = 0; i < 5; i++) await page.click('#verRow'); await page.waitForTimeout(200);
+    if (!/QA override/.test(await page.textContent('#subDesc'))) throw new Error('QA unlock failed');
+    if (!(await page.$$eval('#lenSeg button', b => b.map(x => x.textContent))).includes('60')) throw new Error('QA unlock did not widen lengths');
+    for (let i = 0; i < 5; i++) await page.click('#verRow'); await page.waitForTimeout(200);
+    if (/QA override/.test(await page.textContent('#subDesc'))) throw new Error('QA unlock did not clear');
+  }
   const lens = await page.$$eval('#lenSeg button', b => b.map(x => x.textContent));
   if ((plan === 'plus') !== lens.includes('60')) throw new Error('length options wrong for ' + plan + ': ' + lens);
   await page.click('nav [data-go="home"]'); await page.click('#hScan'); await expect('scan', 'scan'); await page.waitForTimeout(2000); await shot(`${plan}-04-scan`);

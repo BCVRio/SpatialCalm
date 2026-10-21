@@ -63,8 +63,18 @@ npm i && npm run smoke        # headless Chromium: every screen, both plans, scr
 cd api && npm i && npm test   # Worker handler tests (Stripe + KV stubbed)
 ```
 
-Test-build conveniences (only when `RZ_CONFIG.api` is empty): `?plan=plus` / `?plan=free` set the plan
-locally so the Plus features can be exercised without Stripe.
+**Testing the paid areas.** In Settings → Account, tap the `Resonance 0.6 · BCVR Immersive` row five
+times: the plan flips to `PLUS · QA` (all moods, layers, bowl, hum, breath, 30/60-min sessions) and five
+more taps remove it. It persists on the device until Sign out. This is on while `RZ_CONFIG.qaUnlock`
+is `true`; set it to `false` for the public release. `?plan=plus` on the URL does the same when no API
+is configured.
+
+**Connecting billing.** One of:
+- Actions → `api` → Run workflow → tick **connect** (needs the repository secrets below). It creates the
+  Resonance Plus price, portal configuration and webhook in the BCVR Stripe account, deploys the
+  Worker to the BCVR Cloudflare account, points `index.html` at it, commits, and attaches the connected
+  zip to the run.
+- Or locally: `STRIPE_SECRET_KEY=… CLOUDFLARE_API_TOKEN=… CLOUDFLARE_ACCOUNT_ID=… node api/connect.mjs`.
 
 ## What's real in this build
 

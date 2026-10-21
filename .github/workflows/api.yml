@@ -15,6 +15,14 @@ on:
         description: 'Create the SUBS KV namespaces (one-off) and print their ids'
         type: boolean
         default: false
+      connect:
+        description: 'Run api/connect.mjs: create the Stripe price/portal/webhook, deploy the Worker, point the app at it, commit the result'
+        type: boolean
+        default: false
+      app_origin:
+        description: 'Published ZapWorks origin to allow (e.g. https://resonance.zapworks.app)'
+        type: string
+        default: ''
 
 defaults:
   run:
@@ -46,9 +54,39 @@ jobs:
           npx wrangler kv namespace create SUBS
           npx wrangler kv namespace create SUBS --preview
 
+  connect:
+    if: github.event_name == 'workflow_dispatch' && inputs.connect
+    runs-on: ubuntu-latest
+    environment: production
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: npm ci || npm i
+      - name: Connect Stripe + Cloudflare
+        env:
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+          STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          APP_ORIGIN: ${{ inputs.app_origin }}
+        run: node connect.mjs
+      - name: Commit wrangler.toml + index.html
+        working-directory: .
+        run: |
+          git config user.name "resonance-connect[bot]"; git config user.email "noreply@bcvr.io"
+          git add api/wrangler.toml index.html
+          git diff --cached --quiet || (git commit -m "Connect billing: Worker URL, KV ids, app origins" && git push)
+      - uses: actions/upload-artifact@v4
+        with: { name: resonance-webar-zip-connected, path: dist/*.zip }
+
   deploy:
     needs: test
-    if: github.event_name != 'pull_request' && !(github.event_name == 'workflow_dispatch' && inputs.bootstrap)
+    if: github.event_name != 'pull_request' && !(github.event_name == 'workflow_dispatch' && (inputs.bootstrap || inputs.connect))
     runs-on: ubuntu-latest
     environment: production
     steps:

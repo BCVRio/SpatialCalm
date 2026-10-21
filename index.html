@@ -13,7 +13,8 @@
 <link rel="preload" as="image" href="assets/home-sweep.jpg">
 <!-- Deployment config. `api` is the origin of the Resonance billing Worker (see api/README.md). Leave empty for a billing-free test build. -->
 <script>
-window.RZ_CONFIG = { api: '', terms: 'https://bcvr.io/terms', privacy: 'https://bcvr.io/privacy' };
+// qaUnlock: tapping the version row in Settings five times toggles a local Plus override for testing. Set false for the public release.
+window.RZ_CONFIG = { api: '', qaUnlock: true, terms: 'https://bcvr.io/terms', privacy: 'https://bcvr.io/privacy' };
 </script>
 <!-- Zappar Universal AR SDK for JavaScript (instant world tracking + camera pipeline). Licence-free when hosted on ZapWorks. -->
 <script src="zappar.js" onerror="var s=document.createElement('script');s.src='https://libs.zappar.com/zappar-js/4.4.0/zappar.js';document.head.appendChild(s)"></script>
@@ -365,7 +366,7 @@ nav button.on{color:#ECECF2}nav button.on .d{background:#F742C5}
   <div class="card">
     <div class="row"><div class="f"><div class="t">Zappar</div><div class="s">Hosted on ZapWorks · WebAR</div></div><span class="eyebrow" style="color:#25E0A1;font-size:10px">Connected</span></div>
     <div class="row" id="acctRow" style="display:none"><div class="f"><div class="t">Signed in</div><div class="s" id="acctEmail"></div></div><button class="tag" id="signOut">Sign out</button></div>
-    <div class="row"><img src="assets/bcvr-roundel.png" alt="BCVR" style="width:28px;height:28px"><div class="s">Resonance 0.6 · BCVR Immersive</div></div>
+    <button class="row" id="verRow" style="width:100%"><img src="assets/bcvr-roundel.png" alt="BCVR" style="width:28px;height:28px"><div class="s">Resonance 0.6 · BCVR Immersive</div></button>
   </div>
 </section>
 
@@ -391,7 +392,7 @@ nav button.on{color:#ECECF2}nav button.on .d{background:#F742C5}
 <script>
 (() => {
 const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
-const CFG = Object.assign({ api: '', terms: '#', privacy: '#' }, window.RZ_CONFIG || {});
+const CFG = Object.assign({ api: '', qaUnlock: false, terms: '#', privacy: '#' }, window.RZ_CONFIG || {});
 const API = String(CFG.api || '').replace(/\/$/, '');
 
 // ---- soundscape tables (shared by UI and engine) ----
@@ -399,21 +400,21 @@ const MOODS = {
   // v = voice profile: padA/padB oscillator types (even/odd voices), detune cents, pad level + per-osc gain, LFO depth,
   //     drone mix per role, air (filtered pink noise), reverb wet, delay send, bus tone cutoff, vibrato [Hz, cents],
   //     shimmer (octave-up sines), rise (slow cutoff multiplier over ~10 min), pluck character or null.
-  Drift:  { hue:'#3096FB', desc:'Open lydian pad, slow bells',          root:73.42, chord:[0,7,14,16,23,28], scale:[0,2,4,6,7,9,11],  gap:[3,7],   cut:1100,
+  Drift:  { hue:'#3096FB', desc:'Open lydian pad, slow bells',          root:73.42, chord:[0,7,14,16,23,28], scale:[0,2,4,6,7,9,11],  gap:[3,7],   cut:1100, bar:24, prog:[[0,7,14,16,23,28],[2,9,14,18,21,26],[9,16,19,23,28,31],[0,7,14,16,21,28]],
             v:{ padA:'triangle', padB:'sine',     detune:7,  padLevel:1.1, padGain:1,   lfo:1,   drone:{sub:.7, beat:1, saw:.25, tri:1},  air:.04,  wet:.8,  delay:.32, tone:3400, vib:[.12,3],  shimmer:.02, pluck:{vel:1,   dec:1,   ratio:[2,3.01],    bright:1,   oct:[3,3,4,4], type:'sine'} } },
-  Ember:  { hue:'#FF7B10', desc:'Warm minor, close and low',            root:55,    chord:[0,7,12,15,19,22], scale:[0,3,5,7,10],      gap:[4,9],   cut:750,
+  Ember:  { hue:'#FF7B10', desc:'Warm minor, close and low',            root:55,    chord:[0,7,12,15,19,22], scale:[0,3,5,7,10],      gap:[4,9],   cut:750,  bar:28, prog:[[0,7,12,15,19,22],[-4,3,8,15,19,24],[5,12,17,20,24,29],[0,7,10,15,19,22]],
             v:{ padA:'sawtooth', padB:'sawtooth', detune:4,  padLevel:.8,  padGain:.6,  lfo:.6,  drone:{sub:1.5, beat:1, saw:1.6, tri:.3}, air:.01,  wet:.4,  delay:.12, tone:780,  vib:[.08,1.5], shimmer:0,  pluck:{vel:.6,  dec:.6,  ratio:[1.5,2],     bright:.3,  oct:[1,2,2,3], type:'triangle'} } },
-  Tide:   { hue:'#7859EB', desc:'Suspended fourths that rise and fall', root:82.41, chord:[0,5,7,12,14,19],  scale:[0,2,5,7,9],       gap:[2.5,6], cut:1400,
+  Tide:   { hue:'#7859EB', desc:'Suspended fourths that rise and fall', root:82.41, chord:[0,5,7,12,14,19],  scale:[0,2,5,7,9],       gap:[2.5,6], cut:1400, bar:20, prog:[[0,5,7,12,14,19],[-2,5,10,12,17,22],[5,12,17,19,24,29],[0,7,14,17,19,26]],
             v:{ padA:'sawtooth', padB:'triangle', detune:14, padLevel:1.1, padGain:.9,  lfo:1.8, drone:{sub:.8, beat:1, saw:.7, tri:1.2},  air:.04,  wet:.8,  delay:.5,  tone:3200, vib:[.25,6],  shimmer:.03, pluck:{vel:.9,  dec:1.2, ratio:[2,3.01],    bright:1.1, oct:[3,3,4,4], type:'sine'} } },
-  Still:  { hue:'#F742C5', desc:'Two notes, almost nothing',            root:49,    chord:[0,7,12,19],       scale:[0,7,12,14,19],    gap:[6,12],  cut:600,
+  Still:  { hue:'#F742C5', desc:'Two notes, almost nothing',            root:49,    chord:[0,7,12,19],       scale:[0,7,12,14,19],    gap:[6,12],  cut:600,  bar:40, prog:[[0,7,12,19],[0,7,14,19],[-5,7,12,19]],
             v:{ padA:'sine',     padB:'sine',     detune:2,  padLevel:.7,  padGain:1.2, lfo:.3,  drone:{sub:1.1, beat:1, saw:0, tri:.5},   air:.015, wet:.9,  delay:.1,  tone:1800, vib:[.05,1],  shimmer:0,   pluck:{vel:.5,  dec:1.6, ratio:[2],         bright:.4,  oct:[3,4],     type:'sine'} } },
-  Dawn:   { hue:'#FFC845', desc:'Bright major, slowly brightening',     root:65.41, chord:[0,4,7,11,14,19],  scale:[0,2,4,7,9],       gap:[3,6],   cut:1600,
+  Dawn:   { hue:'#FFC845', desc:'Bright major, slowly brightening',     root:65.41, chord:[0,4,7,11,14,19],  scale:[0,2,4,7,9],       gap:[3,6],   cut:1600, bar:22, prog:[[0,4,7,11,14,19],[5,9,12,16,19,24],[-3,4,7,12,16,19],[-5,2,7,11,14,19]],
             v:{ padA:'triangle', padB:'sawtooth', detune:9,  padLevel:1,   padGain:1,   lfo:1,   drone:{sub:.7, beat:1, saw:.6, tri:1},    air:.03,  wet:.7,  delay:.35, tone:5000, vib:[.15,4],  shimmer:.05, rise:2.2, pluck:{vel:1.1, dec:1, ratio:[3.01,4],   bright:1.4, oct:[3,4,4,5], type:'sine'} } },
-  Hollow: { hue:'#6840E8', desc:'Dorian, cavernous, long reverb',       root:61.74, chord:[0,7,10,14,17,21], scale:[0,2,3,5,7,9,10],  gap:[5,10],  cut:650,
+  Hollow: { hue:'#6840E8', desc:'Dorian, cavernous, long reverb',       root:61.74, chord:[0,7,10,14,17,21], scale:[0,2,3,5,7,9,10],  gap:[5,10],  cut:650,  bar:30, prog:[[0,7,10,14,17,21],[5,9,12,17,21,24],[2,9,12,17,21,26],[0,7,10,15,17,22]],
             v:{ padA:'square',   padB:'triangle', detune:5,  padLevel:.6,  padGain:.5,  lfo:.8,  drone:{sub:1.6, beat:1, saw:.3, tri:.6},  air:.02,  wet:1.3, delay:.55, tone:900,  vib:[.06,2],  shimmer:0,   pluck:{vel:.7,  dec:2.2, ratio:[2,2.76],    bright:.5,  oct:[1,2,2,3], type:'triangle'} } },
-  Lumen:  { hue:'#25E0A1', desc:'Whole-tone shimmer, no gravity',       root:87.31, chord:[0,4,8,14,18,22],  scale:[0,2,4,6,8,10],    gap:[2,5],   cut:1900,
+  Lumen:  { hue:'#25E0A1', desc:'Whole-tone shimmer, no gravity',       root:87.31, chord:[0,4,8,14,18,22],  scale:[0,2,4,6,8,10],    gap:[2,5],   cut:1900, bar:18, prog:[[0,4,8,14,18,22],[2,6,10,16,20,24],[-2,2,6,12,16,20],[0,6,10,14,20,24]],
             v:{ padA:'sine',     padB:'triangle', detune:11, padLevel:.9,  padGain:.9,  lfo:1.4, drone:{sub:.4, beat:1, saw:.3, tri:.8},   air:.045, wet:.85, delay:.4,  tone:6500, vib:[.5,7],   shimmer:.09, pluck:{vel:1.2, dec:.8,  ratio:[4,5.5,7],   bright:1.6, oct:[4,4,5,5], type:'sine'} } },
-  Vale:   { hue:'#CB13A9', desc:'Pentatonic drone, bowl-like',          root:58.27, chord:[0,7,12,14,19,26], scale:[0,2,4,7,9],       gap:[4,8],   cut:900,
+  Vale:   { hue:'#CB13A9', desc:'Pentatonic drone, bowl-like',          root:58.27, chord:[0,7,12,14,19,26], scale:[0,2,4,7,9],       gap:[4,8],   cut:900,  bar:36, prog:[[0,7,12,14,19,26],[0,7,12,16,21,26],[0,9,14,16,19,28],[0,7,12,14,21,24]],
             v:{ padA:'triangle', padB:'sine',     detune:3,  padLevel:.5,  padGain:.8,  lfo:.5,  drone:{sub:1.5, beat:1, saw:.9, tri:1.3},  air:.02,  wet:.95, delay:.2,  tone:2000, vib:[.03,1.5], shimmer:.02, pluck:{vel:.8,  dec:2.6, ratio:[2.76,5.4], bright:.7,  oct:[2,3,3],   type:'sine'} } },
 };
 const FREE_MOODS = ['Drift','Ember','Tide','Still'], FREE_LENGTHS = [10,15,20], PLUS_LENGTHS = [10,15,20,30,60];
@@ -496,20 +497,25 @@ $$('nav button').forEach(b=>b.onclick=()=>show(b.dataset.go));
 let toastT; function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('on'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('on'),2800); }
 
 // ---- cover: 10 s intro sequence plays once, content reveals on a timeline, then the loop takes over ----
+// Robust to the ways mobile refuses autoplay (Low Power Mode, loading behind the Zappar launch page, slow CDN):
+// the reveal timeline only starts once the clip is really playing; if autoplay is refused the first tap starts
+// the clip (not skips it); a second tap skips; if nothing can play within 6 s the type simply reveals.
 (function(){
   const intro=$('#intro'), iv=$('#introVid'), lv=$('#coverVid');
   const rm=matchMedia('(prefers-reduced-motion: reduce)').matches, ds=navigator.connection&&navigator.connection.saveData;
-  let done=false;
+  let done=false, started=false, armed=false;
   const srcs=(v,name)=>{ ['mp4','webm'].forEach(ext=>{ const s=document.createElement('source'); s.src=`assets/${name}.${ext}`; s.type=ext==='mp4'?'video/mp4':'video/webm'; v.appendChild(s); }); v.load(); };
-  const settle=()=>{ if(done) return; done=true; intro.classList.add('now'); iv.classList.add('out'); if(!lv.querySelector('source')) srcs(lv,'cover-loop'); lv.play().catch(()=>{}); setTimeout(()=>{ iv.pause(); iv.innerHTML=''; iv.load(); },1400); };
-  if(rm||ds){ iv.remove(); settle(); return; }          // poster only, everything visible
-  const start=()=>{ if(intro.classList.contains('seq')) return; intro.classList.add('seq'); };
+  const settle=()=>{ if(done) return; done=true; intro.classList.add('seq','now'); iv.classList.add('out'); if(!lv.querySelector('source')) srcs(lv,'cover-loop'); lv.muted=true; lv.play().catch(()=>{}); setTimeout(()=>{ iv.pause(); iv.innerHTML=''; iv.load(); },1400); };
+  if(rm||ds||!iv.canPlayType||!(iv.canPlayType('video/mp4')||iv.canPlayType('video/webm'))){ iv.remove(); settle(); return; }   // poster only, everything visible
+  const start=()=>{ if(started) return; started=true; intro.classList.add('seq'); };
+  const tryPlay=()=>{ if(done||started) return; iv.muted=true; iv.defaultMuted=true; const p=iv.play(); if(p&&p.catch) p.catch(()=>{ armed=true; }); };   // armed: a user tap will start it
   iv.addEventListener('playing',start,{once:true});
   iv.addEventListener('timeupdate',()=>{ if(iv.duration&&iv.currentTime>iv.duration-1.3) settle(); });
-  iv.addEventListener('ended',settle); iv.addEventListener('error',()=>{ start(); settle(); });
-  srcs(iv,'cover-intro'); iv.play().catch(()=>{ iv.remove(); start(); settle(); });   // autoplay blocked: reveal without the clip
-  setTimeout(start,900);                                         // never hold the UI hostage to buffering
-  intro.addEventListener('pointerdown',e=>{ if(!done&&!e.target.closest('#actBtn')) settle(); }); // tap to skip
+  iv.addEventListener('ended',settle); iv.addEventListener('error',settle);
+  srcs(iv,'cover-intro'); tryPlay();
+  iv.addEventListener('canplay',tryPlay); document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible') tryPlay(); });
+  setTimeout(()=>{ if(!started) settle(); },6000);              // never hold the UI hostage to buffering
+  intro.addEventListener('pointerdown',e=>{ if(done||e.target.closest('#actBtn')) return; if(!started){ armed=false; tryPlay(); } else settle(); }); // tap: start if refused, else skip
 })();
 
 // ---- sensors: one tap, real permission prompts, fixed minimum display timings ----
@@ -662,16 +668,25 @@ function makeEngine(getLight){
   const hum=ac.createGain(); hum.gain.value=0; [528,264].forEach((f,i)=>{ const o=ac.createOscillator(); o.frequency.value=f; const g=ac.createGain(); g.gain.value=i?.5:1; o.connect(g); g.connect(hum); o.start(); }); lfo(.25,.3,hum.gain); hum.connect(bus);
   // plucks
   let pluckT=null;
-  function pluck(){ const m=MOODS[E.mood], P=m.v.pluck; if(!P) return; const now=ac.currentTime; const pick=a=>a[Math.floor(Math.random()*a.length)]; const deg=pick(m.scale), oct=pick(P.oct), f=m.root*Math.pow(2,deg/12+oct); const c=ac.createOscillator(); c.type=P.type||'sine'; c.frequency.value=f; const mo=ac.createOscillator(); mo.frequency.value=f*pick(P.ratio); const mg=ac.createGain(); mg.gain.setValueAtTime(f*1.1*P.bright,now); mg.gain.exponentialRampToValueAtTime(Math.max(1,f*.04*P.bright),now+1.4*P.dec); mo.connect(mg); mg.connect(c.frequency); const env=ac.createGain(); const vel=(.07+Math.random()*.09)*P.vel, dur=(3+Math.random()*2.5)*P.dec; env.gain.setValueAtTime(0,now); env.gain.linearRampToValueAtTime(vel,now+.04); env.gain.exponentialRampToValueAtTime(.0001,now+dur); const p=pan(Math.random()*1.4-.7); c.connect(env); env.connect(p); p.connect(bus); c.start(now); mo.start(now); c.stop(now+dur+1); mo.stop(now+dur+1); if(E.onPluck) E.onPluck(f); }
+  // current chord (semitones) follows the progression; plucks lean on chord tones and sometimes play a short stepwise phrase
+  let chordIdx=0, chordT=null; const pick=a=>a[Math.floor(Math.random()*a.length)];
+  const curChord=()=>{ const m=MOODS[E.mood]; return (m.prog&&m.prog[chordIdx%m.prog.length])||m.chord; };
+  const applyChord=(ch,tc)=>{ const m=MOODS[E.mood], now=ac.currentTime; pad.forEach((p,i)=>{ if(i<ch.length) p.oscs.forEach(o=>o.frequency.setTargetAtTime(m.root*Math.pow(2,ch[i]/12),now,tc)); }); };
+  const schedChord=()=>{ clearTimeout(chordT); const m=MOODS[E.mood]; if(!m.prog) return; chordT=setTimeout(()=>{ if(E.playing){ chordIdx=(chordIdx+1)%m.prog.length; applyChord(curChord(),1.8); } schedChord(); },m.bar*1000*(0.85+Math.random()*.3)); };
+  function phrase(){ const m=MOODS[E.mood], P=m.v.pluck; if(!P) return; const sc=m.scale, ch=curChord().map(x=>((x%12)+12)%12); const tones=sc.filter(d=>ch.includes(d%12)); let di=sc.indexOf(tones.length?tones[Math.floor(Math.random()*tones.length)]:sc[0]); const n=2+Math.floor(Math.random()*3), oct=P.oct[Math.floor(Math.random()*P.oct.length)], step=(.45+Math.random()*.45)*Math.max(.6,P.dec); for(let k=0;k<n;k++){ const d=sc[di]; setTimeout(()=>{ if(E.playing) pluckNote(m.root*Math.pow(2,d/12+oct),P,k===n-1?1.3:.9); },k*step*1000); di=Math.max(0,Math.min(sc.length-1,di+(Math.random()<.5?-1:1)*(Math.random()<.8?1:2))); } }
+  function pluck(){ const m=MOODS[E.mood], P=m.v.pluck; if(!P) return; if(Math.random()<.35) return phrase(); const ch=curChord().map(x=>((x%12)+12)%12), tones=m.scale.filter(d=>ch.includes(d%12)); const deg=(Math.random()<.65&&tones.length)?pick(tones):pick(m.scale), oct=pick(P.oct); pluckNote(m.root*Math.pow(2,deg/12+oct),P,1); }
+  function pluckNote(f,P,velMul){ const now=ac.currentTime; const c=ac.createOscillator(); c.type=P.type||'sine'; c.frequency.value=f; const mo=ac.createOscillator(); mo.frequency.value=f*pick(P.ratio); const mg=ac.createGain(); mg.gain.setValueAtTime(f*1.1*P.bright,now); mg.gain.exponentialRampToValueAtTime(Math.max(1,f*.04*P.bright),now+1.4*P.dec); mo.connect(mg); mg.connect(c.frequency); const env=ac.createGain(); const vel=(.07+Math.random()*.09)*P.vel*velMul, dur=(3+Math.random()*2.5)*P.dec; env.gain.setValueAtTime(0,now); env.gain.linearRampToValueAtTime(vel,now+.04); env.gain.exponentialRampToValueAtTime(.0001,now+dur); const p=pan(Math.random()*1.4-.7); c.connect(env); env.connect(p); p.connect(bus); c.start(now); mo.start(now); c.stop(now+dur+1); mo.stop(now+dur+1); if(E.onPluck) E.onPluck(f); }
   function schedule(){ const [a,b]=MOODS[E.mood].gap; pluckT=setTimeout(()=>{ if(E.playing) pluck(); schedule(); },(a+Math.random()*(b-a))*1000); }
   E.setMood=name=>{ E.mood=name; const m=MOODS[name], v=m.v, now=ac.currentTime; const set=(p,val,tc)=>{ if(E.init) p.setTargetAtTime(val,now,tc); else p.value=val; };
     drone.forEach(d=>{ const f=d.i===1&&E.beat? m.root*.5+E.beat : m.root*d.m*(d.i===1?1.003:1); set(d.o.frequency,f,1.5); d.g.gain.setTargetAtTime(d.gn*(v.drone[d.role]??1),now,2); });
     const cut=m.cut+(getLight?getLight():0)*1.5;
-    pad.forEach((p,i)=>{ const onv=i<m.chord.length; p.oscs.forEach((o,k)=>{ o.type=i%2?v.padB:v.padA; o.detune.setTargetAtTime([-1,0,1][k]*v.detune,now,1); if(onv) set(o.frequency,m.root*Math.pow(2,m.chord[i]/12),1.2); }); p.ogs.forEach(g=>g.gain.setTargetAtTime((i%2?.045:.085)*v.padGain,now,2)); p.vg.gain.setTargetAtTime(onv?.5*v.padLevel:0,now,3); p.lg.gain.setTargetAtTime(onv?.3*v.lfo:0,now,3);
+    chordIdx=0; const ch0=curChord();
+    pad.forEach((p,i)=>{ const onv=i<ch0.length; p.oscs.forEach((o,k)=>{ o.type=i%2?v.padB:v.padA; o.detune.setTargetAtTime([-1,0,1][k]*v.detune,now,1); if(onv) set(o.frequency,m.root*Math.pow(2,ch0[i]/12),1.2); }); p.ogs.forEach(g=>g.gain.setTargetAtTime((i%2?.045:.085)*v.padGain,now,2)); p.vg.gain.setTargetAtTime(onv?.5*v.padLevel:0,now,3); p.lg.gain.setTargetAtTime(onv?.3*v.lfo:0,now,3);
       const fc=cut*(1-i*.08), fp=p.f.frequency; fp.cancelScheduledValues(now); if(v.rise){ fp.setValueAtTime(E.init?fp.value:fc*.6,now); fp.setTargetAtTime(fc*.6,now,1.5); fp.setTargetAtTime(fc*v.rise,now+6,240); } else set(fp,fc,2); });
     vib.frequency.setTargetAtTime(v.vib[0],now,1); vibG.gain.setTargetAtTime(v.vib[1],now,1);
     ag.gain.setTargetAtTime(v.air,now,2); wet.gain.setTargetAtTime(v.wet,now,2); dsend.gain.setTargetAtTime(v.delay,now,2); tone.frequency.setTargetAtTime(v.tone,now,2);
-    shimO.forEach((o,k)=>set(o.frequency,m.root*Math.pow(2,m.chord[Math.min(k+1,m.chord.length-1)]/12+2),1.5)); shim.gain.setTargetAtTime(v.shimmer,now,3);
+    shimO.forEach((o,k)=>set(o.frequency,m.root*Math.pow(2,ch0[Math.min(k+1,ch0.length-1)]/12+2),1.5)); shim.gain.setTargetAtTime(v.shimmer,now,3);
+    if(E.playing) schedChord();
     E.init=true; };
   E.setBeat=hz=>{ E.beat=hz; E.setMood(E.mood); };
   E.setRoomtone=v=>{ E.roomtone=v; ng.gain.setTargetAtTime(v?.03:0,ac.currentTime,1); };
@@ -679,8 +694,8 @@ function makeEngine(getLight){
   E.setLayer=(name,v)=>{ on[name]=v; const l=L[name]; if(l) l.g.gain.setTargetAtTime(v?l.base:0,ac.currentTime,1.5); };
   E.setBowl=v=>{ E.bowl=v; };
   E.setHum=v=>{ hum.gain.setTargetAtTime(v?.02:0,ac.currentTime,1.5); };
-  E.start=()=>{ ac.resume(); E.playing=true; master.gain.setTargetAtTime(.7,ac.currentTime,2); clearTimeout(pluckT); schedule(); clearTimeout(bowlT); schedBowl(); setTimeout(()=>{ if(E.playing) pluck(); },1200); setTimeout(()=>{ if(E.playing&&E.bowl) strike(); },2500); };
-  E.pause=()=>{ E.playing=false; master.gain.setTargetAtTime(0,ac.currentTime,.6); clearTimeout(pluckT); clearTimeout(bowlT); };
+  E.start=()=>{ ac.resume(); E.playing=true; master.gain.setTargetAtTime(.7,ac.currentTime,2); clearTimeout(pluckT); schedule(); clearTimeout(bowlT); schedBowl(); schedChord(); setTimeout(()=>{ if(E.playing) pluck(); },1200); setTimeout(()=>{ if(E.playing&&E.bowl) strike(); },2500); };
+  E.pause=()=>{ E.playing=false; master.gain.setTargetAtTime(0,ac.currentTime,.6); clearTimeout(pluckT); clearTimeout(bowlT); clearTimeout(chordT); };
   E.stop=()=>{ E.pause(); clearInterval(evTimer); };
   return E;
 }
@@ -715,7 +730,7 @@ function fmtDate(iso){ if(!iso) return ''; const d=new Date(iso); return isNaN(d
 function renderAll(){ ({home:renderHome,sounds:renderSounds,settings:renderSettings,listen:renderListen})[S.screen]?.(); }
 function renderHome(){
   const h=new Date().getHours(); $('#greet').textContent=h<12?'Good morning':h<18?'Good afternoon':'Good evening';
-  const pill=$('#planPill'); pill.className='pill'+(S.sub?' plus':''); pill.textContent=S.sub?(S.plan.status==='trialing'?'Plus · trial':'Plus'):'Free plan';
+  const pill=$('#planPill'); pill.className='pill'+(S.sub?' plus':''); pill.textContent=S.sub?(S.plan.status==='trialing'?'Plus · trial':S.plan.status==='qa'?'Plus · QA':'Plus'):'Free plan';
   $('#hScanSub').textContent=`About 14 seconds · ${S.mood} · ${S.length} min`;
   const act=Object.keys(S.layers).filter(k=>S.layers[k]);
   $('#hSoundsSub').textContent=S.sub?`${S.mood} · ${act.length?act.join(', '):'no layers'}`:`${S.mood} · 4 of 8 moods`;
@@ -754,7 +769,7 @@ $('#prevBtn').onclick=()=>{ S.preview=!S.preview; if(S.preview) startAudio(); el
 function renderSettings(){
   const c=$('#subCard'); c.classList.toggle('plus',S.sub);
   $('#subTitle').textContent=S.sub?'Resonance Plus':'Free plan';
-  $('#subDesc').textContent=S.sub?`£3.99 / month · ${S.plan.status==='trialing'?'trial ends':'renews'} ${fmtDate(S.plan.status==='trialing'?S.plan.trialEnd:S.plan.currentPeriodEnd)||'soon'}`:'4 moods · 20 min sessions · no layers';
+  $('#subDesc').textContent=S.sub?(S.plan.status==='qa'?'QA override · tap the version row 5× to remove':`£3.99 / month · ${S.plan.status==='trialing'?'trial ends':'renews'} ${fmtDate(S.plan.status==='trialing'?S.plan.trialEnd:S.plan.currentPeriodEnd)||'soon'}`):'4 moods · 20 min sessions · no layers';
   $('#subTag').textContent=S.sub?'Manage':'Upgrade';
   $('#moodSeg').innerHTML=Object.keys(MOODS).map(n=>`<button class="chip wrap ${n===S.mood?'on':''} ${canMood(n)?'':'lock'}" data-mood="${n}"><span>${n}${canMood(n)?'':lockSvg(10,'#6B6B7E')}</span></button>`).join('');
   $$('#moodSeg [data-mood]').forEach(b=>b.onclick=()=>pickMood(b.dataset.mood,'settings'));
@@ -764,7 +779,7 @@ function renderSettings(){
   const email=S.plan.email||''; $('#acctRow').style.display=email?'':'none'; $('#acctEmail').textContent=email;
 }
 $$('#denSeg button').forEach(b=>b.onclick=()=>{ S.density=+b.dataset.den; savePrefs(); renderSettings(); });
-$('#subCard').onclick=()=>{ if(S.sub) portal(); else paywall('settings'); };
+$('#subCard').onclick=()=>{ if(S.plan.status==='qa') return toast('QA override active'); if(S.sub) portal(); else paywall('settings'); };
 function renderLib(){
   const n=S.sessions.length, month=new Date().getMonth(), mins=S.sessions.filter(s=>s.ts&&new Date(s.ts).getMonth()===month).reduce((a,s)=>a+(s.min||0),0);
   $('#libCount').textContent=n?`${n} session${n>1?'s':''} saved on this device${mins?` · ${mins} min listened this month`:''}`:'No sessions yet — scan a room to begin.';
@@ -806,6 +821,7 @@ function applyPlan(p,persist){
 async function loadPlan(){
   const q=new URLSearchParams(location.search); let clean=false;
   const cached=JSON.parse(localStorage.getItem(PLAN_KEY)||'null');
+  if(CFG.qaUnlock&&localStorage.getItem('rz.qa')){ applyPlan({plan:'plus',status:'qa',trialEnd:null,email:'qa@bcvr.local'},false); return; }
   try{
     if(q.get('checkout')==='success'&&q.get('session_id')){ clean=true; applyPlan(await api('/api/me?session_id='+encodeURIComponent(q.get('session_id')))); toast('Welcome to Resonance Plus'); }
     else if(q.get('auth')){ clean=true; localStorage.setItem(TOKEN_KEY,q.get('auth')); applyPlan(await api('/api/me')); toast('Purchase restored'); }
@@ -824,7 +840,12 @@ $('#pwTerms').href=CFG.terms; $('#pwPrivacy').href=CFG.privacy;
 $('#pwRestore').onclick=()=>{ if(!API) return toast('Billing is not connected in this build'); $('#sheetMsg').textContent='Enter the email you subscribed with and we’ll send you a sign-in link.'; $('#sheetSend').textContent='Send link'; $('#sheetForm').classList.remove('busy'); $('#sheet').classList.add('on'); setTimeout(()=>$('#sheetEmail').focus(),50); };
 $('#sheetCancel').onclick=()=>$('#sheet').classList.remove('on');
 $('#sheetForm').onsubmit=async e=>{ e.preventDefault(); const f=$('#sheetForm'); f.classList.add('busy'); try{ await api('/api/restore',{email:$('#sheetEmail').value.trim(),return:returnUrl()}); $('#sheetMsg').textContent='Check your inbox — the link signs you back in and restores Plus on this device.'; $('#sheetSend').textContent='Sent'; setTimeout(()=>$('#sheet').classList.remove('on'),2400); }catch(err){ f.classList.remove('busy'); toast('Could not send the link'); } };
-$('#signOut').onclick=()=>{ localStorage.removeItem(TOKEN_KEY); localStorage.removeItem(PLAN_KEY); applyPlan({plan:'free'},false); toast('Signed out on this device'); };
+$('#signOut').onclick=()=>{ localStorage.removeItem(TOKEN_KEY); localStorage.removeItem(PLAN_KEY); localStorage.removeItem('rz.qa'); applyPlan({plan:'free'},false); toast('Signed out on this device'); };
+// QA override: five taps on the version row (Settings → Account) toggles Plus locally; survives reloads until signed out.
+const QA_KEY='rz.qa'; let qaTaps=0, qaT;
+$('#verRow').onclick=()=>{ if(!CFG.qaUnlock) return; clearTimeout(qaT); qaT=setTimeout(()=>qaTaps=0,1500); if(++qaTaps<5) return; qaTaps=0;
+  if(localStorage.getItem(QA_KEY)){ localStorage.removeItem(QA_KEY); applyPlan({plan:'free'},false); toast('QA · Plus removed'); }
+  else { localStorage.setItem(QA_KEY,'1'); applyPlan({plan:'plus',status:'qa',trialEnd:null,email:'qa@bcvr.local'},false); toast('QA · Plus unlocked'); } };
 
 // ---- boot ----
 renderListen(); clockUI(); setCTA();
